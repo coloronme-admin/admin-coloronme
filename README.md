@@ -1,5 +1,4 @@
 # admin-coloronme
-ColorOnMe Admin Repository
 
 ## 프로젝트 환경
 - JDK 17
