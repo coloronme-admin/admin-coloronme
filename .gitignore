@@ -36,5 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-### properies ###
-*.properties
+### application.properties ###
+application.properties
