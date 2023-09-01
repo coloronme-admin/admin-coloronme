@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -20,9 +22,6 @@ public class Member {
     private Long id;
     private String email;
     private String password;
-    @Builder.Default
-    @CreatedDate
     private LocalDateTime createdAt = LocalDateTime.now();
-    @LastModifiedDate
     private LocalDateTime updatedAt = LocalDateTime.now();
 }
