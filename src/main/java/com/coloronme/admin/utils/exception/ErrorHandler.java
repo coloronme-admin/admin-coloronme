@@ -10,10 +10,29 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class ErrorHandler {
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ApiException.class)
+    public ErrorResponse apiException(ApiException e){
+        return new ErrorResponse(e.getErrorCode().getCode(), e.getErrorCode().getMessage());
+    }
+
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorResponse methodArgumentNotValidException(MethodArgumentNotValidException e){
-        log.error("invalid data.");
-        return new ErrorResponse(400, e.getFieldError().getDefaultMessage()); /*Objects.requireNonNull(e.getFieldError()).getDefaultMessage()*/
+        return new ErrorResponse(400, e.getFieldError().getDefaultMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DuplicateException.class)
+    public ErrorResponse duplicateException(DuplicateException e){
+        return new ErrorResponse(e.getErrorCode().getCode(), e.getErrorCode().getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidByEmailException.class)
+    public ErrorResponse invalidByEmailException(InvalidByEmailException e){
+        return new ErrorResponse(e.getErrorCode().getCode(), e.getErrorCode().getMessage());
     }
 }

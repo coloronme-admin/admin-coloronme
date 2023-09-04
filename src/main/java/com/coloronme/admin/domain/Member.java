@@ -24,4 +24,6 @@ public class Member {
     private String password;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
+    @Column(name = "REFRESH_TOKEN")
+    private String refreshToken;
 }
