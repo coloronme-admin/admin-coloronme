@@ -10,5 +10,4 @@ public class JwtResponseDto {
     private String email;
     private String role;
     private String accessToken;
-    private String refreshToken;
 }

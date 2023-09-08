@@ -14,9 +14,12 @@ import com.coloronme.admin.utils.security.jwt.JwtProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +45,7 @@ public class MemberService {
         log.info("sign up success.");
     }
 
-    public JwtResponseDto login(MemberLoginRequestDto memberLoginRequestDto) {
+    public String login(MemberLoginRequestDto memberLoginRequestDto) {
         Member member = memberRepository.findByEmail(memberLoginRequestDto.getEmail());
         if(member == null){
             log.error("invalid email error");
@@ -53,13 +56,10 @@ public class MemberService {
             throw new ApiException(ErrorCode.NOT_FOUND_ACCOUNT);
         }
 
-        /*JWT 생성*/
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(memberLoginRequestDto.getEmail(),
-                        memberLoginRequestDto.getPassword())
-        );
+        /*토큰 생성*/
+        String accessToken = jwtProvider.generateAccessToken(member.getEmail(), MemberRoleEnum.ADMIN);
+        jwtProvider.generateRefreshToken(member.getEmail(), MemberRoleEnum.ADMIN);
 
-        String accessToken = jwtProvider.createToken(member.getEmail(), MemberRoleEnum.ADMIN);
-
+        return accessToken;
     }
 }
