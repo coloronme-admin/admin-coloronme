@@ -1,7 +1,7 @@
 package com.coloronme.admin.Global.jwt;
 
 
-import com.coloronme.admin.Global.dto.TokenDto;
+import com.coloronme.admin.Global.dto.JwtDto;
 import com.coloronme.admin.Domain.member.entity.Authority;
 import com.coloronme.admin.Domain.member.entity.RefreshToken;
 import com.coloronme.admin.Domain.member.repository.RefreshTokenRepository;
@@ -63,8 +63,8 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public TokenDto createAllToken(String email) {
-        return new TokenDto(createToken(email, "Access"), createToken(email, "Refresh"));
+    public JwtDto createAllToken(String email) {
+        return new JwtDto(createToken(email, "Access"), createToken(email, "Refresh"));
     }
 
     public String createToken(String email, String type) {
