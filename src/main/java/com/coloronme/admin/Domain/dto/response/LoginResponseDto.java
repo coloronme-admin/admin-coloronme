@@ -1,7 +1,7 @@
-package com.coloronme.admin.Domain.member.dto.response;
+package com.coloronme.admin.Domain.dto.response;
 
 
-import com.coloronme.admin.Domain.member.entity.Authority;
+import com.coloronme.admin.Domain.entity.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

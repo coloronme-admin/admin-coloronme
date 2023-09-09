@@ -1,7 +1,7 @@
-package com.coloronme.admin.Domain.member.entity;
+package com.coloronme.admin.Domain.entity;
 
 
-import com.coloronme.admin.Domain.member.dto.request.MemberRequestDto;
+import com.coloronme.admin.Domain.dto.request.MemberRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

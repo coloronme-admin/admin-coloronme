@@ -1,14 +1,15 @@
-package com.coloronme.admin.Domain.member.controller;
+package com.coloronme.admin.Domain.controller;
 
-import com.coloronme.admin.Domain.member.dto.request.MemberRequestDto;
-import com.coloronme.admin.Domain.member.dto.request.LoginRequestDto;
-import com.coloronme.admin.Domain.member.dto.response.LoginResponseDto;
+import com.coloronme.admin.Domain.dto.request.LoginRequestDto;
+import com.coloronme.admin.Domain.dto.request.MemberRequestDto;
+import com.coloronme.admin.Domain.dto.response.LoginResponseDto;
+import com.coloronme.admin.Domain.dto.response.SignupResponseDto;
+import com.coloronme.admin.Domain.service.LoginService;
 import com.coloronme.admin.Global.dto.ResponseDto;
-import com.coloronme.admin.Domain.member.dto.response.SignupResponseDto;
-import com.coloronme.admin.Domain.member.service.LoginService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+
 public class LoginController {
 
     private final LoginService loginService;
@@ -30,7 +32,7 @@ public class LoginController {
         return loginService.signup(memberRequestDto);
     }
     @PostMapping("/login")
-    public ResponseDto<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto loginRequestDto,HttpServletResponse response
+    public ResponseDto<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpServletResponse response
                                                ) {
         return loginService.login(loginRequestDto, response);
     }

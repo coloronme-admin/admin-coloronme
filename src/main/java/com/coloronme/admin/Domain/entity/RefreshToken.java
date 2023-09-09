@@ -1,4 +1,4 @@
-package com.coloronme.admin.Domain.member.entity;
+package com.coloronme.admin.Domain.entity;
 
 
 import jakarta.persistence.*;

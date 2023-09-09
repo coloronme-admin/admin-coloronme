@@ -1,19 +1,20 @@
-package com.coloronme.admin.Domain.member.service;
+package com.coloronme.admin.Domain.service;
 
 
-import com.coloronme.admin.Domain.member.dto.request.MemberRequestDto;
+import com.coloronme.admin.Domain.dto.request.LoginRequestDto;
+import com.coloronme.admin.Domain.dto.request.MemberRequestDto;
+import com.coloronme.admin.Domain.dto.response.LoginResponseDto;
+import com.coloronme.admin.Domain.dto.response.SignupResponseDto;
+import com.coloronme.admin.Domain.entity.RefreshToken;
+import com.coloronme.admin.Domain.repository.MemberRepository;
+import com.coloronme.admin.Domain.repository.RefreshTokenRepository;
 import com.coloronme.admin.Global.exception.ErrorCode;
 import com.coloronme.admin.Global.exception.RequestException;
 import com.coloronme.admin.Global.dto.JwtDto;
-import com.coloronme.admin.Domain.member.dto.request.LoginRequestDto;
-import com.coloronme.admin.Domain.member.dto.response.LoginResponseDto;
 import com.coloronme.admin.Global.dto.ResponseDto;
-import com.coloronme.admin.Domain.member.dto.response.SignupResponseDto;
 import com.coloronme.admin.Global.jwt.JwtUtil;
-import com.coloronme.admin.Domain.member.entity.Authority;
-import com.coloronme.admin.Domain.member.entity.Member;
-import com.coloronme.admin.Domain.member.repository.MemberRepository;
-import com.coloronme.admin.Domain.member.repository.RefreshTokenRepository;
+import com.coloronme.admin.Domain.entity.Authority;
+import com.coloronme.admin.Domain.entity.Member;
 
 
 import lombok.RequiredArgsConstructor;
@@ -65,7 +66,6 @@ public class LoginService {
 
             // 엑세스토콘, 리프레쉬토큰 생성
             JwtDto jwtDto = jwtUtil.createAllToken(loginRequestDto.getEmail());
-            refreshTokenRepository.save(jwtDto);
 
 //            // 리프레쉬 토큰은 DB에서 찾기
 //            Optional<RefreshToken> refreshToken = refreshTokenRepository.findByMemberEmail(loginRequestDto.getEmail());

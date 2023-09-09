@@ -1,7 +1,7 @@
 package com.coloronme.admin.Global.security;
 
-import com.coloronme.admin.Domain.member.repository.MemberRepository;
-import com.coloronme.admin.Domain.member.entity.Member;
+import com.coloronme.admin.Domain.repository.MemberRepository;
+import com.coloronme.admin.Domain.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

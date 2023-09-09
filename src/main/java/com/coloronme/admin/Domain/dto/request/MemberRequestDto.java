@@ -1,4 +1,4 @@
-package com.coloronme.admin.Domain.member.dto.request;
+package com.coloronme.admin.Domain.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

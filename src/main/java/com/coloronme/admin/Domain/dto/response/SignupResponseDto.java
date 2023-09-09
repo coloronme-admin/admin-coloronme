@@ -1,4 +1,4 @@
-package com.coloronme.admin.Domain.member.dto.response;
+package com.coloronme.admin.Domain.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

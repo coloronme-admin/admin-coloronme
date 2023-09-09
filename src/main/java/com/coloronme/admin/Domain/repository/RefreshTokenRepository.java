@@ -1,6 +1,6 @@
-package com.coloronme.admin.Domain.member.repository;
+package com.coloronme.admin.Domain.repository;
 
-import com.coloronme.admin.Domain.member.entity.RefreshToken;
+import com.coloronme.admin.Domain.entity.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

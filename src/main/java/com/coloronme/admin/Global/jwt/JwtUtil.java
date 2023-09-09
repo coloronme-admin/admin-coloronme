@@ -2,9 +2,9 @@ package com.coloronme.admin.Global.jwt;
 
 
 import com.coloronme.admin.Global.dto.JwtDto;
-import com.coloronme.admin.Domain.member.entity.Authority;
-import com.coloronme.admin.Domain.member.entity.RefreshToken;
-import com.coloronme.admin.Domain.member.repository.RefreshTokenRepository;
+import com.coloronme.admin.Domain.entity.Authority;
+import com.coloronme.admin.Domain.entity.RefreshToken;
+import com.coloronme.admin.Domain.repository.RefreshTokenRepository;
 import com.coloronme.admin.Global.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
