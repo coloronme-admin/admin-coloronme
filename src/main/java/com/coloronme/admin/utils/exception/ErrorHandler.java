@@ -1,5 +1,6 @@
 package com.coloronme.admin.utils.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -38,7 +39,13 @@ public class ErrorHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidJwtException.class)
-    public ErrorResponse expiredJwtException(InvalidJwtException e){
+    public ErrorResponse invalidJwtException(InvalidJwtException e){
         return new ErrorResponse(e.getErrorCode().getCode(), e.getErrorCode().getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ErrorResponse expiredJwtException(ExpiredJwtException e){
+        return new ErrorResponse(ErrorCode.EXPIRED_JWT_TOKEN.getCode(), ErrorCode.EXPIRED_JWT_TOKEN.getMessage());
     }
 }

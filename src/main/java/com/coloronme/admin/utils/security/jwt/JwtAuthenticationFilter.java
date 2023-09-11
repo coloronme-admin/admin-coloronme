@@ -22,7 +22,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         /*요청 헤더로부터 access token 추출*/
         String accessToken = jwtProvider.resolveToken(request);
-        System.out.println("JwtAuthenticationFilter accessToken ==================================== "+accessToken);
         try {
             /*access token 유효성 검사*/
             if (accessToken != null && jwtProvider.checkJwtToken(accessToken)){
@@ -33,7 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.clearContext();
             response.sendError(ErrorCode.EXPIRED_JWT_TOKEN.getCode(), ErrorCode.EXPIRED_JWT_TOKEN.getMessage());
         }
-        /*처리 후 다음 필터체인으로 이동*/
+        /*처리 후 다음 필터로 이동*/
         filterChain.doFilter(request, response);
     }
 }

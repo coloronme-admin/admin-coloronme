@@ -29,7 +29,7 @@ public class MemberService {
 
     public void signup(MemberRequestDto memberRequestDto) {
         if (memberRepository.existsByEmail(memberRequestDto.getEmail())) {
-            log.error("duplicated member email error.");
+            log.error("email 중복 오류.");
             throw new DuplicateException(ErrorCode.DUPLICATED_BY_EMAIL);
         }
         Member member = new Member();
@@ -37,24 +37,22 @@ public class MemberService {
         member.setPassword(bCryptPasswordEncoder.encode(memberRequestDto.getPassword()));
         member.setMemberRoleType(MemberRoleType.ADMIN);
         memberRepository.save(member);
-        log.info("sign up success.");
     }
 
     public String login(MemberLoginRequestDto memberLoginRequestDto) {
         Member member = memberRepository.findByEmail(memberLoginRequestDto.getEmail());
         
         if(member == null){
-            log.error("invalid email error");
+            log.error("유효하지 않은 email.");
             throw new InvalidByEmailException(ErrorCode.INVALID_BY_EMAIL);
         }
         
         if(!bCryptPasswordEncoder.matches(memberLoginRequestDto.getPassword(), member.getPassword())){
-            log.error("id, password mismatch error.");
+            log.error("id, password 불일치.");
             throw new ApiException(ErrorCode.NOT_FOUND_ACCOUNT);
         }
         
         String accessToken = jwtProvider.generateAccessToken(member); /*access token*/
-        System.out.println("login accessToken ==================================== "+accessToken);
         jwtProvider.generateRefreshToken(member); /*refresh token*/
 
         return accessToken;
