@@ -6,12 +6,10 @@ import com.coloronme.admin.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +18,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    /*회원가입*/
     @PostMapping(value = "/signup")
     public ResponseEntity<MemberRequestDto> signup(@RequestBody @Valid MemberRequestDto memberRequestDto) {
         memberService.signup(memberRequestDto);
@@ -34,6 +31,22 @@ public class MemberController {
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, accessToken)
                     .body("token is valid.");
         }
-        return ResponseEntity.badRequest().body("token is invalid");
+        return ResponseEntity.badRequest().body("token is invalid.");
+    }
+
+    @PostMapping(value="/refresh")
+    public ResponseEntity<?> againGenerateAccessToken() {
+        String expiredAccessToken = HttpHeaders.SET_COOKIE;
+        String refreshAccessToken = memberService.againGenerateAccessToken(expiredAccessToken);
+        if(refreshAccessToken != null) {
+            return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, refreshAccessToken)
+                    .body("token is refreshed.");
+        }
+        return ResponseEntity.badRequest().body("token is refreshed.");
+    }
+
+    @GetMapping(value = "/test")
+    public String testToken() {
+        return "success?";
     }
 }

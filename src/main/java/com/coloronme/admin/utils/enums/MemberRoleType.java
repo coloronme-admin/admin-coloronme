@@ -1,6 +1,6 @@
 package com.coloronme.admin.utils.enums;
 
-public enum MemberRoleEnum {
+public enum MemberRoleType {
     USER,
     ADMIN
 }

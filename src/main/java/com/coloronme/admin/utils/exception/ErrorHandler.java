@@ -35,4 +35,10 @@ public class ErrorHandler {
     public ErrorResponse invalidByEmailException(InvalidByEmailException e){
         return new ErrorResponse(e.getErrorCode().getCode(), e.getErrorCode().getMessage());
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidJwtException.class)
+    public ErrorResponse expiredJwtException(InvalidJwtException e){
+        return new ErrorResponse(e.getErrorCode().getCode(), e.getErrorCode().getMessage());
+    }
 }
