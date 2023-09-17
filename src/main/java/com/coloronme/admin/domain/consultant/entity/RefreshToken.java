@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor
+// RefreshToken 을 따로 테이블을 두는 이유 : Consultant 안에 RefreshToken 을 두면 Consultant 테이블을 불러올 때 RefreshToken 을 같이 불러 오게 된다.
+//
 public class RefreshToken {
 
 
@@ -18,12 +20,12 @@ public class RefreshToken {
     @Column(name = "refreshToken", nullable = false)
     private String refreshToken;
 
-    @Column(name = "memberEmail", nullable = false)
-    private String memberEmail;
+    @Column(name = "consultantEmail", nullable = false)
+    private String consultantEmail;
 
     public RefreshToken(String token, String email) {
         this.refreshToken = token;
-        this.memberEmail = email;
+        this.consultantEmail = email;
     }
 
     public RefreshToken updateToken(String token) {

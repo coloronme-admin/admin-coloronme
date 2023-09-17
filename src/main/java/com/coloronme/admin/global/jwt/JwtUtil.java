@@ -2,7 +2,7 @@ package com.coloronme.admin.global.jwt;
 
 
 import com.coloronme.admin.global.dto.JwtDto;
-import com.coloronme.admin.domain.consultant.entity.Authority;
+import com.coloronme.admin.domain.consultant.entity.RoleType;
 import com.coloronme.admin.domain.consultant.entity.RefreshToken;
 import com.coloronme.admin.domain.consultant.repository.RefreshTokenRepository;
 import com.coloronme.admin.global.security.UserDetailsServiceImpl;
@@ -74,7 +74,7 @@ public class JwtUtil {
 
         return BEARER_TYPE + Jwts.builder()
                 .setSubject(email)
-                .claim(AUTHORITIES_KEY, Authority.ROLE_USER.toString())
+                .claim(AUTHORITIES_KEY, RoleType.ROLE_USER.toString())
                 .setExpiration(new Date(date.getTime() + time))
                 .setIssuedAt(date)
                 .signWith(key, signatureAlgorithm)
@@ -106,7 +106,7 @@ public class JwtUtil {
             return false;
 
         // DB에 저장한 토큰 비교
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByMemberEmail(getEmailFromToken(token));
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByConsultantEmail(getEmailFromToken(token));
 
         return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken());
     }

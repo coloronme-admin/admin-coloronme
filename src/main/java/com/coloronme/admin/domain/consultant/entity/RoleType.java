@@ -1,5 +1,5 @@
 package com.coloronme.admin.domain.consultant.entity;
 
-public enum Authority {
+public enum RoleType {
     ROLE_USER
 }

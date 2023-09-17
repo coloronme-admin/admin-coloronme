@@ -22,18 +22,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Consultant member = consultantRepository.findByEmail(email).
+        Consultant consultant = consultantRepository.findByEmail(email).
                 orElseThrow(() -> new RuntimeException("Not Found Account")
                 );
-        return createUserDetails(member);
+        return createUserDetails(consultant);
     }
 
-    private UserDetails createUserDetails(Consultant member) {
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("member");
+    private UserDetails createUserDetails(Consultant consultant) {
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("consultant");
 
         return new User(
-                member.getEmail(),
-                member.getPassword(),
+                consultant.getEmail(),
+                consultant.getPassword(),
                 Collections.singleton(grantedAuthority)
         );
     }

@@ -2,10 +2,7 @@ package com.coloronme.admin.domain.consultant.entity;
 
 
 import com.coloronme.admin.domain.consultant.dto.request.ConsultantRequestDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,11 +21,13 @@ public class Consultant {
 
     private String password;
 
-    private Authority authority;
 
-    public Consultant(ConsultantRequestDto consultantRequestDto, Authority authority) {
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
+
+    public Consultant(ConsultantRequestDto consultantRequestDto, RoleType roleType) {
         this.email = consultantRequestDto.getEmail();
-        this.authority =authority;
+        this.roleType =roleType;
         this.password = consultantRequestDto.getPassword();
     }
 }

@@ -8,18 +8,18 @@ import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
 
-    public Consultant member;
+    public Consultant consultant;
 
-    public UserDetailsImpl(Consultant member) {
-        this.member = member;
+    public UserDetailsImpl(Consultant consultant) {
+        this.consultant = consultant;
     }
 
-    public Consultant getMember() {
-        return this.getMember();
+    public Consultant getConsultant() {
+        return this.getConsultant();
     }
 
-    public void setMember(Consultant member) {
-        this.member = member;
+    public void setConsultant(Consultant consultant) {
+        this.consultant = consultant;
     }
 
     @Override
