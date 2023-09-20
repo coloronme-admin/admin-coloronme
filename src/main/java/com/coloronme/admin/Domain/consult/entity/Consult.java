@@ -1,0 +1,45 @@
+package com.coloronme.admin.domain.consult.entity;
+
+import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Consult {
+    @Id @GeneratedValue
+    @Column(name="CONSULT_ID")
+    private Long consultId;
+    @Column(name = "CONSULTANT_ID")
+    private Long consultantId;
+    @Column(name = "USER_ID")
+    private Long userId;
+    @NotNull
+    private LocalDateTime consultDate;
+    @NotNull
+    private String consultContent;
+    @NotNull
+    private LocalDateTime createdAt;
+    @NotNull
+    private LocalDateTime updatedAt;
+    private LocalDateTime deleteAt;
+
+    public Consult(Long consultantId, Long userId, ConsultRequestDto consultRequestDto) {
+        this.consultantId = consultantId;
+        this.userId = userId;
+        this.consultContent = consultRequestDto.getConsultContent();
+        this.consultDate = consultRequestDto.getConsultDate();
+    }
+}
