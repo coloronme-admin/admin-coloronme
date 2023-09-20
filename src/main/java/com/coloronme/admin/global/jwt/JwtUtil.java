@@ -29,7 +29,6 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
-
     private final UserDetailsServiceImpl userDetailsService;
     private final RefreshTokenRepository refreshTokenRepository;
 
@@ -38,9 +37,7 @@ public class JwtUtil {
     public static final String REFRESH_TOKEN = "Refresh_Token";
     private static final long ACCESS_TIME = 1000 * 60 * 60 * 24;
     private static final long REFRESH_TIME = 1000 * 60 * 60 * 24 * 7;
-
     public static final String BEARER_TYPE = "Bearer ";
-
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -61,7 +58,6 @@ public class JwtUtil {
         return null;
     }
 
-    // 토큰 생성
     public JwtDto createAllToken(String email) {
         return new JwtDto(createToken(email, "Access"), createToken(email, "Refresh"));
     }
@@ -80,7 +76,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    // 토큰 검증
     public Boolean tokenValidation(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -97,16 +92,13 @@ public class JwtUtil {
         return false;
     }
 
-    // refreshToken 토큰 검증
     public Boolean refreshTokenValidation(String token) {
 
         // 1차 토큰 검증
         if (!tokenValidation(token))
             return false;
-
         // DB에 저장한 토큰 비교
         Optional<RefreshToken> refreshToken = refreshTokenRepository.findByConsultantEmail(getEmailFromToken(token));
-
         return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken());
     }
 

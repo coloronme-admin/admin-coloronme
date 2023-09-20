@@ -36,7 +36,6 @@ public class LoginService {
     private final ConsultantRepository consultantRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-
     @Transactional
     public ResponseDto<SignupResponseDto> signup(ConsultantRequestDto consultantRequestDto) {
 
@@ -85,14 +84,12 @@ public class LoginService {
                         .email(consultant.getEmail())
                         .roleType(consultant.getRoleType())
                         .build()
-
         );
     }
     private void setHeader(HttpServletResponse response, JwtDto jwtDto) {
         response.addHeader(JwtUtil.ACCESS_TOKEN, jwtDto.getAccessToken());
         response.addHeader(JwtUtil.REFRESH_TOKEN, jwtDto.getRefreshToken());
     }
-
 }
 
 

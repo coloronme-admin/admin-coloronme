@@ -41,8 +41,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
             setAuthentication(jwtUtil.getEmailFromToken(refreshToken));
         }
-
-        // 다음 필터로 수행되게 해준다
         filterChain.doFilter(request, response);
     }
 

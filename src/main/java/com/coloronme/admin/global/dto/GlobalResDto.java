@@ -1,16 +1,13 @@
 package com.coloronme.admin.global.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class GlobalResDto {
     private String msg;
     private int statusCode;
-
-    public GlobalResDto(String msg, int statusCode) {
-        this.msg = msg;
-        this.statusCode = statusCode;
-    }
 }
