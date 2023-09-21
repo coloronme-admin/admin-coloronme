@@ -27,10 +27,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Service
-@Component
 @RequiredArgsConstructor
 public class LoginService {
-
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
     private final ConsultantRepository consultantRepository;

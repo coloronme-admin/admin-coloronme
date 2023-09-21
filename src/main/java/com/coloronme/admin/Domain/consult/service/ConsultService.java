@@ -2,7 +2,7 @@ package com.coloronme.admin.domain.consult.service;
 
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
 import com.coloronme.admin.domain.consult.entity.Consult;
-import com.coloronme.admin.domain.consult.entity.User;
+import com.coloronme.admin.domain.consult.entity.Member;
 import com.coloronme.admin.domain.consult.repository.ConsultRepository;
 import com.coloronme.admin.domain.consult.repository.UserRepository;
 import com.coloronme.admin.domain.consultant.entity.Consultant;
@@ -25,18 +25,20 @@ public class ConsultService {
     @Transactional
     public void registerConsultUser(String consultantEmail, Long userId, ConsultRequestDto consultRequestDto) {
 
-        Optional<User> user = userRepository.findById(userId);
+        Optional<Member> user = userRepository.findById(userId);
+        System.out.println("user : " + user);
         if (user.isEmpty()) {
             throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
         }
 
         Optional<Consultant> consultant = consultantRepository.findByEmail(consultantEmail);
+        System.out.println("consultant : " + consultant);
         if (consultant.isEmpty()) {
             throw new RequestException(ErrorCode.CONSULTANT_NOT_FOUND_404);
         }
 
-        User userData = user.get();
-        userData.setPersonalColorId(consultRequestDto.getPersonalColorId());
+        Member memberData = user.get();
+        memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
         Consult consult = new Consult(consultant.get().getId(), userId, consultRequestDto);
 
         consultUserRepository.save(consult);
