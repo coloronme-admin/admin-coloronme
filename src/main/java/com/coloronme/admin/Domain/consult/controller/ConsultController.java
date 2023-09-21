@@ -18,14 +18,17 @@ public class ConsultController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/{userId}")
-    public ResponseDto<ConsultResponseDto> registerConsultUser(HttpServletRequest request,
-                                                               @RequestParam Long userId,
+    public ResponseDto<ConsultResponseDto> registerConsultUser(HttpServletRequest request, @PathVariable Long userId,
                                                                @Valid @RequestBody ConsultRequestDto consultRequestDto) {
-        String consultantEmail = jwtUtil.getEmailFromToken(request.getHeader(JwtUtil.ACCESS_TOKEN));
+        /*진단자 계정 검증*/
+        String accessToken = jwtUtil.getHeaderToken(request, "Access");
+        String consultantEmail = jwtUtil.getEmailFromToken(accessToken);
+        System.out.println("consultant email :" + consultantEmail);
+        /*고객 진단 정보 추가*/
         consultService.registerConsultUser(consultantEmail, userId, consultRequestDto);
         return ResponseDto.success(
                 ConsultResponseDto.builder()
-                        .status("success")
+                        .status("ok")
                         .message("Customer registration complete")
                         .build());
     }

@@ -110,6 +110,7 @@ public class JwtUtil {
 
     // 토큰에서 email 가져오는 기능
     public String getEmailFromToken(String token) {
+        System.out.println("jwt:" + token);
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
 }

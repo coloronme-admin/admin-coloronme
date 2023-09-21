@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -31,8 +33,10 @@ public class Consult {
     @NotNull
     private String consultContent;
     @NotNull
+    @CreationTimestamp
     private LocalDateTime createdAt;
     @NotNull
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
     private LocalDateTime deleteAt;
 
@@ -41,5 +45,7 @@ public class Consult {
         this.userId = userId;
         this.consultContent = consultRequestDto.getConsultContent();
         this.consultDate = consultRequestDto.getConsultDate();
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 }

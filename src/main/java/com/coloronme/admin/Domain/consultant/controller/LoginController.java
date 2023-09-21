@@ -16,16 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@Component
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-
 public class LoginController {
-
     private final LoginService loginService;
-
-
     @PostMapping("/signup")
     public ResponseDto<SignupResponseDto> signup(@RequestBody @Valid ConsultantRequestDto consultantRequestDto) {
         return loginService.signup(consultantRequestDto);
