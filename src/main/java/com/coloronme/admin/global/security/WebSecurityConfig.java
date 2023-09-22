@@ -49,7 +49,6 @@ public class WebSecurityConfig {
 
         http.csrf((csrf) -> csrf.disable());
                 http
-//                .addFilterBefore(Filter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
