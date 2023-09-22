@@ -29,19 +29,16 @@ public class ConsultService {
     public void registerConsultUser(String consultantEmail, Long userId, ConsultRequestDto consultRequestDto) {
 
         Optional<Member> user = userRepository.findById(userId);
-        System.out.println("user : " + user);
         if (user.isEmpty()) {
             throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
         }
 
         Optional<Consultant> consultant = consultantRepository.findByEmail(consultantEmail);
-        System.out.println("consultant : " + consultant);
         if (consultant.isEmpty()) {
             throw new RequestException(ErrorCode.CONSULTANT_NOT_FOUND_404);
         }
 
         Optional<PersonalColor> personalColor = personalColorRepository.findById(consultRequestDto.getPersonalColorId());
-        System.out.println("personalColor : " + personalColor);
         if (personalColor.isEmpty()) {
             throw new RequestException(ErrorCode.PERSONAL_COLOR_NOT_FOUND_404);
         }

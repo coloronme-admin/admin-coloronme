@@ -93,24 +93,22 @@ public class JwtUtil {
     }
 
     public Boolean refreshTokenValidation(String token) {
-
-        // 1차 토큰 검증
+        /*1차 토큰 검증*/
         if (!tokenValidation(token))
             return false;
-        // DB에 저장한 토큰 비교
+        /*DB에 저장한 토큰 비교*/
         Optional<RefreshToken> refreshToken = refreshTokenRepository.findByConsultantEmail(getEmailFromToken(token));
         return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken());
     }
 
-    // 인증 객체 생성
+    /*인증 객체 생성*/
     public Authentication createAuthentication(String email) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    // 토큰에서 email 가져오는 기능
+    /*토큰에서 email 가져오는 기능*/
     public String getEmailFromToken(String token) {
-        System.out.println("jwt:" + token);
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
 }
