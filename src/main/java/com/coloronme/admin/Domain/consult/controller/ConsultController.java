@@ -23,7 +23,6 @@ public class ConsultController {
         /*진단자 계정 검증*/
         String accessToken = jwtUtil.getHeaderToken(request, "Access");
         String consultantEmail = jwtUtil.getEmailFromToken(accessToken);
-        System.out.println("consultant email :" + consultantEmail);
         /*고객 진단 정보 추가*/
         consultService.registerConsultUser(consultantEmail, userId, consultRequestDto);
         return ResponseDto.success(
