@@ -30,13 +30,10 @@ public class Consult {
     private Long userId;
     @NotNull
     private LocalDateTime consultDate;
-    @NotNull
     private String consultContent;
     @NotNull
-    @CreationTimestamp
     private LocalDateTime createdAt;
     @NotNull
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
     private LocalDateTime deleteAt;
 

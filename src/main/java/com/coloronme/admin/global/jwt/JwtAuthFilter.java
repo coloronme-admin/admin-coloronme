@@ -46,7 +46,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     public void setAuthentication(String email) {
         Authentication authentication = jwtUtil.createAuthentication(email);
-        // context에 담아두면 UsernamePasswordAuthenticationFilter에서 인증된걸 알게 해준다
+        /*context에 담아두면 UsernamePasswordAuthenticationFilter에서 인증된걸 알게 해준다*/
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
