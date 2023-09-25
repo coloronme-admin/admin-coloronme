@@ -24,8 +24,8 @@ public class Consult {
     private Long consultId;
     @Column(name = "CONSULTANT_ID")
     private Long consultantId;
-    @Column(name = "USER_ID")
-    private Long userId;
+    @Column(name = "MEMBER_ID")
+    private Long memberId;
     @Column(name = "PERSONAL_COLOR_ID")
     private Long personalColorId;
     @NotNull
@@ -39,7 +39,7 @@ public class Consult {
 
     public Consult(Long consultantId, Long userId, ConsultRequestDto consultRequestDto) {
         this.consultantId = consultantId;
-        this.userId = userId;
+        this.memberId = userId;
         this.personalColorId = consultRequestDto.getPersonalColorId();
         this.consultContent = consultRequestDto.getConsultContent();
         this.consultDate = consultRequestDto.getConsultDate();

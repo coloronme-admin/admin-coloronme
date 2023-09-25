@@ -1,4 +1,4 @@
-package com.coloronme.admin.domain.user.entity;
+package com.coloronme.admin.domain.member.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
