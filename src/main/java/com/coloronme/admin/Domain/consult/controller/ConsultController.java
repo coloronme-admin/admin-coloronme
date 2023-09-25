@@ -36,14 +36,4 @@ public class ConsultController {
         ConsultUserResponseDto consultUserResponseDto = consultService.selectConsultUserByUserId(userId);
         return ResponseDto.success(consultUserResponseDto);
     }
-
-    @GetMapping("/")
-    public ResponseDto<List<ConsultUserResponseDto>> selectConsultUserList(HttpServletRequest request) {
-        /*진단자 계정 검증*/
-        String accessToken = jwtUtil.getHeaderToken(request, "Access");
-        String consultantEmail = jwtUtil.getEmailFromToken(accessToken);
-
-        List<ConsultUserResponseDto> consultUserList = consultService.selectConsultUserList(consultantEmail);
-        return ResponseDto.success(consultUserList);
-    }
 }
