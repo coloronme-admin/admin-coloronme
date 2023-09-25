@@ -18,3 +18,4 @@ public class ConsultUserResponseDto {
     private String gender;
     private String consultContent;
 }
+  

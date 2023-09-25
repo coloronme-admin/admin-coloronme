@@ -3,8 +3,6 @@ package com.coloronme.admin.domain.consult.controller;
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
 import com.coloronme.admin.domain.consult.dto.response.ConsultUserResponseDto;
 import com.coloronme.admin.domain.consult.service.ConsultService;
-import com.coloronme.admin.domain.user.dto.response.UserResponseDto;
-import com.coloronme.admin.domain.user.service.MemberService;
 import com.coloronme.admin.global.dto.ResponseDto;
 import com.coloronme.admin.global.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,12 +10,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/members")
 @RequiredArgsConstructor
 public class ConsultController {
     private final ConsultService consultService;
-    private final MemberService memberService;
     private final JwtUtil jwtUtil;
 
     @PostMapping("/{userId}")
@@ -36,5 +35,15 @@ public class ConsultController {
     public ResponseDto<ConsultUserResponseDto> selectConsultUserByUserId(@PathVariable Long userId) {
         ConsultUserResponseDto consultUserResponseDto = consultService.selectConsultUserByUserId(userId);
         return ResponseDto.success(consultUserResponseDto);
+    }
+
+    @GetMapping("/")
+    public ResponseDto<List<ConsultUserResponseDto>> selectConsultUserList(HttpServletRequest request) {
+        /*진단자 계정 검증*/
+        String accessToken = jwtUtil.getHeaderToken(request, "Access");
+        String consultantEmail = jwtUtil.getEmailFromToken(accessToken);
+
+        List<ConsultUserResponseDto> consultUserList = consultService.selectConsultUserList(consultantEmail);
+        return ResponseDto.success(consultUserList);
     }
 }
