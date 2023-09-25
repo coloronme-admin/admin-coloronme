@@ -10,8 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -28,6 +26,8 @@ public class Consult {
     private Long consultantId;
     @Column(name = "USER_ID")
     private Long userId;
+    @Column(name = "PERSONAL_COLOR_ID")
+    private Long personalColorId;
     @NotNull
     private LocalDateTime consultDate;
     private String consultContent;
@@ -40,6 +40,7 @@ public class Consult {
     public Consult(Long consultantId, Long userId, ConsultRequestDto consultRequestDto) {
         this.consultantId = consultantId;
         this.userId = userId;
+        this.personalColorId = consultRequestDto.getPersonalColorId();
         this.consultContent = consultRequestDto.getConsultContent();
         this.consultDate = consultRequestDto.getConsultDate();
         this.createdAt = LocalDateTime.now();
