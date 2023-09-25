@@ -17,7 +17,10 @@ public enum ErrorCode {
     USER_NOT_FOUND_404(HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다."),
 
     /*PERSONAL COLOR*/
-    PERSONAL_COLOR_NOT_FOUND_404(HttpStatus.NOT_FOUND, "퍼스널 컬러를 찾을 수 없습니다.");
+    PERSONAL_COLOR_NOT_FOUND_404(HttpStatus.NOT_FOUND, "퍼스널 컬러를 찾을 수 없습니다."),
+
+    /*PERSONAL COLOR*/
+    CONSULT_NOT_FOUND_404(HttpStatus.NOT_FOUND, "진단 내역을 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
