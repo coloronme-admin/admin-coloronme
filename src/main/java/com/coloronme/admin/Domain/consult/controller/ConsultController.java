@@ -22,11 +22,10 @@ public class ConsultController {
     @PostMapping("/{userId}")
     public ResponseDto<String> registerConsultUser(HttpServletRequest request, @PathVariable Long userId,
                                                                @Valid @RequestBody ConsultRequestDto consultRequestDto) {
-        String accessToken = jwtUtil.getHeaderToken(request, "Access");
-        String consultantEmail = jwtUtil.getEmailFromToken(accessToken);
+        String consultantEmail = jwtUtil.getEmailFromRequest(request, "Access");
         consultService.registerConsultUser(consultantEmail, userId, consultRequestDto);
         return ResponseDto.success(
-               "Customer Information Registration Successful.");
+               "Consult Registration Successful.");
     }
 
     @GetMapping("/{userId}")
@@ -37,8 +36,7 @@ public class ConsultController {
 
     @GetMapping()
     public ResponseDto<List<ConsultUserResponseDto>> selectConsultUserList(HttpServletRequest request) {
-        String accessToken = jwtUtil.getHeaderToken(request, "Access");
-        String consultantEmail = jwtUtil.getEmailFromToken(accessToken);
+        String consultantEmail = jwtUtil.getEmailFromRequest(request, "Access");
         List<ConsultUserResponseDto> consultUserList = consultService.selectConsultUserList(consultantEmail);
         return ResponseDto.success(consultUserList);
     }
