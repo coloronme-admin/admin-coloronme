@@ -36,7 +36,6 @@ public class LoginService {
 
     @Transactional
     public ResponseDto<SignupResponseDto> signup(ConsultantRequestDto consultantRequestDto) {
-
         if (consultantRepository.findByEmail(consultantRequestDto.getEmail()).isPresent()) {
             throw new RequestException(ErrorCode.EMAIL_DUPLICATION_409);
         }
