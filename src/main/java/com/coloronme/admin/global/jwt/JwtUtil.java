@@ -111,4 +111,10 @@ public class JwtUtil {
     public String getEmailFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
+
+    /*request에서 token에 담긴 email 정보 갖고오는 기능*/
+    public String getEmailFromRequest(HttpServletRequest request, String type) {
+        String accessToken = getHeaderToken(request, type);
+        return getEmailFromToken(accessToken);
+    }
 }
