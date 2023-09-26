@@ -17,6 +17,8 @@ public class Consultant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String name;
+    private String company;
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
@@ -34,6 +36,8 @@ public class Consultant {
     public Consultant(ConsultantRequestDto consultantRequestDto, RoleType roleType) {
         this.email = consultantRequestDto.getEmail();
         this.roleType = roleType;
+        this.name = getName();
+        this.company = getCompany();
         this.password = consultantRequestDto.getPassword();
     }
 }

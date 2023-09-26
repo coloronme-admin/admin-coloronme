@@ -66,9 +66,9 @@ public class LoginService {
             JwtDto jwtDto = jwtUtil.createAllToken(loginRequestDto.getEmail());
 //            // 리프레쉬 토큰은 DB에서 찾기
             Optional<RefreshToken> refreshToken = refreshTokenRepository.findByConsultantEmail(loginRequestDto.getEmail());
-//            // 리프레쉬토큰 null인지 아닌지 에 따라서
-//            // 값을 가지고있으면 save
-//            // 값이 없으면 newToken 만들어내서 save
+             /*리프레쉬토큰 null인지 아닌지 에 따라서
+             값을 가지고있으면 save
+             값이 없으면 newToken 만들어내서 save*/
             if (refreshToken.isPresent()) {
                 refreshTokenRepository.save(refreshToken.get().updateToken(jwtDto.getRefreshToken()));
             } else {
