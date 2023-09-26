@@ -22,10 +22,8 @@ public class ConsultController {
     @PostMapping("/{userId}")
     public ResponseDto<String> registerConsultUser(HttpServletRequest request, @PathVariable Long userId,
                                                                @Valid @RequestBody ConsultRequestDto consultRequestDto) {
-        /*진단자 계정 검증*/
         String accessToken = jwtUtil.getHeaderToken(request, "Access");
         String consultantEmail = jwtUtil.getEmailFromToken(accessToken);
-        /*고객 진단 정보 추가*/
         consultService.registerConsultUser(consultantEmail, userId, consultRequestDto);
         return ResponseDto.success(
                "Customer Information Registration Successful.");
@@ -39,10 +37,8 @@ public class ConsultController {
 
     @GetMapping()
     public ResponseDto<List<ConsultUserResponseDto>> selectConsultUserList(HttpServletRequest request) {
-        /*진단자 계정 검증*/
         String accessToken = jwtUtil.getHeaderToken(request, "Access");
         String consultantEmail = jwtUtil.getEmailFromToken(accessToken);
-
         List<ConsultUserResponseDto> consultUserList = consultService.selectConsultUserList(consultantEmail);
         return ResponseDto.success(consultUserList);
     }

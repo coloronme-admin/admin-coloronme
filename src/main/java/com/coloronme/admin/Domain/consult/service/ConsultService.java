@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,7 +65,7 @@ public class ConsultService {
             throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
         }
 
-        Optional<Consult> consult = consultRepository.findById(memberId);
+        Optional<Consult> consult = consultRepository.findByMemberId(memberId);
         if(consult.isEmpty()) {
             log.error("CONSULT NOT FOUND.");
             throw new RequestException(ErrorCode.CONSULT_NOT_FOUND_404);
@@ -88,13 +88,14 @@ public class ConsultService {
     public List<ConsultUserResponseDto> selectConsultUserList(String consultantEmail) {
         Optional<Consultant> consultant = consultantRepository.findByEmail(consultantEmail);
         if(consultant.isEmpty()) {
+            log.error("CONSULTANT NOT FOUND.");
             throw new RequestException(ErrorCode.CONSULTANT_NOT_FOUND_404);
         }
 
         Consultant consultantData = consultant.get();
         List<Consult> consultList = consultRepository.findAllByConsultantId(consultantData.getId());
 
-        List<ConsultUserResponseDto> consultUserList = new ArrayList<>();
+        List<ConsultUserResponseDto> consultUserList = new LinkedList<>();
         for(Consult consult : consultList) {
             ConsultUserResponseDto consultUserResponseDto = ConsultUserResponseDto.builder()
                     .nickname(consult.getMember().getNickname())
