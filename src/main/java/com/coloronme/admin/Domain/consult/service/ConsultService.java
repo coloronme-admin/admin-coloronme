@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +53,7 @@ public class ConsultService {
 
         Member memberData = user.get();
         memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
-        Consult consult = new Consult(consultant.get().getId(), userId, consultRequestDto);
+        Consult consult = new Consult(consultant.get(), memberData, personalColor.get(), consultRequestDto);
 
         consultUserRepository.save(consult);
     }
@@ -79,8 +80,34 @@ public class ConsultService {
                 .personalDate(consultData.getConsultDate())
                 .age(memberData.getAge())
                 .gender(memberData.getGender())
-                .personalColorId(consultData.getPersonalColorId())
+                .personalColorId(consultData.getPersonalColor().getId())
                 .consultContent(consultData.getConsultContent())
                 .build();
+    }
+
+    public List<ConsultUserResponseDto> selectConsultUserList(String consultantEmail) {
+        Optional<Consultant> consultant = consultantRepository.findByEmail(consultantEmail);
+        if(consultant.isEmpty()) {
+            throw new RequestException(ErrorCode.CONSULTANT_NOT_FOUND_404);
+        }
+
+        Consultant consultantData = consultant.get();
+        List<Consult> consultList = consultRepository.findAllByConsultantId(consultantData.getId());
+
+        List<ConsultUserResponseDto> consultUserList = new ArrayList<>();
+        for(Consult consult : consultList) {
+            ConsultUserResponseDto consultUserResponseDto = ConsultUserResponseDto.builder()
+                    .nickname(consult.getMember().getNickname())
+                    .email(consult.getMember().getEmail())
+                    .personalDate(consult.getConsultDate())
+                    .personalColorId(consult.getPersonalColor().getId())
+                    .age(consult.getMember().getAge())
+                    .gender(consult.getMember().getGender())
+                    .consultContent(consult.getConsultContent())
+                    .build();
+
+            consultUserList.add(consultUserResponseDto);
+        }
+        return consultUserList;
     }
 }

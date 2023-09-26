@@ -1,10 +1,10 @@
 package com.coloronme.admin.domain.consult.entity;
 
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.coloronme.admin.domain.consultant.entity.Consultant;
+import com.coloronme.admin.domain.member.entity.Member;
+import com.coloronme.admin.domain.personalColor.entity.PersonalColor;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,13 +21,16 @@ import java.time.LocalDateTime;
 public class Consult {
     @Id @GeneratedValue
     @Column(name="CONSULT_ID")
-    private Long consultId;
-    @Column(name = "CONSULTANT_ID")
-    private Long consultantId;
-    @Column(name = "MEMBER_ID")
-    private Long memberId;
-    @Column(name = "PERSONAL_COLOR_ID")
-    private Long personalColorId;
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "CONSULTANT_ID")
+    private Consultant consultant;
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
+    @ManyToOne
+    @JoinColumn(name = "PERSONAL_COLOR_ID")
+    private PersonalColor personalColor;
     @NotNull
     private LocalDateTime consultDate;
     private String consultContent;
@@ -37,10 +40,10 @@ public class Consult {
     private LocalDateTime updatedAt;
     private LocalDateTime deleteAt;
 
-    public Consult(Long consultantId, Long userId, ConsultRequestDto consultRequestDto) {
-        this.consultantId = consultantId;
-        this.memberId = userId;
-        this.personalColorId = consultRequestDto.getPersonalColorId();
+    public Consult(Consultant consultant, Member member, PersonalColor personalColor, ConsultRequestDto consultRequestDto) {
+        this.consultant = consultant;
+        this.member = member;
+        this.personalColor = personalColor;
         this.consultContent = consultRequestDto.getConsultContent();
         this.consultDate = consultRequestDto.getConsultDate();
         this.createdAt = LocalDateTime.now();
