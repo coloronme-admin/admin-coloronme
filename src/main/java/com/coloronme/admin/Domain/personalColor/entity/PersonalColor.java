@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 public class PersonalColor {
     @Id @GeneratedValue
-    @Column(name = "personal_color_id")
+    @Column(name = "PERSONAL_COLOR_ID")
     private Long id;
     private Long code;
 }
