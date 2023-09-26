@@ -40,6 +40,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 return;
             }
             setAuthentication(jwtUtil.getEmailFromToken(refreshToken));
+        } else {
+            jwtExceptionHandler(response, "JWT is empty", HttpStatus.BAD_REQUEST);
+            return;
         }
         filterChain.doFilter(request, response);
     }
