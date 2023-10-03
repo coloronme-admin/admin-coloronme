@@ -5,9 +5,13 @@ import com.coloronme.admin.domain.consult.dto.response.ConsultUserResponseDto;
 import com.coloronme.admin.domain.consult.service.ConsultService;
 import com.coloronme.admin.global.dto.ResponseDto;
 import com.coloronme.admin.global.jwt.JwtUtil;
+import com.coloronme.admin.global.security.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,8 +33,10 @@ public class ConsultController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseDto<ConsultUserResponseDto> selectConsultUserByUserId(@PathVariable Long userId) {
-        ConsultUserResponseDto consultUserResponseDto = consultService.selectConsultUserByUserId(userId);
+    public ResponseDto<ConsultUserResponseDto> selectConsultUserByUserId(@AuthenticationPrincipal UserDetails userDetails,
+                                                                         @PathVariable Long userId) {
+        String consultantEmail = userDetails.getUsername();
+        ConsultUserResponseDto consultUserResponseDto = consultService.selectConsultUserByUserId(userId, consultantEmail);
         return ResponseDto.success(consultUserResponseDto);
     }
 
@@ -40,4 +46,13 @@ public class ConsultController {
         List<ConsultUserResponseDto> consultUserList = consultService.selectConsultUserList(consultantEmail);
         return ResponseDto.success(consultUserList);
     }
+
+    @PatchMapping("/{userId}")
+    public ResponseDto<String> updateConsultUser(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long userId,
+                                                 @Valid @RequestBody ConsultRequestDto consultRequestDto) {
+        String consultantEmail = userDetails.getUsername();
+        consultService.updateConsultUser(consultantEmail, userId, consultRequestDto);
+        return ResponseDto.success("update consult success!");
+    }
+
 }
