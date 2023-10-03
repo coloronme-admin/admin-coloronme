@@ -34,7 +34,7 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+/*    @Bean
     public WebSecurityCustomizer ignoringCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers("/h2-console/**",
@@ -43,12 +43,13 @@ public class WebSecurityConfig {
                         "/configuration/ui",
                         "/configuration/security",
                         "/webjars/**");
-    }
+    }*/
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        http.csrf((csrf) -> csrf.disable());
+        System.out.println("SecurityFilterChain-----------------------------");
+        http.csrf((csrf) -> csrf.disable())
+                        .httpBasic((httpBasic) -> httpBasic.disable());
                 http
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
