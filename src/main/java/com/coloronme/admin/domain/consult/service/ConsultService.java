@@ -58,14 +58,21 @@ public class ConsultService {
         consultUserRepository.save(consult);
     }
 
-    public ConsultUserResponseDto selectConsultUserByUserId(Long memberId) {
-        Optional<Member> member = memberRepository.findById(memberId);
+    public ConsultUserResponseDto selectConsultUserByUserId(Long userId, String consultantEmail) {
+        Optional<Member> member = memberRepository.findById(userId);
         if(member.isEmpty()) {
             log.error("USER NOT FOUND.");
             throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
         }
 
-        Optional<Consult> consult = consultRepository.findByMemberId(memberId);
+        Optional<Consultant> consultant = consultantRepository.findByEmail(consultantEmail);
+        if(consultant.isEmpty()){
+            log.error("CONSULTANT NOT FOUND.");
+            throw new RequestException(ErrorCode.CONSULTANT_NOT_FOUND_404);
+        }
+
+        /*Optional<Consult> consult = consultRepository.findByMemberId(memberId);*/
+        Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(userId, consultant.get().getId());
         if(consult.isEmpty()) {
             log.error("CONSULT NOT FOUND.");
             throw new RequestException(ErrorCode.CONSULT_NOT_FOUND_404);
@@ -110,5 +117,38 @@ public class ConsultService {
             consultUserList.add(consultUserResponseDto);
         }
         return consultUserList;
+    }
+
+    public void updateConsultUser(String consultantEmail, Long userId, ConsultRequestDto consultRequestDto) {
+        Optional<Member> member = memberRepository.findById(userId);
+        if(member.isEmpty()) {
+            log.error("USER NOT FOUND.");
+            throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
+        }
+
+        Optional<Consultant> consultant = consultantRepository.findByEmail(consultantEmail);
+        if(consultant.isEmpty()){
+            log.error("CONSULTANT NOT FOUND.");
+            throw new RequestException(ErrorCode.CONSULTANT_NOT_FOUND_404);
+        }
+
+        Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(userId, consultant.get().getId());
+        if(consult.isEmpty()) {
+            log.error("CONSULT NOT FOUND.");
+            throw new RequestException(ErrorCode.CONSULT_NOT_FOUND_404);
+        }
+
+        Optional<PersonalColor> personalColor = personalColorRepository.findById(consultRequestDto.getPersonalColorId());
+        if (personalColor.isEmpty()) {
+            log.error("PERSONAL COLOR NOT FOUND.");
+            throw new RequestException(ErrorCode.PERSONAL_COLOR_NOT_FOUND_404);
+        }
+
+        Consult consultData = consult.get();
+        consultData.setPersonalColor(personalColor.get());
+        consultData.setConsultContent(consultRequestDto.getConsultContent());
+
+        Member memberData = member.get();
+        memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
     }
 }
