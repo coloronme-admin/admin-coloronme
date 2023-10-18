@@ -2,6 +2,7 @@ package com.coloronme.admin.domain.mypage.service;
 
 import com.coloronme.admin.domain.consultant.entity.Consultant;
 import com.coloronme.admin.domain.consultant.repository.ConsultantRepository;
+import com.coloronme.admin.domain.mypage.dto.MyPageRequestDto;
 import com.coloronme.admin.domain.mypage.dto.MyPageResponseDto;
 import com.coloronme.admin.global.dto.ResponseDto;
 import com.coloronme.admin.global.exception.ErrorCode;
@@ -38,5 +39,15 @@ public class MyPageService {
                         .email(consultant.getEmail())
                         .build()
         );
+    }
+
+    //마이 페이지 수정
+    @Transactional
+    public ResponseDto<?> updateMyPage(MyPageRequestDto myPageRequestDto, String email) {
+        Consultant consultant = getConsultant(email);
+
+        consultant.update(myPageRequestDto);
+        return ResponseDto.success("수정 완료");
+
     }
 }
