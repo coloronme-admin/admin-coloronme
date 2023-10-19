@@ -24,7 +24,7 @@ public class MyPageController {
     }
 
     @PatchMapping("/myPageSujung")
-    public ResponseDto<?> updateMyPage(@RequestBody MyPageRequestDto myPageRequestDto,
+    public ResponseDto<MyPageResponseDto> updateMyPage(@RequestBody MyPageRequestDto myPageRequestDto,
                                        @AuthenticationPrincipal UserDetails userDetails) {
         return myPageService.updateMyPage(myPageRequestDto, userDetails.getUsername());
     }

@@ -46,5 +46,6 @@ public class Consultant {
         this.name = myPageRequestDto.getName();
         this.company = myPageRequestDto.getCompany();
         this.email = myPageRequestDto.getEmail();
+        this.updatedAt = LocalDateTime.now();
     }
 }
