@@ -27,7 +27,7 @@ public class MyPageService {
     }
 
     //마이 페이지 정보 불러오기
-    @Transactional()
+    @Transactional(readOnly = true)
     public ResponseDto<MyPageResponseDto> getMyPage(String email) {
 
         Consultant consultant = getConsultant(email);
@@ -43,11 +43,16 @@ public class MyPageService {
 
     //마이 페이지 수정
     @Transactional
-    public ResponseDto<?> updateMyPage(MyPageRequestDto myPageRequestDto, String email) {
+    public ResponseDto<MyPageResponseDto> updateMyPage(MyPageRequestDto myPageRequestDto, String email) {
         Consultant consultant = getConsultant(email);
 
         consultant.update(myPageRequestDto);
-        return ResponseDto.success("수정 완료");
-
+        return ResponseDto.success(
+                MyPageResponseDto.builder()
+                        .name(consultant.getName())
+                        .company(consultant.getCompany())
+                        .email(consultant.getEmail())
+                        .build()
+        );
     }
 }
