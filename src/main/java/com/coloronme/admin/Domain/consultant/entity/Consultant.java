@@ -1,6 +1,7 @@
 package com.coloronme.admin.domain.consultant.entity;
 
 import com.coloronme.admin.domain.consultant.dto.request.ConsultantRequestDto;
+import com.coloronme.admin.domain.mypage.dto.MyPageRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +18,8 @@ public class Consultant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String name;
+    private String company;
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
@@ -34,6 +37,14 @@ public class Consultant {
     public Consultant(ConsultantRequestDto consultantRequestDto, RoleType roleType) {
         this.email = consultantRequestDto.getEmail();
         this.roleType = roleType;
+        this.name = getName();
+        this.company = getCompany();
         this.password = consultantRequestDto.getPassword();
+    }
+
+    public void update(MyPageRequestDto myPageRequestDto) {
+        this.name = myPageRequestDto.getName();
+        this.company = myPageRequestDto.getCompany();
+        this.email = myPageRequestDto.getEmail();
     }
 }
