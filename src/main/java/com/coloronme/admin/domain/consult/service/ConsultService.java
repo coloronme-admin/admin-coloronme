@@ -71,7 +71,6 @@ public class ConsultService {
             throw new RequestException(ErrorCode.CONSULTANT_NOT_FOUND_404);
         }
 
-        /*Optional<Consult> consult = consultRepository.findByMemberId(memberId);*/
         Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(userId, consultant.get().getId());
         if(consult.isEmpty()) {
             log.error("CONSULT NOT FOUND.");
