@@ -20,7 +20,11 @@ public enum ErrorCode {
     PERSONAL_COLOR_NOT_FOUND_404(HttpStatus.NOT_FOUND, "퍼스널 컬러를 찾을 수 없습니다."),
 
     /*PERSONAL COLOR*/
-    CONSULT_NOT_FOUND_404(HttpStatus.NOT_FOUND, "진단 내역을 찾을 수 없습니다.");
+    CONSULT_NOT_FOUND_404(HttpStatus.NOT_FOUND, "진단 내역을 찾을 수 없습니다."),
+
+    /*MY PAGE*/
+    MY_PAGE_NOT_FOUND_404(HttpStatus.NOT_FOUND, "마이페이지 내용을 찾을 수 없습니다.");
+
 
     private final HttpStatus httpStatus;
     private final String message;

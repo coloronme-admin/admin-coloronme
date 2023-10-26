@@ -1,5 +1,6 @@
 package com.coloronme.admin.domain.consult.dto.response;
 
+import com.coloronme.admin.domain.member.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ public class ConsultUserResponseDto {
     private LocalDateTime personalDate;
     private Long personalColorId;
     private String age;
-    private String gender;
+    private Gender gender;
     private String consultContent;
 }
   
