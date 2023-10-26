@@ -14,7 +14,7 @@ public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private int id;
     @Column(name = "refreshToken", nullable = false)
     private String refreshToken;
     @Column(name = "consultantEmail", nullable = false)

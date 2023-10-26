@@ -24,7 +24,7 @@ public class ConsultController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/{userId}")
-    public ResponseDto<String> registerConsultUser(HttpServletRequest request, @PathVariable Long userId,
+    public ResponseDto<String> registerConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                                @Valid @RequestBody ConsultRequestDto consultRequestDto) {
         String consultantEmail = jwtUtil.getEmailFromRequest(request, "Access");
         consultService.registerConsultUser(consultantEmail, userId, consultRequestDto);
@@ -34,7 +34,7 @@ public class ConsultController {
 
     @GetMapping("/{userId}")
     public ResponseDto<ConsultUserResponseDto> selectConsultUserByUserId(@AuthenticationPrincipal UserDetails userDetails,
-                                                                         @PathVariable Long userId) {
+                                                                         @PathVariable int userId) {
         String consultantEmail = userDetails.getUsername();
         ConsultUserResponseDto consultUserResponseDto = consultService.selectConsultUserByUserId(userId, consultantEmail);
         return ResponseDto.success(consultUserResponseDto);
@@ -48,7 +48,7 @@ public class ConsultController {
     }
 
     @PatchMapping("/{userId}")
-    public ResponseDto<String> updateConsultUser(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Long userId,
+    public ResponseDto<String> updateConsultUser(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int userId,
                                                  @Valid @RequestBody ConsultRequestDto consultRequestDto) {
         String consultantEmail = userDetails.getUsername();
         consultService.updateConsultUser(consultantEmail, userId, consultRequestDto);

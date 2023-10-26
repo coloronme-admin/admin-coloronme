@@ -14,25 +14,34 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "User")
+@Table(name = "`User`")
 public class Member {
     @Id @GeneratedValue
-    private Long id;
+    private int id;
     private String uuid;
     private String email;
     private String password;
+    @Column(name="`profileImageUrl`")
     private String profileImageUrl;
     private String nickname;
-    private Long personalColorId;
-    private Long worstColorId;
+    @Column(name="`personalColorId`")
+    private int personalColorId;
+    @Column(name="`worstColorId`")
+    private int worstColorId;
+    @Column(name="`currentHashedRefreshToken`")
     private String currentHashedRefreshToken;
     private Gender gender; /*male, female, etc*/
     private String age;
+    @Column(name="`agreedToTerms`")
     private boolean agreedToTerms;
+    @Column(name="`agreedToPrivacy`")
     private boolean agreedToPrivacy;
+    @Column(name="`isAgeRequirementAgreed`")
     private boolean isAgeRequirementAgreed;
+    @Column(name="`createdAt`")
     private LocalDateTime createdAt;
+    @Column(name="`updatedAt`")
     private LocalDateTime updatedAt;
+    @Column(name="`deletedAt`")
     private LocalDateTime deletedAt;
-
 }

@@ -32,7 +32,7 @@ public class ConsultService {
     private final PersonalColorRepository personalColorRepository;
     private final ConsultRepository consultRepository;
 
-    public void registerConsultUser(String consultantEmail, Long userId, ConsultRequestDto consultRequestDto) {
+    public void registerConsultUser(String consultantEmail, int userId, ConsultRequestDto consultRequestDto) {
         Optional<Member> user = memberRepository.findById(userId);
         if (user.isEmpty()) {
             log.error("USER NOT FOUND.");
@@ -58,7 +58,7 @@ public class ConsultService {
         consultUserRepository.save(consult);
     }
 
-    public ConsultUserResponseDto selectConsultUserByUserId(Long userId, String consultantEmail) {
+    public ConsultUserResponseDto selectConsultUserByUserId(int userId, String consultantEmail) {
         Optional<Member> member = memberRepository.findById(userId);
         if(member.isEmpty()) {
             log.error("USER NOT FOUND.");
@@ -71,6 +71,7 @@ public class ConsultService {
             throw new RequestException(ErrorCode.CONSULTANT_NOT_FOUND_404);
         }
 
+        /*Optional<Consult> consult = consultRepository.findByMemberId(memberId);*/
         Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(userId, consultant.get().getId());
         if(consult.isEmpty()) {
             log.error("CONSULT NOT FOUND.");
@@ -133,7 +134,7 @@ public class ConsultService {
         return consultUserList;
     }
 
-    public void updateConsultUser(String consultantEmail, Long userId, ConsultRequestDto consultRequestDto) {
+    public void updateConsultUser(String consultantEmail, int userId, ConsultRequestDto consultRequestDto) {
         Optional<Member> member = memberRepository.findById(userId);
         if(member.isEmpty()) {
             log.error("USER NOT FOUND.");

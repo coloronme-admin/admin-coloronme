@@ -18,26 +18,34 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Consult")
+@Table(name = "`Consult`")
 public class Consult {
     @Id @GeneratedValue
-    private Long id;
-    private Long consultantId;
-    private Long memberId;
-    private Long personalColorId;
+    private int id;
+    @Column(name="`consultantId`")
+    private int consultantId;
+    @Column(name="`memberId`")
+    private int memberId;
+    @Column(name="`personalColorId`")
+    private int personalColorId;
     @NotNull
+    @Column(name="`consultDate`")
     private LocalDateTime consultDate;
+    @Column(name="`consultContent`")
     private String consultContent;
     @NotNull
+    @Column(name="`createdAt`")
     private LocalDateTime createdAt;
     @NotNull
+    @Column(name="`updatedAt`")
     private LocalDateTime updatedAt;
+    @Column(name="`deleteAt`")
     private LocalDateTime deleteAt;
 
-    public Consult(Long consultant, Long member, Long personalColor, ConsultRequestDto consultRequestDto) {
-        this.consultantId = consultant;
-        this.memberId = member;
-        this.personalColorId = personalColor;
+    public Consult(int consultantId, int memberId, int personalColorId, ConsultRequestDto consultRequestDto) {
+        this.consultantId = consultantId;
+        this.memberId = memberId;
+        this.personalColorId = personalColorId;
         this.consultContent = consultRequestDto.getConsultContent();
         this.consultDate = consultRequestDto.getConsultDate();
         this.createdAt = LocalDateTime.now();
