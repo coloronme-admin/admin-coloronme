@@ -2,6 +2,7 @@ package com.coloronme.admin.domain.consultant.entity;
 
 import com.coloronme.admin.domain.consultant.dto.request.ConsultantRequestDto;
 import com.coloronme.admin.domain.mypage.dto.MyPageRequestDto;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
