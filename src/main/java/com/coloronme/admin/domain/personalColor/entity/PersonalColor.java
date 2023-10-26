@@ -1,21 +1,19 @@
 package com.coloronme.admin.domain.personalColor.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @Setter
-@Table(name = "PersonalColor")
 public class PersonalColor {
     @Id @GeneratedValue
+    @Column(name = "PERSONAL_COLOR_ID")
     private Long id;
-    private String code;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
+    private Long code;
 }

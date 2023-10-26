@@ -53,7 +53,7 @@ public class ConsultService {
 
         Member memberData = user.get();
         memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
-        Consult consult = new Consult(consultant.get().getId(), memberData.getId(), personalColor.get().getId(), consultRequestDto);
+        Consult consult = new Consult(consultant.get(), memberData, personalColor.get(), consultRequestDto);
 
         consultUserRepository.save(consult);
     }
@@ -86,7 +86,7 @@ public class ConsultService {
                 .personalDate(consultData.getConsultDate())
                 .age(memberData.getAge())
                 .gender(memberData.getGender())
-                .personalColorId(consultData.getPersonalColorId())
+                .personalColorId(consultData.getPersonalColor().getId())
                 .consultContent(consultData.getConsultContent())
                 .build();
     }
@@ -103,28 +103,13 @@ public class ConsultService {
 
         List<ConsultUserResponseDto> consultUserList = new LinkedList<>();
         for(Consult consult : consultList) {
-            Optional<Member> member = memberRepository.findById(consult.getMemberId());
-
-            if(member.isEmpty()) {
-                log.error("USER NOT FOUND.");
-                throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
-            }
-
-            Optional<PersonalColor> personalColor = personalColorRepository.findById(consult.getPersonalColorId());
-            if (personalColor.isEmpty()) {
-                log.error("PERSONAL COLOR NOT FOUND.");
-                throw new RequestException(ErrorCode.PERSONAL_COLOR_NOT_FOUND_404);
-            }
-
-            Member memberData = member.get();
-            PersonalColor personalColorData = personalColor.get();
             ConsultUserResponseDto consultUserResponseDto = ConsultUserResponseDto.builder()
-                    .nickname(memberData.getNickname())
-                    .email(memberData.getEmail())
+                    .nickname(consult.getMember().getNickname())
+                    .email(consult.getMember().getEmail())
                     .personalDate(consult.getConsultDate())
-                    .personalColorId(personalColorData.getId())
-                    .age(memberData.getAge())
-                    .gender(memberData.getGender())
+                    .personalColorId(consult.getPersonalColor().getId())
+                    .age(consult.getMember().getAge())
+                    .gender(consult.getMember().getGender())
                     .consultContent(consult.getConsultContent())
                     .build();
 
@@ -159,7 +144,7 @@ public class ConsultService {
         }
 
         Consult consultData = consult.get();
-        consultData.setPersonalColorId(personalColor.get().getId());
+        consultData.setPersonalColor(personalColor.get());
         consultData.setConsultContent(consultRequestDto.getConsultContent());
 
         Member memberData = member.get();

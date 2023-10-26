@@ -1,38 +1,27 @@
 package com.coloronme.admin.domain.member.entity;
 
-import com.coloronme.admin.domain.member.enums.Gender;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "User")
 public class Member {
     @Id @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private Long id;
-    private String uuid;
     private String email;
-    private String password;
-    private String profileImageUrl;
     private String nickname;
     private Long personalColorId;
-    private Long worstColorId;
-    private String currentHashedRefreshToken;
-    private Gender gender; /*male, female, etc*/
+    private String gender;
     private String age;
-    private boolean agreedToTerms;
-    private boolean agreedToPrivacy;
-    private boolean isAgeRequirementAgreed;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
 
 }
