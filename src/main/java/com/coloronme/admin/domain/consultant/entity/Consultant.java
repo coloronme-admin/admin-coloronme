@@ -13,20 +13,25 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "`Consultant`")
 public class Consultant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private int id;
     private String name;
     private String company;
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
+    @Column(name="`roleType`")
     private RoleType roleType;
     @CreatedDate
+    @Column(name="`createdAt`")
     private LocalDateTime createdAt;
+    @Column(name="`updatedAt`")
     private LocalDateTime updatedAt;
+    @Column(name="`deletedAt`")
     private LocalDateTime deletedAt;
 
     @PrePersist //DB에 INSERT 되기 전에 실행, DB에 값을 넣으면 자동으로 실행됨

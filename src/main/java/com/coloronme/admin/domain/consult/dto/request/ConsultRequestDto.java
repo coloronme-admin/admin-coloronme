@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class ConsultRequestDto {
     @NotNull(message = "퍼스널 컬러를 선택해 주세요.")
     @JsonProperty(value = "personal_color_id")
-    private Long personalColorId;
+    private int personalColorId;
     @JsonProperty(value = "consult_content")
     private String consultContent;
     @JsonProperty(value = "consult_date")

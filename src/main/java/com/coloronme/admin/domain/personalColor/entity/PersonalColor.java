@@ -8,12 +8,20 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
+@Table(name = "`PersonalColor`")
 public class PersonalColor {
     @Id @GeneratedValue
-    @Column(name = "PERSONAL_COLOR_ID")
-    private Long id;
-    private Long code;
+    private int id;
+    private String code;
+    @Column(name="`createdAt`")
+    private LocalDateTime createdAt;
+    @Column(name="`updatedAt`")
+    private LocalDateTime updatedAt;
+    @Column(name="`deletedAt`")
+    private LocalDateTime deletedAt;
 }

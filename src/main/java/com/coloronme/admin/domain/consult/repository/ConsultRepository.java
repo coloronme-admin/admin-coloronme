@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ConsultRepository extends JpaRepository<Consult, Long> {
-    Optional<Consult> findByMemberId(Long memberId);
-    Optional<Consult> findByMemberIdAndConsultantId(Long memberId, Long consultantId);
-    List<Consult> findAllByConsultantId(Long consultantId);
+public interface ConsultRepository extends JpaRepository<Consult, Integer> {
+    Optional<Consult> findByMemberId(int memberId);
+    Optional<Consult> findByMemberIdAndConsultantId(int memberId, int consultantId);
+    List<Consult> findAllByConsultantId(int consultantId);
 }

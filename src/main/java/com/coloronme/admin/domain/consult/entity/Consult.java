@@ -18,32 +18,34 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "`Consult`")
 public class Consult {
     @Id @GeneratedValue
-    @Column(name="CONSULT_ID")
-    private Long id;
-    @ManyToOne
-    @JoinColumn(name = "CONSULTANT_ID")
-    private Consultant consultant;
-    @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
-    private Member member;
-    @ManyToOne
-    @JoinColumn(name = "PERSONAL_COLOR_ID")
-    private PersonalColor personalColor;
+    private int id;
+    @Column(name="`consultantId`")
+    private int consultantId;
+    @Column(name="`memberId`")
+    private int memberId;
+    @Column(name="`personalColorId`")
+    private int personalColorId;
     @NotNull
+    @Column(name="`consultDate`")
     private LocalDateTime consultDate;
+    @Column(name="`consultContent`")
     private String consultContent;
     @NotNull
+    @Column(name="`createdAt`")
     private LocalDateTime createdAt;
     @NotNull
+    @Column(name="`updatedAt`")
     private LocalDateTime updatedAt;
+    @Column(name="`deleteAt`")
     private LocalDateTime deleteAt;
 
-    public Consult(Consultant consultant, Member member, PersonalColor personalColor, ConsultRequestDto consultRequestDto) {
-        this.consultant = consultant;
-        this.member = member;
-        this.personalColor = personalColor;
+    public Consult(int consultantId, int memberId, int personalColorId, ConsultRequestDto consultRequestDto) {
+        this.consultantId = consultantId;
+        this.memberId = memberId;
+        this.personalColorId = personalColorId;
         this.consultContent = consultRequestDto.getConsultContent();
         this.consultDate = consultRequestDto.getConsultDate();
         this.createdAt = LocalDateTime.now();

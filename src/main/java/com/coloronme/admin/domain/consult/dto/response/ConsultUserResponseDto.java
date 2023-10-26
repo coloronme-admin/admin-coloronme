@@ -13,7 +13,7 @@ public class ConsultUserResponseDto {
     private String nickname;
     private String email;
     private LocalDateTime personalDate;
-    private Long personalColorId;
+    private int personalColorId;
     private String age;
     private String gender;
     private String consultContent;
