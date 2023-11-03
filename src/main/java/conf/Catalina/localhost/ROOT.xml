@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Context docBase="/Users/4ir/Desktop/coloronme/admin-coloronme/src/main/java">
+  <Resources cacheMaxSize="10240">
+    <PreResources base="/Users/4ir/Desktop/coloronme/admin-coloronme/build/classes/java/main" className="org.apache.catalina.webresources.DirResourceSet" webAppMount="/WEB-INF/classes"/>
+    <PreResources base="/Users/4ir/Desktop/coloronme/admin-coloronme/build/resources/main" className="org.apache.catalina.webresources.DirResourceSet" webAppMount="/WEB-INF/classes"/>
+  </Resources>
+</Context>
