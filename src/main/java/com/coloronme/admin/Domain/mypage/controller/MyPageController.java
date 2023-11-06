@@ -3,6 +3,9 @@ package com.coloronme.admin.domain.mypage.controller;
 
 import com.coloronme.admin.domain.mypage.dto.MyPageRequestDto;
 import com.coloronme.admin.domain.mypage.dto.MyPageResponseDto;
+//import com.coloronme.admin.domain.mypage.dto.PasswordRequestDto;
+import com.coloronme.admin.domain.mypage.dto.PasswordRequestDto;
+import com.coloronme.admin.domain.mypage.dto.PasswordResponseDto;
 import com.coloronme.admin.domain.mypage.service.MyPageService;
 import com.coloronme.admin.global.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -28,4 +31,11 @@ public class MyPageController {
                                        @AuthenticationPrincipal UserDetails userDetails) {
         return myPageService.updateMyPage(myPageRequestDto, userDetails.getUsername());
     }
+
+    @PatchMapping("/password")
+    public ResponseDto<PasswordResponseDto> updatePassword(@RequestBody PasswordRequestDto passwordRequestDto,
+                                                           @AuthenticationPrincipal UserDetails userDetails) {
+        return myPageService.updatePassword(passwordRequestDto, userDetails.getUsername());
+    }
+
 }

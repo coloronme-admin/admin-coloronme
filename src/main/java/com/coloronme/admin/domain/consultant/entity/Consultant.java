@@ -3,6 +3,8 @@ package com.coloronme.admin.domain.consultant.entity;
 import com.coloronme.admin.domain.consultant.dto.request.ConsultantRequestDto;
 import com.coloronme.admin.domain.mypage.dto.MyPageRequestDto;
 
+import com.coloronme.admin.domain.mypage.dto.PasswordRequestDto;
+import com.coloronme.admin.domain.mypage.dto.PasswordResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +25,7 @@ public class Consultant {
     private String name;
     private String company;
     private String email;
+    @Column(name = "password", nullable = false)
     private String password;
     @Enumerated(EnumType.STRING)
     @Column(name="`roleType`")
@@ -53,5 +56,8 @@ public class Consultant {
         this.company = myPageRequestDto.getCompany();
         this.email = myPageRequestDto.getEmail();
         this.updatedAt = LocalDateTime.now();
+    }
+    public void updatePassword(PasswordRequestDto passwordRequestDto) {
+        this.password = passwordRequestDto.getNewPassword();
     }
 }
