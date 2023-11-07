@@ -33,6 +33,8 @@ public class Consult {
     private LocalDateTime consultDate;
     @Column(name="`consultContent`")
     private String consultContent;
+    @Column(name="`consultDrawing`")
+    private String consultDrawing;
     @NotNull
     @Column(name="`createdAt`")
     private LocalDateTime createdAt;
