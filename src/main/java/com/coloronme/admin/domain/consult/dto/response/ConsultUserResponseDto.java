@@ -18,5 +18,6 @@ public class ConsultUserResponseDto {
     private String age;
     private Gender gender;
     private String consultContent;
+    private String consultDrawing;
 }
   

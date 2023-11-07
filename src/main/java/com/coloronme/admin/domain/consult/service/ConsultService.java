@@ -89,6 +89,7 @@ public class ConsultService {
                 .gender(memberData.getGender())
                 .personalColorId(consultData.getPersonalColorId())
                 .consultContent(consultData.getConsultContent())
+                .consultDrawing(consultData.getConsultDrawing())
                 .build();
     }
 
@@ -127,6 +128,7 @@ public class ConsultService {
                     .age(memberData.getAge())
                     .gender(memberData.getGender())
                     .consultContent(consult.getConsultContent())
+                    .consultDrawing(consult.getConsultDrawing())
                     .build();
 
             consultUserList.add(consultUserResponseDto);
@@ -162,6 +164,7 @@ public class ConsultService {
         Consult consultData = consult.get();
         consultData.setPersonalColorId(personalColor.get().getId());
         consultData.setConsultContent(consultRequestDto.getConsultContent());
+        consultData.setConsultDrawing(consultRequestDto.getConsultDrawing());
 
         Member memberData = member.get();
         memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());

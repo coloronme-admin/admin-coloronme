@@ -20,6 +20,8 @@ public class ConsultRequestDto {
     private int personalColorId;
     @JsonProperty(value = "consult_content")
     private String consultContent;
+    @JsonProperty(value="consult_drawing")
+    private String consultDrawing;
     @JsonProperty(value = "consult_date")
     private LocalDateTime consultDate;
 }
