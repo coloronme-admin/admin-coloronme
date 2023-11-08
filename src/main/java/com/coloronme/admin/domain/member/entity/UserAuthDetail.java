@@ -1,5 +1,5 @@
 package com.coloronme.admin.domain.member.entity;
-
+  
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
