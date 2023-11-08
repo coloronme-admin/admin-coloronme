@@ -30,6 +30,7 @@ public class Member {
     private int worstColorId;
     @Column(name="`currentHashedRefreshToken`")
     private String currentHashedRefreshToken;
+    @Enumerated(EnumType.STRING)
     private Gender gender; /*male, female, etc*/
     private String age;
     @Column(name="`agreedToTerms`")
