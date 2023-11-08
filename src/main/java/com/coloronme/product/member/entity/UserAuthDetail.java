@@ -1,4 +1,4 @@
-package com.coloronme.admin.domain.member.entity;
+package com.coloronme.product.member.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

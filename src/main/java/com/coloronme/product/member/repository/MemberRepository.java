@@ -1,6 +1,6 @@
-package com.coloronme.admin.domain.member.repository;
+package com.coloronme.product.member.repository;
 
-import com.coloronme.admin.domain.member.entity.Member;
+import com.coloronme.product.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
