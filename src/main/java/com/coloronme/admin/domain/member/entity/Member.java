@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 public class Member {
     @Id @GeneratedValue
     private int id;
-    private String uuid;
     private String email;
     private String password;
     @Column(name="`profileImageUrl`")
@@ -28,17 +27,11 @@ public class Member {
     private int personalColorId;
     @Column(name="`worstColorId`")
     private int worstColorId;
-    @Column(name="`currentHashedRefreshToken`")
-    private String currentHashedRefreshToken;
+    @Column(name="`userAuthDetailId")
+    private int userAuthDetailId;
     @Enumerated(EnumType.STRING)
     private Gender gender; /*male, female, etc*/
     private String age;
-    @Column(name="`agreedToTerms`")
-    private boolean agreedToTerms;
-    @Column(name="`agreedToPrivacy`")
-    private boolean agreedToPrivacy;
-    @Column(name="`isAgeRequirementAgreed`")
-    private boolean isAgeRequirementAgreed;
     @Column(name="`createdAt`")
     private LocalDateTime createdAt;
     @Column(name="`updatedAt`")
