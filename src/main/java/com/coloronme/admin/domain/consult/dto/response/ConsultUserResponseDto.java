@@ -1,6 +1,6 @@
 package com.coloronme.admin.domain.consult.dto.response;
 
-import com.coloronme.admin.domain.member.enums.Gender;
+import com.coloronme.product.member.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

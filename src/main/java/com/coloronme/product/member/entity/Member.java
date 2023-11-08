@@ -1,6 +1,6 @@
-package com.coloronme.admin.domain.member.entity;
+package com.coloronme.product.member.entity;
 
-import com.coloronme.admin.domain.member.enums.Gender;
+import com.coloronme.product.member.enums.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +17,8 @@ import java.time.LocalDateTime;
 @Table(name = "`User`")
 public class Member {
     @Id @GeneratedValue
-    private int id;
+    @Column(name="id")
+    private int userId;
     private String email;
     private String password;
     @Column(name="`profileImageUrl`")

@@ -1,9 +1,6 @@
 package com.coloronme.admin.domain.consult.entity;
 
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
-import com.coloronme.admin.domain.consultant.entity.Consultant;
-import com.coloronme.admin.domain.member.entity.Member;
-import com.coloronme.admin.domain.personalColor.entity.PersonalColor;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
