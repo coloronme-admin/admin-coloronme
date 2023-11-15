@@ -35,9 +35,9 @@ public class ConsultController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseDto<ConsultUserResponseDto> selectConsultUserByUserId(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseDto<ConsultUserResponseDto> selectConsultUserByUserId(HttpServletRequest request,
                                                                          @PathVariable int userId) {
-        int consultantId = Integer.parseInt(userDetails.getUsername());
+        int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         ConsultUserResponseDto consultUserResponseDto = consultService.selectConsultUserByUserId(userId, consultantId);
         return ResponseDto.success(consultUserResponseDto);
     }
@@ -50,9 +50,9 @@ public class ConsultController {
     }
 
     @PatchMapping("/{userId}")
-    public ResponseDto<String> updateConsultUser(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int userId,
+    public ResponseDto<String> updateConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                  @Valid @RequestBody ConsultRequestDto consultRequestDto) {
-        String consultantId = userDetails.getUsername();
+        int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         consultService.updateConsultUser(consultantId, userId, consultRequestDto);
         return ResponseDto.success("update consult success!");
     }

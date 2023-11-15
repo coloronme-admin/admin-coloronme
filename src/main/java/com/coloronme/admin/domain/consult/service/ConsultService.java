@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -118,14 +119,14 @@ public class ConsultService {
         return consultUserList;
     }
 
-    public void updateConsultUser(String consultantId, int userId, ConsultRequestDto consultRequestDto) {
+    public void updateConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
         Optional<Member> member = memberRepository.findById(userId);
         if(member.isEmpty()) {
             log.error("USER NOT FOUND.");
             throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
         }
 
-        Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(userId, Integer.parseInt(consultantId));
+        Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(userId, consultantId);
         if(consult.isEmpty()) {
             log.error("CONSULT NOT FOUND.");
             throw new RequestException(ErrorCode.CONSULT_NOT_FOUND_404);
@@ -147,8 +148,40 @@ public class ConsultService {
     }
 
     public ConsultUserResponseDto verifyUserQr(int consultantId, Member member) {
-        Optional<Consult> consult = consultRepository.findByMemberId(member.getId());
+        Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(member.getId(), consultantId);
 
-        return null;
+        ConsultUserResponseDto consultUserResponseDto;
+
+        /*이전 진단 내역이 없는 경우에는 진단 내용을 null 값으로 보냄*/
+        if(consult.isEmpty()) {
+            consultUserResponseDto = ConsultUserResponseDto.builder()
+                    .nickname(member.getNickname())
+                    .email(member.getEmail())
+                    .personalDate(null)
+                    .personalColorId(1)
+                    .age(member.getAge())
+                    .gender(member.getGender())
+                    .consultContent(null)
+                    .consultDrawing(null)
+                    .build();
+
+        /*이전 진단 내역이 있는 경우에는 이전 내용을 같이 보내줌*/
+        } else {
+
+            Consult consultData = consult.get();
+
+            consultUserResponseDto = ConsultUserResponseDto.builder()
+                    .nickname(member.getNickname())
+                    .email(member.getEmail())
+                    .personalDate(consultData.getConsultDate())
+                    .personalColorId(consultData.getPersonalColorId())
+                    .age(member.getAge())
+                    .gender(member.getGender())
+                    .consultContent(consultData.getConsultContent())
+                    .consultDrawing(consultData.getConsultDrawing())
+                    .build();
+        }
+
+        return consultUserResponseDto;
     }
 }
