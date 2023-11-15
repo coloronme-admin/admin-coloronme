@@ -16,9 +16,9 @@ public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "refreshToken", nullable = false)
+    @Column(name = "`refreshToken`", nullable = false)
     private String refreshToken;
-    @Column(name = "consultantId", nullable = false)
+    @Column(name = "`consultantId`", nullable = false)
     private int consultantId;
 
     public RefreshToken(String token, int id) {

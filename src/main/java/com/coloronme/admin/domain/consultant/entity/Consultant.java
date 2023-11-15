@@ -4,7 +4,6 @@ import com.coloronme.admin.domain.consultant.dto.request.ConsultantRequestDto;
 import com.coloronme.admin.domain.mypage.dto.MyPageRequestDto;
 
 import com.coloronme.admin.domain.mypage.dto.PasswordRequestDto;
-import com.coloronme.admin.domain.mypage.dto.PasswordResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
