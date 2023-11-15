@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @Table(name = "`PersonalColor`")
 public class PersonalColor {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String code;
     private String name;

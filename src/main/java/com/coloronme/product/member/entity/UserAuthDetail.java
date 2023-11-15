@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "`UserAuthDetail`")
 public class UserAuthDetail {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String uuid;
     @Column(name="`uuidExpiredAt`")
@@ -27,8 +27,8 @@ public class UserAuthDetail {
     private boolean agreedToTerms;
     @Column(name="`agreedToPrivacy`")
     private boolean agreedToPrivacy;
-    @Column(name="`isAgeRequirementAgree`")
-    private boolean isAgeRequirementAgree;
+    @Column(name="`isAgeRequirementAgreed`")
+    private boolean isAgeRequirementAgreed;
     @Column(name="`createdAt`")
     private LocalDateTime createdAt;
     @Column(name="`updatedAt`")

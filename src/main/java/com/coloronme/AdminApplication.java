@@ -1,4 +1,4 @@
-package com.coloronme.admin;
+package com.coloronme;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

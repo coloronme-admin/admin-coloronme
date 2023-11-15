@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "`Mood`")
 public class Mood {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String code;
