@@ -3,7 +3,6 @@ package com.coloronme.admin.domain.mypage.controller;
 
 import com.coloronme.admin.domain.mypage.dto.MyPageRequestDto;
 import com.coloronme.admin.domain.mypage.dto.MyPageResponseDto;
-//import com.coloronme.admin.domain.mypage.dto.PasswordRequestDto;
 import com.coloronme.admin.domain.mypage.dto.PasswordRequestDto;
 import com.coloronme.admin.domain.mypage.dto.PasswordResponseDto;
 import com.coloronme.admin.domain.mypage.service.MyPageService;
@@ -23,19 +22,19 @@ public class MyPageController {
 
     @GetMapping("/myPages")
     public ResponseDto<MyPageResponseDto> getMyPage(@AuthenticationPrincipal UserDetails userDetails) {
-        return myPageService.getMyPage(Integer.parseInt(userDetails.getUsername()));
+        return myPageService.getMyPage(userDetails.getUsername());
     }
 
     @PatchMapping("/myPages")
     public ResponseDto<MyPageResponseDto> updateMyPage(@RequestBody MyPageRequestDto myPageRequestDto,
                                        @AuthenticationPrincipal UserDetails userDetails) {
-        return myPageService.updateMyPage(myPageRequestDto, Integer.parseInt(userDetails.getUsername()));
+        return myPageService.updateMyPage(myPageRequestDto, userDetails.getUsername());
     }
 
     @PatchMapping("/password")
     public ResponseDto<PasswordResponseDto> updatePassword(@RequestBody PasswordRequestDto passwordRequestDto,
                                                            @AuthenticationPrincipal UserDetails userDetails) {
-        return myPageService.updatePassword(passwordRequestDto, Integer.parseInt(userDetails.getUsername()));
+        return myPageService.updatePassword(passwordRequestDto,userDetails.getUsername());
     }
 
 }

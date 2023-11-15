@@ -1,14 +1,9 @@
 package com.coloronme.admin.domain.mypage.service;
 
-import com.coloronme.admin.domain.consultant.dto.request.ConsultantRequestDto;
-import com.coloronme.admin.domain.consultant.dto.response.SignupResponseDto;
 import com.coloronme.admin.domain.consultant.entity.Consultant;
-import com.coloronme.admin.domain.consultant.entity.RoleType;
 import com.coloronme.admin.domain.consultant.repository.ConsultantRepository;
 import com.coloronme.admin.domain.mypage.dto.MyPageRequestDto;
 import com.coloronme.admin.domain.mypage.dto.MyPageResponseDto;
-//import com.coloronme.admin.domain.mypage.dto.PasswordRequestDto;
-//import com.coloronme.admin.domain.mypage.dto.PasswordResponseDto;
 import com.coloronme.admin.domain.mypage.dto.PasswordRequestDto;
 import com.coloronme.admin.domain.mypage.dto.PasswordResponseDto;
 import com.coloronme.admin.global.dto.ResponseDto;
@@ -28,8 +23,8 @@ public class MyPageService {
     private final ConsultantRepository consultantRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private Consultant getConsultant(int id) {
-        Consultant consultant = consultantRepository.findById(id).orElseThrow(
+    private Consultant getConsultant(String email) {
+        Consultant consultant = consultantRepository.findByEmail(email).orElseThrow(
                 () -> new RequestException(ErrorCode.CONSULTANT_NOT_FOUND_404)
         );
         return consultant;
@@ -37,9 +32,8 @@ public class MyPageService {
 
     //마이 페이지 정보 불러오기
     @Transactional(readOnly = true)
-    public ResponseDto<MyPageResponseDto> getMyPage(int id) {
-
-        Consultant consultant = getConsultant(id);
+    public ResponseDto<MyPageResponseDto> getMyPage(String email) {
+        Consultant consultant = getConsultant(email);
 
         return ResponseDto.success(
                 MyPageResponseDto.builder()
@@ -52,8 +46,8 @@ public class MyPageService {
 
     //마이 페이지 수정
     @Transactional
-    public ResponseDto<MyPageResponseDto> updateMyPage(MyPageRequestDto myPageRequestDto, int id) {
-        Consultant consultant = getConsultant(id);
+    public ResponseDto<MyPageResponseDto> updateMyPage(MyPageRequestDto myPageRequestDto, String email) {
+        Consultant consultant = getConsultant(email);
 
         consultant.update(myPageRequestDto);
         return ResponseDto.success(
@@ -67,8 +61,8 @@ public class MyPageService {
 
     //비밀번호 변경
     @Transactional
-    public ResponseDto<PasswordResponseDto> updatePassword(PasswordRequestDto passwordRequestDto, int id) {
-        Consultant consultant = getConsultant(id);
+    public ResponseDto<PasswordResponseDto> updatePassword(PasswordRequestDto passwordRequestDto, String email) {
+        Consultant consultant = getConsultant(email);
 
         //기존 비밀번호 확인
         if (!passwordEncoder.matches(passwordRequestDto.getOldPassword(), consultant.getPassword())) {
