@@ -1,9 +1,12 @@
 package com.coloronme.product.member.service;
 
 import com.coloronme.admin.domain.consult.dto.response.ConsultUserResponseDto;
+import com.coloronme.admin.domain.consult.repository.ConsultRepository;
 import com.coloronme.admin.global.exception.ErrorCode;
 import com.coloronme.admin.global.exception.RequestException;
+import com.coloronme.product.member.entity.Member;
 import com.coloronme.product.member.entity.UserAuthDetail;
+import com.coloronme.product.member.repository.MemberRepository;
 import com.coloronme.product.member.repository.UserAuthDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,10 +19,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserAuthDetailService {
+
     private final UserAuthDetailRepository userAuthDetailRepository;
+    private final MemberRepository memberRepository;
 
-
-    public ConsultUserResponseDto verifyUserQr(String uuid) {
+    public Member verifyUserQr(String uuid) {
         Optional<UserAuthDetail> userAuthDetail = userAuthDetailRepository.findByUuid(uuid);
         /*uuid로 조회가 되지 않을 경우*/
         if(userAuthDetail.isEmpty()){
@@ -39,11 +43,12 @@ public class UserAuthDetailService {
             throw new RequestException(ErrorCode.QR_EXPIRED_AT_BAD_REQUEST_400);
         }
 
+        Optional<Member> member = memberRepository.findByUserAuthDetailId(userAuthDetailData.getId());
 
+        if(member.isEmpty()) {
+            throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
+        }
 
-
-        return null;
-
-
+        return member.get();
     }
 }

@@ -25,10 +25,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final ConsultantRepository consultantRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<Consultant> consultant = consultantRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+        Optional<Consultant> consultant = consultantRepository.findById(Integer.parseInt(id));
         if(consultant.isEmpty()){
-           log.error("NOT FOUND ACCOUNT : " + email);
+           log.error("NOT FOUND ACCOUNT : " + id);
            throw new RequestException(ErrorCode.CONSULTANT_NOT_FOUND_404);
         }
         return createUserDetails(consultant.get());

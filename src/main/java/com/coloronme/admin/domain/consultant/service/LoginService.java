@@ -62,16 +62,16 @@ public class LoginService {
         }
 
             // 엑세스토콘, 리프레쉬토큰 생성
-            JwtDto jwtDto = jwtUtil.createAllToken(loginRequestDto.getEmail());
+            JwtDto jwtDto = jwtUtil.createAllToken(consultant.getId());
 //            // 리프레쉬 토큰은 DB에서 찾기
-            Optional<RefreshToken> refreshToken = refreshTokenRepository.findByConsultantEmail(loginRequestDto.getEmail());
+            Optional<RefreshToken> refreshToken = refreshTokenRepository.findByConsultantId(consultant.getId());
              /*리프레쉬토큰 null인지 아닌지 에 따라서
              값을 가지고있으면 save
              값이 없으면 newToken 만들어내서 save*/
             if (refreshToken.isPresent()) {
                 refreshTokenRepository.save(refreshToken.get().updateToken(jwtDto.getRefreshToken()));
             } else {
-                RefreshToken newToken = new RefreshToken(jwtDto.getRefreshToken(), loginRequestDto.getEmail());
+                RefreshToken newToken = new RefreshToken(jwtDto.getRefreshToken(), consultant.getId());
                 refreshTokenRepository.save(newToken);
             }
             setHeader(response, jwtDto);

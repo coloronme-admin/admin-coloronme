@@ -5,6 +5,7 @@ import com.coloronme.admin.domain.consult.dto.response.ConsultUserResponseDto;
 import com.coloronme.admin.domain.consult.service.ConsultService;
 import com.coloronme.admin.global.dto.ResponseDto;
 import com.coloronme.admin.global.jwt.JwtUtil;
+import com.coloronme.product.member.entity.Member;
 import com.coloronme.product.member.repository.UserAuthDetailRepository;
 import com.coloronme.product.member.service.UserAuthDetailService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,8 +28,8 @@ public class ConsultController {
     @PostMapping("/{userId}")
     public ResponseDto<String> registerConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                                @Valid @RequestBody ConsultRequestDto consultRequestDto) {
-        String consultantEmail = jwtUtil.getEmailFromRequest(request, "Access");
-        consultService.registerConsultUser(consultantEmail, userId, consultRequestDto);
+        int consultantId = jwtUtil.getIdFromRequest(request, "Access");
+        consultService.registerConsultUser(consultantId, userId, consultRequestDto);
         return ResponseDto.success(
                "Consult Registration Successful.");
     }
@@ -36,29 +37,31 @@ public class ConsultController {
     @GetMapping("/{userId}")
     public ResponseDto<ConsultUserResponseDto> selectConsultUserByUserId(@AuthenticationPrincipal UserDetails userDetails,
                                                                          @PathVariable int userId) {
-        String consultantEmail = userDetails.getUsername();
-        ConsultUserResponseDto consultUserResponseDto = consultService.selectConsultUserByUserId(userId, consultantEmail);
+        int consultantId = Integer.parseInt(userDetails.getUsername());
+        ConsultUserResponseDto consultUserResponseDto = consultService.selectConsultUserByUserId(userId, consultantId);
         return ResponseDto.success(consultUserResponseDto);
     }
 
     @GetMapping()
     public ResponseDto<List<ConsultUserResponseDto>> selectConsultUserList(HttpServletRequest request) {
-        String consultantEmail = jwtUtil.getEmailFromRequest(request, "Access");
-        List<ConsultUserResponseDto> consultUserList = consultService.selectConsultUserList(consultantEmail);
+        int consultantId = jwtUtil.getIdFromRequest(request, "Access");
+        List<ConsultUserResponseDto> consultUserList = consultService.selectConsultUserList(consultantId);
         return ResponseDto.success(consultUserList);
     }
 
     @PatchMapping("/{userId}")
     public ResponseDto<String> updateConsultUser(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int userId,
                                                  @Valid @RequestBody ConsultRequestDto consultRequestDto) {
-        String consultantEmail = userDetails.getUsername();
-        consultService.updateConsultUser(consultantEmail, userId, consultRequestDto);
+        String consultantId = userDetails.getUsername();
+        consultService.updateConsultUser(consultantId, userId, consultRequestDto);
         return ResponseDto.success("update consult success!");
     }
 
     @GetMapping("/qr/{uuid}")
-    public ResponseDto<ConsultUserResponseDto> verifyUserQr(@PathVariable String uuid){
-        ConsultUserResponseDto consultUserResponseDto = userAuthDetailService.verifyUserQr(uuid);
+    public ResponseDto<ConsultUserResponseDto> verifyUserQr(HttpServletRequest request, @PathVariable String uuid){
+        int consultantId = jwtUtil.getIdFromRequest(request, "Access");
+        Member member = userAuthDetailService.verifyUserQr(uuid);
+        ConsultUserResponseDto consultUserResponseDto = consultService.verifyUserQr(consultantId, member);
         return ResponseDto.success(consultUserResponseDto);
     }
 

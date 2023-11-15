@@ -32,17 +32,11 @@ public class ConsultService {
     private final PersonalColorRepository personalColorRepository;
     private final ConsultRepository consultRepository;
 
-    public void registerConsultUser(String consultantEmail, int userId, ConsultRequestDto consultRequestDto) {
+    public void registerConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
         Optional<Member> user = memberRepository.findById(userId);
         if (user.isEmpty()) {
             log.error("USER NOT FOUND.");
             throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
-        }
-
-        Optional<Consultant> consultant = consultantRepository.findByEmail(consultantEmail);
-        if (consultant.isEmpty()) {
-            log.error("CONSULTANT NOT FOUND.");
-            throw new RequestException(ErrorCode.CONSULTANT_NOT_FOUND_404);
         }
 
         Optional<PersonalColor> personalColor = personalColorRepository.findById(consultRequestDto.getPersonalColorId());
@@ -53,26 +47,20 @@ public class ConsultService {
 
         Member memberData = user.get();
         memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
-        Consult consult = new Consult(consultant.get().getId(), memberData.getId(), personalColor.get().getId(), consultRequestDto);
+        Consult consult = new Consult(consultantId, memberData.getId(), personalColor.get().getId(), consultRequestDto);
 
         consultUserRepository.save(consult);
     }
 
-    public ConsultUserResponseDto selectConsultUserByUserId(int userId, String consultantEmail) {
+    public ConsultUserResponseDto selectConsultUserByUserId(int userId, int consultantId) {
         Optional<Member> member = memberRepository.findById(userId);
         if(member.isEmpty()) {
             log.error("USER NOT FOUND.");
             throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
         }
 
-        Optional<Consultant> consultant = consultantRepository.findByEmail(consultantEmail);
-        if(consultant.isEmpty()){
-            log.error("CONSULTANT NOT FOUND.");
-            throw new RequestException(ErrorCode.CONSULTANT_NOT_FOUND_404);
-        }
-
         /*Optional<Consult> consult = consultRepository.findByMemberId(memberId);*/
-        Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(userId, consultant.get().getId());
+        Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(userId, consultantId);
         if(consult.isEmpty()) {
             log.error("CONSULT NOT FOUND.");
             throw new RequestException(ErrorCode.CONSULT_NOT_FOUND_404);
@@ -93,15 +81,9 @@ public class ConsultService {
                 .build();
     }
 
-    public List<ConsultUserResponseDto> selectConsultUserList(String consultantEmail) {
-        Optional<Consultant> consultant = consultantRepository.findByEmail(consultantEmail);
-        if(consultant.isEmpty()) {
-            log.error("CONSULTANT NOT FOUND.");
-            throw new RequestException(ErrorCode.CONSULTANT_NOT_FOUND_404);
-        }
+    public List<ConsultUserResponseDto> selectConsultUserList(int consultantId) {
 
-        Consultant consultantData = consultant.get();
-        List<Consult> consultList = consultRepository.findAllByConsultantId(consultantData.getId());
+        List<Consult> consultList = consultRepository.findAllByConsultantId(consultantId);
 
         List<ConsultUserResponseDto> consultUserList = new LinkedList<>();
         for(Consult consult : consultList) {
@@ -136,20 +118,14 @@ public class ConsultService {
         return consultUserList;
     }
 
-    public void updateConsultUser(String consultantEmail, int userId, ConsultRequestDto consultRequestDto) {
+    public void updateConsultUser(String consultantId, int userId, ConsultRequestDto consultRequestDto) {
         Optional<Member> member = memberRepository.findById(userId);
         if(member.isEmpty()) {
             log.error("USER NOT FOUND.");
             throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
         }
 
-        Optional<Consultant> consultant = consultantRepository.findByEmail(consultantEmail);
-        if(consultant.isEmpty()){
-            log.error("CONSULTANT NOT FOUND.");
-            throw new RequestException(ErrorCode.CONSULTANT_NOT_FOUND_404);
-        }
-
-        Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(userId, consultant.get().getId());
+        Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(userId, Integer.parseInt(consultantId));
         if(consult.isEmpty()) {
             log.error("CONSULT NOT FOUND.");
             throw new RequestException(ErrorCode.CONSULT_NOT_FOUND_404);
@@ -168,5 +144,11 @@ public class ConsultService {
 
         Member memberData = member.get();
         memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
+    }
+
+    public ConsultUserResponseDto verifyUserQr(int consultantId, Member member) {
+        Optional<Consult> consult = consultRepository.findByMemberId(member.getId());
+
+        return null;
     }
 }
