@@ -18,12 +18,12 @@ public class RefreshToken {
     private int id;
     @Column(name = "refreshToken", nullable = false)
     private String refreshToken;
-    @Column(name = "consultantEmail", nullable = false)
-    private String consultantEmail;
+    @Column(name = "consultantId", nullable = false)
+    private int consultantId;
 
-    public RefreshToken(String token, String email) {
+    public RefreshToken(String token, int id) {
         this.refreshToken = token;
-        this.consultantEmail = email;
+        this.consultantId = id;
     }
 
     public RefreshToken updateToken(String token) {

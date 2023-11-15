@@ -58,17 +58,17 @@ public class JwtUtil {
         return null;
     }
 
-    public JwtDto createAllToken(String email) {
-        return new JwtDto(createToken(email, "Access"), createToken(email, "Refresh"));
+    public JwtDto createAllToken(int id) {
+        return new JwtDto(createToken(id, "Access"), createToken(id, "Refresh"));
     }
 
-    public String createToken(String email, String type) {
+    public String createToken(int id, String type) {
         Date date = new Date();
 
         long time = type.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
 
         return BEARER_TYPE + Jwts.builder()
-                .setSubject(email)
+                .setSubject(String.valueOf(id))
                 .claim(AUTHORITIES_KEY, RoleType.ROLE_CONSULTANT.toString())
                 .setExpiration(new Date(date.getTime() + time))
                 .setIssuedAt(date)
@@ -97,24 +97,24 @@ public class JwtUtil {
         if (!tokenValidation(token))
             return false;
         /*DB에 저장한 토큰 비교*/
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByConsultantEmail(getEmailFromToken(token));
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByConsultantId(getIdFromToken(token));
         return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken());
     }
 
     /*인증 객체 생성*/
-    public Authentication createAuthentication(String email) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+    public Authentication createAuthentication(String id) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(id);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    /*토큰에서 email 가져오는 기능*/
-    public String getEmailFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+    /*토큰에서 id 가져오는 기능*/
+    public int getIdFromToken(String token) {
+        return Integer.parseInt(Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject());
     }
 
-    /*request에서 token에 담긴 email 정보 갖고오는 기능*/
-    public String getEmailFromRequest(HttpServletRequest request, String type) {
+    /*request에서 token에 담긴 id 정보 갖고오는 기능*/
+    public int getIdFromRequest(HttpServletRequest request, String type) {
         String accessToken = getHeaderToken(request, type);
-        return getEmailFromToken(accessToken);
+        return getIdFromToken(accessToken);
     }
 }
