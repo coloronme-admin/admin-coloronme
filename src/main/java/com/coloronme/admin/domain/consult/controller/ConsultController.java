@@ -5,12 +5,12 @@ import com.coloronme.admin.domain.consult.dto.response.ConsultUserResponseDto;
 import com.coloronme.admin.domain.consult.service.ConsultService;
 import com.coloronme.admin.global.dto.ResponseDto;
 import com.coloronme.admin.global.jwt.JwtUtil;
-import com.coloronme.admin.global.security.UserDetailsImpl;
+import com.coloronme.product.member.repository.UserAuthDetailRepository;
+import com.coloronme.product.member.service.UserAuthDetailService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConsultController {
     private final ConsultService consultService;
+    private final UserAuthDetailService userAuthDetailService;
     private final JwtUtil jwtUtil;
 
     @PostMapping("/{userId}")
@@ -53,6 +54,12 @@ public class ConsultController {
         String consultantEmail = userDetails.getUsername();
         consultService.updateConsultUser(consultantEmail, userId, consultRequestDto);
         return ResponseDto.success("update consult success!");
+    }
+
+    @GetMapping("/qr/{uuid}")
+    public ResponseDto<ConsultUserResponseDto> verifyUserQr(@PathVariable String uuid){
+        ConsultUserResponseDto consultUserResponseDto = userAuthDetailService.verifyUserQr(uuid);
+        return ResponseDto.success(consultUserResponseDto);
     }
 
 }

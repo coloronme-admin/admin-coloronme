@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "`User`")
 public class Member {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private int userId;
+    private int id;
     private String email;
     private String password;
     @Column(name="`profileImageUrl`")
@@ -28,11 +28,11 @@ public class Member {
     private int personalColorId;
     @Column(name="`worstColorId`")
     private int worstColorId;
-    @Column(name="`userAuthDetailId")
+    @Column(name="`userAuthDetailId`")
     private int userAuthDetailId;
     @Enumerated(EnumType.STRING)
     private Gender gender; /*male, female, etc*/
-    private String age;
+    private int age;
     @Column(name="`createdAt`")
     private LocalDateTime createdAt;
     @Column(name="`updatedAt`")

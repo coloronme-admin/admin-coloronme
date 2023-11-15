@@ -11,9 +11,10 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Table(name = "`WorstColor`")
 public class WorstColor {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String code;
     private String name;
