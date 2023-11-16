@@ -34,20 +34,9 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-/*    @Bean
-    public WebSecurityCustomizer ignoringCustomizer() {
-        return (web) -> web.ignoring()
-                .requestMatchers("/h2-console/**",
-                        "/v2/api-docs",
-                        "/v3/api-docs",
-                        "/configuration/ui",
-                        "/configuration/security",
-                        "/webjars/**");
-    }*/
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        System.out.println("SecurityFilterChain-----------------------------");
+        System.out.println("SecurityFilterChain 접속 -----------------------------");
         http.csrf((csrf) -> csrf.disable())
                         .httpBasic((httpBasic) -> httpBasic.disable());
                 http
@@ -55,7 +44,7 @@ public class WebSecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/login", "/api/signup").permitAll()
+                        .requestMatchers("/health", "/api/login", "/api/signup").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
