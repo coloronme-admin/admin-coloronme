@@ -14,8 +14,8 @@ public class ConsultUserResponseDto {
     private String nickname;
     private String email;
     private LocalDateTime personalDate;
-    private int personalColorId;
-    private int age;
+    private Integer personalColorId;
+    private Integer age;
     private Gender gender;
     private String consultContent;
     private String consultDrawing;

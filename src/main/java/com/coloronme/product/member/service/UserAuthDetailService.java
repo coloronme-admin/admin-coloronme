@@ -34,7 +34,7 @@ public class UserAuthDetailService {
 
         /*기간이 만료된 qr일 경우*/
         String userExpiredAtData = userAuthDetailData.getUuidExpiredAt();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         LocalDateTime userExpiredAt = LocalDateTime.parse(userExpiredAtData, formatter);
 
         int compare = LocalDateTime.now().compareTo(userExpiredAt);
