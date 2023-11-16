@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConsultUserResponseDto {
+    private int memberId;
     private String nickname;
     private String email;
     private LocalDateTime personalDate;
