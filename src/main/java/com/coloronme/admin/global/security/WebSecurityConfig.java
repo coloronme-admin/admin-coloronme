@@ -3,6 +3,7 @@ package com.coloronme.admin.global.security;
 import com.coloronme.admin.global.jwt.JwtAuthFilter;
 import com.coloronme.admin.global.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,6 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -36,7 +38,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        System.out.println("SecurityFilterChain 접속 -----------------------------");
+        log.info("SecurityFilterChain 접속 -----------------------------");
         http.csrf((csrf) -> csrf.disable())
                         .httpBasic((httpBasic) -> httpBasic.disable());
                 http

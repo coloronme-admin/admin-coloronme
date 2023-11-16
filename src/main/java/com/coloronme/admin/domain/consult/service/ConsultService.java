@@ -30,7 +30,6 @@ import java.util.Optional;
 public class ConsultService {
     private final MemberRepository memberRepository;
     private final ConsultRepository consultUserRepository;
-    private final ConsultantRepository consultantRepository;
     private final PersonalColorRepository personalColorRepository;
     private final ConsultRepository consultRepository;
 

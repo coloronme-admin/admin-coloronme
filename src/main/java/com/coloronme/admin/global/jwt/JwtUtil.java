@@ -1,6 +1,8 @@
 package com.coloronme.admin.global.jwt;
 
+import com.coloronme.admin.domain.consultant.entity.Consultant;
 import com.coloronme.admin.domain.consultant.entity.RefreshToken;
+import com.coloronme.admin.domain.consultant.repository.ConsultantRepository;
 import com.coloronme.admin.domain.consultant.repository.RefreshTokenRepository;
 import com.coloronme.admin.global.dto.JwtDto;
 import com.coloronme.admin.domain.consultant.entity.RoleType;
@@ -31,6 +33,7 @@ import java.util.Optional;
 public class JwtUtil {
     private final UserDetailsServiceImpl userDetailsService;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final ConsultantRepository consultantRepository;
 
     private static final String AUTHORITIES_KEY = "auth";
     public static final String ACCESS_TOKEN = "Authorization";
@@ -116,5 +119,14 @@ public class JwtUtil {
     public int getIdFromRequest(HttpServletRequest request, String type) {
         String accessToken = getHeaderToken(request, type);
         return getIdFromToken(accessToken);
+    }
+
+    /*access token 에서 추출한 사용자 정보가 유효한 정보인지 확인하는 기능*/
+    public int checkValidDataByJwt(int consultantId) {
+        Optional<Consultant> consultant = consultantRepository.findById(consultantId);
+        if(consultant.isEmpty()){
+            return 0;
+        }
+        return 1;
     }
 }
