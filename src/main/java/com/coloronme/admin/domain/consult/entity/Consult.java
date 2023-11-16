@@ -26,27 +26,27 @@ public class Consult {
     @Column(name="`personalColorId`")
     private int personalColorId;
     @NotNull
-    @Column(name="`consultDate`")
-    private LocalDateTime consultDate;
-    @Column(name="`consultContent`")
-    private String consultContent;
-    @Column(name="`consultDrawing`")
-    private String consultDrawing;
+    @Column(name="`consultedDate`")
+    private LocalDateTime consultedDate;
+    @Column(name="`consultedContent`")
+    private String consultedContent;
+    @Column(name="`consultedDrawing`")
+    private String consultedDrawing;
     @NotNull
     @Column(name="`createdAt`")
     private LocalDateTime createdAt;
     @NotNull
     @Column(name="`updatedAt`")
     private LocalDateTime updatedAt;
-    @Column(name="`deleteAt`")
-    private LocalDateTime deleteAt;
+    @Column(name="`deletedAt`")
+    private LocalDateTime deletedAt;
 
     public Consult(int consultantId, int memberId, int personalColorId, ConsultRequestDto consultRequestDto) {
         this.consultantId = consultantId;
         this.memberId = memberId;
         this.personalColorId = personalColorId;
-        this.consultContent = consultRequestDto.getConsultContent();
-        this.consultDate = consultRequestDto.getConsultDate();
+        this.consultedContent = consultRequestDto.getConsultedContent();
+        this.consultedDate = consultRequestDto.getConsultedDate();
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
