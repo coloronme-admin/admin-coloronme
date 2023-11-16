@@ -18,7 +18,7 @@ public class ConsultUserResponseDto {
     private Integer personalColorId;
     private Integer age;
     private Gender gender;
-    private String consultContent;
-    private String consultDrawing;
+    private String consultedContent;
+    private String consultedDrawing;
 }
   

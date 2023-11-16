@@ -73,12 +73,12 @@ public class ConsultService {
         return ConsultUserResponseDto.builder()
                 .nickname(memberData.getNickname())
                 .email(memberData.getEmail())
-                .personalDate(consultData.getConsultDate())
+                .personalDate(consultData.getConsultedDate())
                 .age(memberData.getAge())
                 .gender(memberData.getGender())
                 .personalColorId(consultData.getPersonalColorId())
-                .consultContent(consultData.getConsultContent())
-                .consultDrawing(consultData.getConsultDrawing())
+                .consultedContent(consultData.getConsultedContent())
+                .consultedDrawing(consultData.getConsultedDrawing())
                 .build();
     }
 
@@ -106,12 +106,12 @@ public class ConsultService {
             ConsultUserResponseDto consultUserResponseDto = ConsultUserResponseDto.builder()
                     .nickname(memberData.getNickname())
                     .email(memberData.getEmail())
-                    .personalDate(consult.getConsultDate())
+                    .personalDate(consult.getConsultedDate())
                     .personalColorId(personalColorData.getId())
                     .age(memberData.getAge())
                     .gender(memberData.getGender())
-                    .consultContent(consult.getConsultContent())
-                    .consultDrawing(consult.getConsultDrawing())
+                    .consultedContent(consult.getConsultedContent())
+                    .consultedDrawing(consult.getConsultedDrawing())
                     .build();
 
             consultUserList.add(consultUserResponseDto);
@@ -140,8 +140,8 @@ public class ConsultService {
 
         Consult consultData = consult.get();
         consultData.setPersonalColorId(personalColor.get().getId());
-        consultData.setConsultContent(consultRequestDto.getConsultContent());
-        consultData.setConsultDrawing(consultRequestDto.getConsultDrawing());
+        consultData.setConsultedContent(consultRequestDto.getConsultedContent());
+        consultData.setConsultedDrawing(consultRequestDto.getConsultedDrawing());
 
         Member memberData = member.get();
         memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
@@ -162,8 +162,8 @@ public class ConsultService {
                     .personalColorId(1)
                     .age(member.getAge())
                     .gender(member.getGender())
-                    .consultContent(null)
-                    .consultDrawing(null)
+                    .consultedContent(null)
+                    .consultedDrawing(null)
                     .build();
 
         /*이전 진단 내역이 있는 경우에는 이전 내용을 같이 보내줌*/
@@ -174,12 +174,12 @@ public class ConsultService {
             consultUserResponseDto = ConsultUserResponseDto.builder()
                     .nickname(member.getNickname())
                     .email(member.getEmail())
-                    .personalDate(consultData.getConsultDate())
+                    .personalDate(consultData.getConsultedDate())
                     .personalColorId(consultData.getPersonalColorId())
                     .age(member.getAge())
                     .gender(member.getGender())
-                    .consultContent(consultData.getConsultContent())
-                    .consultDrawing(consultData.getConsultDrawing())
+                    .consultedContent(consultData.getConsultedContent())
+                    .consultedDrawing(consultData.getConsultedDrawing())
                     .build();
         }
 

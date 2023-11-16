@@ -16,12 +16,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ConsultRequestDto {
     @NotNull(message = "퍼스널 컬러를 선택해 주세요.")
-    @JsonProperty(value = "personal_color_id")
     private int personalColorId;
-    @JsonProperty(value = "consult_content")
-    private String consultContent;
-    @JsonProperty(value="consult_drawing")
-    private String consultDrawing;
-    @JsonProperty(value = "consult_date")
-    private LocalDateTime consultDate;
+    private String consultedContent;
+    private String consultedDrawing;
+    private LocalDateTime consultedDate;
 }
