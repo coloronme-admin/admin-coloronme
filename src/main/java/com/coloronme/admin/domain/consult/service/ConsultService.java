@@ -15,6 +15,7 @@ import com.coloronme.admin.global.exception.RequestException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -47,10 +48,22 @@ public class ConsultService {
         }
 
         Member memberData = user.get();
-        memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
-        Consult consult = new Consult(consultantId, memberData.getId(), personalColor.get().getId(), consultRequestDto);
 
-        consultUserRepository.save(consult);
+        Optional<Consult> consult = consultRepository.findByMemberId(userId);
+        /*진단 정보를 처음 등록하는 경우*/
+        if(consult.isEmpty()) {
+            memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
+            Consult consultData = new Consult(consultantId, memberData.getId(), personalColor.get().getId(), consultRequestDto);
+
+            consultUserRepository.save(consultData);
+        } else {
+            /*진단 정보가 이미 있는 경우 수정 작업으로 변경*/
+            Consult consultData = consult.get();
+            consultData.setPersonalColorId(personalColor.get().getId());
+            consultData.setConsultedContent(consultRequestDto.getConsultedContent());
+            consultData.setConsultedDrawing(consultRequestDto.getConsultedDrawing());
+            memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
+        }
     }
 
     public ConsultUserResponseDto selectConsultUserByUserId(int userId, int consultantId) {
@@ -60,7 +73,6 @@ public class ConsultService {
             throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
         }
 
-        /*Optional<Consult> consult = consultRepository.findByMemberId(memberId);*/
         Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(userId, consultantId);
         if(consult.isEmpty()) {
             log.error("CONSULT NOT FOUND.");
@@ -126,7 +138,7 @@ public class ConsultService {
             throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
         }
 
-        Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(userId, consultantId);
+        Optional<Consult> consult = consultRepository.findByMemberId(userId);
         if(consult.isEmpty()) {
             log.error("CONSULT NOT FOUND.");
             throw new RequestException(ErrorCode.CONSULT_NOT_FOUND_404);
@@ -158,6 +170,7 @@ public class ConsultService {
                     .memberId(member.getId())
                     .nickname(member.getNickname())
                     .email(member.getEmail())
+                    .profileImageUrl(member.getProfileImageUrl())
                     .personalDate(null)
                     .personalColorId(1)
                     .age(member.getAge())
@@ -172,8 +185,10 @@ public class ConsultService {
             Consult consultData = consult.get();
 
             consultUserResponseDto = ConsultUserResponseDto.builder()
+                    .memberId(member.getId())
                     .nickname(member.getNickname())
                     .email(member.getEmail())
+                    .profileImageUrl(member.getProfileImageUrl())
                     .personalDate(consultData.getConsultedDate())
                     .personalColorId(consultData.getPersonalColorId())
                     .age(member.getAge())
