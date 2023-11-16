@@ -15,7 +15,7 @@ public class ConsultUserResponseDto {
     private String nickname;
     private String email;
     private String profileImageUrl;
-    private LocalDateTime personalDate;
+    private LocalDateTime consultedDate;
     private Integer personalColorId;
     private Integer age;
     private Gender gender;
