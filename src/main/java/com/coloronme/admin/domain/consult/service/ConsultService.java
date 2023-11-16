@@ -155,6 +155,7 @@ public class ConsultService {
         /*이전 진단 내역이 없는 경우에는 진단 내용을 null 값으로 보냄*/
         if(consult.isEmpty()) {
             consultUserResponseDto = ConsultUserResponseDto.builder()
+                    .memberId(member.getId())
                     .nickname(member.getNickname())
                     .email(member.getEmail())
                     .personalDate(null)
