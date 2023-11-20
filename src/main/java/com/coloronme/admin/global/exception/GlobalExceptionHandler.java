@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.format.DateTimeParseException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -21,5 +23,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorResponseDto methodArgumentNotValidException(MethodArgumentNotValidException e) {
         return new ErrorResponseDto(400, e.getFieldError().getDefaultMessage());
+    }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    public ErrorResponseDto dateTimeParseException(DateTimeParseException e) {
+        return new ErrorResponseDto(400, "유효하지 않은 날짜입니다.");
     }
 }
