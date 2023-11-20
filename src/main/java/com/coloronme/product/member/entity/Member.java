@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-// @DynamicUpdate /*User는 읽는 용 테이블이기 때문에 수정할 데이터만 수정되도록 설정*/
+@DynamicUpdate
 @Table(name = "`User`")
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +32,7 @@ public class Member {
     @Column(name="`userAuthDetailId`")
     private Integer userAuthDetailId;
     @Enumerated(EnumType.STRING)
-    @Column(name="gender", columnDefinition = "character_varying")
-    private GenderEnum gender; /*male, female, etc*/
+    private GenderEnum gender;
     private Integer age;
     @Column(name="`createdAt`")
     private LocalDateTime createdAt;

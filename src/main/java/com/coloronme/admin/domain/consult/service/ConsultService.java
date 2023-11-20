@@ -30,7 +30,6 @@ public class ConsultService {
     private final ConsultRepository consultRepository;
 
     public void registerConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
-        System.out.println("userId + " + userId );
         Optional<Member> user = memberRepository.findById(userId);
         if (user.isEmpty()) {
             log.error("USER NOT FOUND.");
@@ -48,13 +47,11 @@ public class ConsultService {
         Optional<Consult> consult = consultRepository.findByMemberId(userId);
         /*진단 정보를 처음 등록하는 경우*/
         if(consult.isEmpty()) {
-            System.out.println("없음");
             memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
             Consult consultData = new Consult(consultantId, userId, personalColor.get().getId(), consultRequestDto);
 
             consultUserRepository.save(consultData);
         } else {
-            System.out.println("이미있음");
             /*진단 정보가 이미 있는 경우 수정 작업으로 변경*/
             Consult consultData = consult.get();
             consultData.setPersonalColorId(personalColor.get().getId());
