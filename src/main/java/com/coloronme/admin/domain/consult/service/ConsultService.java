@@ -8,17 +8,13 @@ import com.coloronme.product.personalColor.entity.PersonalColor;
 import com.coloronme.admin.domain.consult.repository.ConsultRepository;
 import com.coloronme.product.personalColor.repository.PersonalColorRepository;
 import com.coloronme.product.member.repository.MemberRepository;
-import com.coloronme.admin.domain.consultant.entity.Consultant;
-import com.coloronme.admin.domain.consultant.repository.ConsultantRepository;
 import com.coloronme.admin.global.exception.ErrorCode;
 import com.coloronme.admin.global.exception.RequestException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +30,7 @@ public class ConsultService {
     private final ConsultRepository consultRepository;
 
     public void registerConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
+        System.out.println("userId + " + userId );
         Optional<Member> user = memberRepository.findById(userId);
         if (user.isEmpty()) {
             log.error("USER NOT FOUND.");
@@ -51,14 +48,17 @@ public class ConsultService {
         Optional<Consult> consult = consultRepository.findByMemberId(userId);
         /*진단 정보를 처음 등록하는 경우*/
         if(consult.isEmpty()) {
+            System.out.println("없음");
             memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
-            Consult consultData = new Consult(consultantId, memberData.getId(), personalColor.get().getId(), consultRequestDto);
+            Consult consultData = new Consult(consultantId, userId, personalColor.get().getId(), consultRequestDto);
 
             consultUserRepository.save(consultData);
         } else {
+            System.out.println("이미있음");
             /*진단 정보가 이미 있는 경우 수정 작업으로 변경*/
             Consult consultData = consult.get();
             consultData.setPersonalColorId(personalColor.get().getId());
+            consultData.setConsultedDate(consultRequestDto.getConsultedDate());
             consultData.setConsultedContent(consultRequestDto.getConsultedContent());
             consultData.setConsultedDrawing(consultRequestDto.getConsultedDrawing());
             memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
@@ -82,11 +82,12 @@ public class ConsultService {
         Consult consultData = consult.get();
 
         return ConsultUserResponseDto.builder()
+                .memberId(consultData.getMemberId())
                 .nickname(memberData.getNickname())
                 .email(memberData.getEmail())
                 .consultedDate(consultData.getConsultedDate())
                 .age(memberData.getAge())
-                .gender(memberData.getGender())
+                .genderEnum(memberData.getGender())
                 .personalColorId(consultData.getPersonalColorId())
                 .consultedContent(consultData.getConsultedContent())
                 .consultedDrawing(consultData.getConsultedDrawing())
@@ -115,12 +116,13 @@ public class ConsultService {
             Member memberData = member.get();
             PersonalColor personalColorData = personalColor.get();
             ConsultUserResponseDto consultUserResponseDto = ConsultUserResponseDto.builder()
+                    .memberId(consult.getMemberId())
                     .nickname(memberData.getNickname())
                     .email(memberData.getEmail())
                     .consultedDate(consult.getConsultedDate())
                     .personalColorId(personalColorData.getId())
                     .age(memberData.getAge())
-                    .gender(memberData.getGender())
+                    .genderEnum(memberData.getGender())
                     .consultedContent(consult.getConsultedContent())
                     .consultedDrawing(consult.getConsultedDrawing())
                     .build();
@@ -173,7 +175,7 @@ public class ConsultService {
                     .consultedDate(null)
                     .personalColorId(1)
                     .age(member.getAge())
-                    .gender(member.getGender())
+                    .genderEnum(member.getGender())
                     .consultedContent(null)
                     .consultedDrawing(null)
                     .build();
@@ -191,7 +193,7 @@ public class ConsultService {
                     .consultedDate(consultData.getConsultedDate())
                     .personalColorId(consultData.getPersonalColorId())
                     .age(member.getAge())
-                    .gender(member.getGender())
+                    .genderEnum(member.getGender())
                     .consultedContent(consultData.getConsultedContent())
                     .consultedDrawing(consultData.getConsultedDrawing())
                     .build();

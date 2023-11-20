@@ -1,8 +1,7 @@
 package com.coloronme.admin.domain.consult.dto.response;
 
-import com.coloronme.product.member.enums.Gender;
+import com.coloronme.product.member.enums.GenderEnum;
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +17,7 @@ public class ConsultUserResponseDto {
     private LocalDateTime consultedDate;
     private Integer personalColorId;
     private Integer age;
-    private Gender gender;
+    private GenderEnum genderEnum;
     private String consultedContent;
     private String consultedDrawing;
 }
