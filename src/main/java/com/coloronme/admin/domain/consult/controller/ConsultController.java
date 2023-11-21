@@ -29,9 +29,8 @@ public class ConsultController {
     public ResponseDto<ConsultUserResponseDto> registerConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                                @Valid @RequestBody ConsultRequestDto consultRequestDto) {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
-        consultService.registerConsultUser(consultantId, userId, consultRequestDto);
-        return ResponseDto.status(
-               "Consult Registration Successful.");
+        ConsultUserResponseDto consultUserResponseDto = consultService.registerConsultUser(consultantId, userId, consultRequestDto);
+        return ResponseDto.status(consultUserResponseDto);
     }
 
     @GetMapping("/{userId}")
@@ -53,8 +52,8 @@ public class ConsultController {
     public ResponseDto<ConsultUserResponseDto> updateConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                  @Valid @RequestBody ConsultRequestDto consultRequestDto) {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
-        consultService.updateConsultUser(consultantId, userId, consultRequestDto);
-        return ResponseDto.status("update consult success!");
+        ConsultUserResponseDto consultUserResponseDto = consultService.updateConsultUser(consultantId, userId, consultRequestDto);
+        return ResponseDto.status(consultUserResponseDto);
        
     }
 
