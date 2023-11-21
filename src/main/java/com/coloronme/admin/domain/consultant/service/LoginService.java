@@ -44,7 +44,7 @@ public class LoginService {
 
         consultantRepository.save(consultant);
 
-        return ResponseDto.success(
+        return ResponseDto.status(
                 SignupResponseDto.builder()
                         .build()
         );
@@ -76,7 +76,7 @@ public class LoginService {
             }
             setHeader(response, jwtDto);
 
-        return ResponseDto.success(
+        return ResponseDto.status(
                 LoginResponseDto.builder()
                         .email(consultant.getEmail())
                         .roleType(consultant.getRoleType())

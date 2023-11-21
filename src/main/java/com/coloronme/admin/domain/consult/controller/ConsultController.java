@@ -29,8 +29,9 @@ public class ConsultController {
     public ResponseDto<ConsultUserResponseDto> registerConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                                @Valid @RequestBody ConsultRequestDto consultRequestDto) {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
-        ConsultUserResponseDto consultUserResponseDto = consultService.registerConsultUser(consultantId, userId, consultRequestDto);
-        return ResponseDto.success(consultUserResponseDto);
+        consultService.registerConsultUser(consultantId, userId, consultRequestDto);
+        return ResponseDto.status(
+               "Consult Registration Successful.");
     }
 
     @GetMapping("/{userId}")
@@ -38,22 +39,23 @@ public class ConsultController {
                                                                          @PathVariable int userId) {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         ConsultUserResponseDto consultUserResponseDto = consultService.selectConsultUserByUserId(userId, consultantId);
-        return ResponseDto.success(consultUserResponseDto);
+        return ResponseDto.status(consultUserResponseDto);
     }
 
     @GetMapping()
     public ResponseDto<List<ConsultUserResponseDto>> selectConsultUserList(HttpServletRequest request) {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         List<ConsultUserResponseDto> consultUserList = consultService.selectConsultUserList(consultantId);
-        return ResponseDto.success(consultUserList);
+        return ResponseDto.status(consultUserList);
     }
 
     @PatchMapping("/{userId}")
     public ResponseDto<ConsultUserResponseDto> updateConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                  @Valid @RequestBody ConsultRequestDto consultRequestDto) {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
-        ConsultUserResponseDto consultUserResponseDto = consultService.updateConsultUser(consultantId, userId, consultRequestDto);
-        return ResponseDto.success(consultUserResponseDto);
+        consultService.updateConsultUser(consultantId, userId, consultRequestDto);
+        return ResponseDto.status("update consult success!");
+       
     }
 
     @GetMapping("/qr/{uuid}")
@@ -61,7 +63,7 @@ public class ConsultController {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         Member member = userAuthDetailService.verifyUserQr(uuid);
         ConsultUserResponseDto consultUserResponseDto = consultService.verifyUserQr(consultantId, member);
-        return ResponseDto.success(consultUserResponseDto);
+        return ResponseDto.status(consultUserResponseDto);
     }
 
 }

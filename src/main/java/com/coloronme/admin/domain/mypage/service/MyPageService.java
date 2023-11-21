@@ -35,7 +35,7 @@ public class MyPageService {
     public ResponseDto<MyPageResponseDto> getMyPage(String email) {
         Consultant consultant = getConsultant(email);
 
-        return ResponseDto.success(
+        return ResponseDto.status(
                 MyPageResponseDto.builder()
                         .name(consultant.getName())
                         .company(consultant.getCompany())
@@ -50,7 +50,7 @@ public class MyPageService {
         Consultant consultant = getConsultant(email);
 
         consultant.update(myPageRequestDto);
-        return ResponseDto.success(
+        return ResponseDto.status(
                 MyPageResponseDto.builder()
                         .name(consultant.getName())
                         .company(consultant.getCompany())
@@ -76,7 +76,7 @@ public class MyPageService {
         if (!passwordEncoder.matches(passwordRequestDto.getNewPasswordConfirm(), consultant.getPassword())) {
             throw new RequestException(ErrorCode.PASSWORD_CONFIRM_BAD_REQUEST_400);
         }
-        return ResponseDto.success(
+        return ResponseDto.status(
                 PasswordResponseDto.builder()
                         .newPassword(consultant.getPassword())
                         .build()
