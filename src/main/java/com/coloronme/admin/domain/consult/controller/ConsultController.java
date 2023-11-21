@@ -26,7 +26,7 @@ public class ConsultController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/{userId}")
-    public ResponseDto<String> registerConsultUser(HttpServletRequest request, @PathVariable int userId,
+    public ResponseDto<ConsultUserResponseDto> registerConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                                @Valid @RequestBody ConsultRequestDto consultRequestDto) {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         consultService.registerConsultUser(consultantId, userId, consultRequestDto);
@@ -50,11 +50,12 @@ public class ConsultController {
     }
 
     @PatchMapping("/{userId}")
-    public ResponseDto<String> updateConsultUser(HttpServletRequest request, @PathVariable int userId,
+    public ResponseDto<ConsultUserResponseDto> updateConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                  @Valid @RequestBody ConsultRequestDto consultRequestDto) {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         consultService.updateConsultUser(consultantId, userId, consultRequestDto);
         return ResponseDto.status("update consult success!");
+       
     }
 
     @GetMapping("/qr/{uuid}")

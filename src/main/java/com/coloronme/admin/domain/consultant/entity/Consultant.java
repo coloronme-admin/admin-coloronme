@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeRegistration;
 import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
 
@@ -20,18 +22,14 @@ public class Consultant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private int id;
-    @Column
     private String name;
-    @Column
     private String company;
-    @Column
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
     @Enumerated(EnumType.STRING)
-    @Column(name="`roleType`", nullable = false)
+    @Column(name="`roleType`", nullable = false, columnDefinition = "`RoleType`")
     private RoleType roleType;
     @CreatedDate
     @Column(name="`createdAt`", nullable = false)
