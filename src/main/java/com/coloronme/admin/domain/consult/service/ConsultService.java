@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +30,7 @@ public class ConsultService {
     private final PersonalColorRepository personalColorRepository;
     private final ConsultRepository consultRepository;
 
-    public void registerConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
+    public ConsultUserResponseDto registerConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
         Optional<Member> user = memberRepository.findById(userId);
         if (user.isEmpty()) {
             log.error("USER NOT FOUND.");
@@ -45,21 +46,37 @@ public class ConsultService {
         Member memberData = user.get();
 
         Optional<Consult> consult = consultRepository.findByMemberId(userId);
+
+        Consult consultData;
+
         /*진단 정보를 처음 등록하는 경우*/
         if(consult.isEmpty()) {
             memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
-            Consult consultData = new Consult(consultantId, userId, personalColor.get().getId(), consultRequestDto);
-
+            consultData = new Consult(consultantId, userId, personalColor.get().getId(), consultRequestDto);
             consultUserRepository.save(consultData);
         } else {
             /*진단 정보가 이미 있는 경우 수정 작업으로 변경*/
-            Consult consultData = consult.get();
+            consultData = consult.get();
             consultData.setPersonalColorId(personalColor.get().getId());
             consultData.setConsultedDate(consultRequestDto.getConsultedDate());
             consultData.setConsultedContent(consultRequestDto.getConsultedContent());
             consultData.setConsultedDrawing(consultRequestDto.getConsultedDrawing());
+            consultData.setUpdatedAt(LocalDateTime.now());
             memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
         }
+
+        return ConsultUserResponseDto.builder()
+                .memberId(consultData.getMemberId())
+                .nickname(memberData.getNickname())
+                .profileImageUrl(memberData.getProfileImageUrl())
+                .email(memberData.getEmail())
+                .consultedDate(consultData.getConsultedDate())
+                .age(memberData.getAge())
+                .genderEnum(memberData.getGender())
+                .personalColorId(consultData.getPersonalColorId())
+                .consultedContent(consultData.getConsultedContent())
+                .consultedDrawing(consultData.getConsultedDrawing())
+                .build();
     }
 
     public ConsultUserResponseDto selectConsultUserByUserId(int userId, int consultantId) {
@@ -81,6 +98,7 @@ public class ConsultService {
         return ConsultUserResponseDto.builder()
                 .memberId(consultData.getMemberId())
                 .nickname(memberData.getNickname())
+                .profileImageUrl(memberData.getProfileImageUrl())
                 .email(memberData.getEmail())
                 .consultedDate(consultData.getConsultedDate())
                 .age(memberData.getAge())
@@ -117,6 +135,7 @@ public class ConsultService {
                     .nickname(memberData.getNickname())
                     .email(memberData.getEmail())
                     .consultedDate(consult.getConsultedDate())
+                    .profileImageUrl(memberData.getProfileImageUrl())
                     .personalColorId(personalColorData.getId())
                     .age(memberData.getAge())
                     .genderEnum(memberData.getGender())
@@ -129,7 +148,7 @@ public class ConsultService {
         return consultUserList;
     }
 
-    public void updateConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
+    public ConsultUserResponseDto updateConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
         Optional<Member> member = memberRepository.findById(userId);
         if(member.isEmpty()) {
             log.error("USER NOT FOUND.");
@@ -152,9 +171,23 @@ public class ConsultService {
         consultData.setPersonalColorId(personalColor.get().getId());
         consultData.setConsultedContent(consultRequestDto.getConsultedContent());
         consultData.setConsultedDrawing(consultRequestDto.getConsultedDrawing());
+        consultData.setUpdatedAt(LocalDateTime.now());
 
         Member memberData = member.get();
         memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
+
+        return ConsultUserResponseDto.builder()
+                .memberId(consultData.getMemberId())
+                .nickname(memberData.getNickname())
+                .email(memberData.getEmail())
+                .consultedDate(consultData.getConsultedDate())
+                .profileImageUrl(memberData.getProfileImageUrl())
+                .personalColorId(consultData.getPersonalColorId())
+                .age(memberData.getAge())
+                .genderEnum(memberData.getGender())
+                .consultedContent(consultData.getConsultedContent())
+                .consultedDrawing(consultData.getConsultedDrawing())
+                .build();
     }
 
     public ConsultUserResponseDto verifyUserQr(int consultantId, Member member) {
