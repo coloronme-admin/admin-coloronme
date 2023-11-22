@@ -7,6 +7,8 @@ import com.coloronme.admin.domain.consultant.dto.response.SignupResponseDto;
 import com.coloronme.admin.domain.consultant.service.LoginService;
 import com.coloronme.admin.global.dto.ResponseDto;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +21,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Tag(name = "Login Controller" , description = "회원가입/로그인 컨트롤러")
 public class LoginController {
     private final LoginService loginService;
+
+
+    @Operation(summary = "signup", description = "회원가입")
     @PostMapping("/signup")
     public ResponseDto<SignupResponseDto> signup(@RequestBody @Valid ConsultantRequestDto consultantRequestDto) {
         return loginService.signup(consultantRequestDto);
     }
+
+    @Operation(summary = "login", description = "로그인")
     @PostMapping("/login")
     public ResponseDto<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpServletResponse response
-                                               ) {
+    )
+    {
         return loginService.login(loginRequestDto, response);
     }
 }
