@@ -23,7 +23,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-@Tag(name = "Login Controller" , description = "회원가입/로그인 컨트롤러")
+@Tag(name = "Login Controller" , description = "회원가입/로그인/토큰재발급 컨트롤러")
 public class LoginController {
     private final LoginService loginService;
 //    private final TokenService tokenService;
@@ -43,6 +43,7 @@ public class LoginController {
         return loginService.login(loginRequestDto, response);
     }
 
+    @Operation(summary = "reissue", description = "AccessToken 재발급")
     @PostMapping("/refresh-token")
     public ResponseDto<TokenResponseDto> reissueToken(@RequestBody Map<String, String> refreshToken, HttpServletRequest request, HttpServletResponse response){
         String token = refreshToken.get("refreshToken");
