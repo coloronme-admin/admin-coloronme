@@ -97,11 +97,14 @@ public class JwtUtil {
 
     public Boolean refreshTokenValidation(String token) {
         /*1차 토큰 검증*/
-        if (!tokenValidation(token))
-            return false;
+        if (!tokenValidation(token)){
+            return false;}
         /*DB에 저장한 토큰 비교*/
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByConsultantId(getIdFromToken(token));
+        int consultantId = getIdFromToken(token);
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByConsultantId(consultantId);
         return refreshToken.isPresent() && token.equals(refreshToken.get().getRefreshToken());
+
+
     }
 
     /*인증 객체 생성*/
@@ -112,8 +115,23 @@ public class JwtUtil {
 
     /*토큰에서 id 가져오는 기능*/
     public int getIdFromToken(String token) {
-        return Integer.parseInt(Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject());
+        return Integer.parseInt(Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject());
     }
+
+//    public Authentication getIdFromToken(String token) {
+//        Claims claims = parseClaims(token);
+//
+//    }
+
+//    public Authentication getIdFromRequest(HttpServletRequest request, String type) {
+//        String accessToken = getHeaderToken(request, type);
+//        return getIdFromToken(accessToken);
+//    }
 
     /*request에서 token에 담긴 id 정보 갖고오는 기능*/
     public int getIdFromRequest(HttpServletRequest request, String type) {
@@ -129,4 +147,13 @@ public class JwtUtil {
         }
         return 1;
     }
+
+    private Claims parseClaims(String token) {
+        try{
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        }catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
+    }
+
 }

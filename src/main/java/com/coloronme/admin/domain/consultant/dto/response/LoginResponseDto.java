@@ -19,4 +19,6 @@ public class LoginResponseDto {
     private String email;
     @Schema
     private RoleType roleType;
+    @Schema
+    private String refreshToken;
 }

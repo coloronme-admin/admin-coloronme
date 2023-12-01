@@ -67,7 +67,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","/health", "/api/login", "/api/signup").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","/health", "/api/login", "/api/signup", "/api/refresh-token").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
