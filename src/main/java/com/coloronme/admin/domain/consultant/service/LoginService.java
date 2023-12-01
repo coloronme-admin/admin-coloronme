@@ -1,5 +1,7 @@
 package com.coloronme.admin.domain.consultant.service;
 
+import com.coloronme.admin.domain.consultant.dto.TokenRequestDto;
+import com.coloronme.admin.domain.consultant.dto.TokenResponseDto;
 import com.coloronme.admin.domain.consultant.dto.request.LoginRequestDto;
 import com.coloronme.admin.domain.consultant.dto.request.ConsultantRequestDto;
 import com.coloronme.admin.domain.consultant.dto.response.LoginResponseDto;
@@ -16,9 +18,11 @@ import com.coloronme.admin.domain.consultant.entity.RoleType;
 import com.coloronme.admin.domain.consultant.entity.Consultant;
 
 
+import io.jsonwebtoken.JwtException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +37,7 @@ public class LoginService {
     private final PasswordEncoder passwordEncoder;
     private final ConsultantRepository consultantRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+
 
     @Transactional
     public ResponseDto<SignupResponseDto> signup(ConsultantRequestDto consultantRequestDto) {
@@ -52,40 +57,62 @@ public class LoginService {
 
     @Transactional
     public ResponseDto<LoginResponseDto> login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
-        // 이메일 있는지 확인
+
         Consultant consultant = consultantRepository.findByEmail(loginRequestDto.getEmail()).orElseThrow(
                 () -> new RequestException(ErrorCode.LOGIN_NOT_FOUND_404)
         );
-        // 비밀번호 있는지 확인
+
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), consultant.getPassword())) {
             throw new RequestException(ErrorCode.LOGIN_NOT_FOUND_404);
         }
 
-            // 엑세스토콘, 리프레쉬토큰 생성
-            JwtDto jwtDto = jwtUtil.createAllToken(consultant.getId());
-//            // 리프레쉬 토큰은 DB에서 찾기
-            Optional<RefreshToken> refreshToken = refreshTokenRepository.findByConsultantId(consultant.getId());
+        // 엑세스토콘, 리프레쉬토큰 생성
+        JwtDto jwtDto = jwtUtil.createAllToken(consultant.getId());
+        String newRefreshToken = jwtDto.getRefreshToken().substring(7);
+        int consultantId = consultant.getId();
+        // 리프레쉬 토큰은 DB에서 찾기
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByConsultantId(consultantId);
              /*리프레쉬토큰 null인지 아닌지 에 따라서
-             값을 가지고있으면 save
              값이 없으면 newToken 만들어내서 save*/
-            if (refreshToken.isPresent()) {
-                refreshTokenRepository.save(refreshToken.get().updateToken(jwtDto.getRefreshToken()));
-            } else {
-                RefreshToken newToken = new RefreshToken(jwtDto.getRefreshToken(), consultant.getId());
-                refreshTokenRepository.save(newToken);
-            }
-            setHeader(response, jwtDto);
+        /*기존회원로그인*/
+        if (refreshToken.isPresent()) {
+            RefreshToken updateToken = refreshToken.get().updateToken(newRefreshToken);
+            refreshTokenRepository.save(updateToken);
+        /*신규회원로그인*/
+        } else {
+            RefreshToken newToken = new RefreshToken(jwtDto.getRefreshToken(), consultant.getId());
+            refreshTokenRepository.save(newToken);
+        }
+        setHeader(response, jwtDto.getAccessToken());
 
         return ResponseDto.status(
                 LoginResponseDto.builder()
                         .email(consultant.getEmail())
                         .roleType(consultant.getRoleType())
+                        .refreshToken(jwtDto.getRefreshToken())
                         .build()
         );
     }
-    private void setHeader(HttpServletResponse response, JwtDto jwtDto) {
-        response.addHeader(JwtUtil.ACCESS_TOKEN, jwtDto.getAccessToken());
-        response.addHeader(JwtUtil.REFRESH_TOKEN, jwtDto.getRefreshToken());
+
+    private void setHeader(HttpServletResponse response, String accessToken) {
+        response.addHeader(JwtUtil.ACCESS_TOKEN, accessToken);
+    }
+
+    @Transactional
+    public ResponseDto<TokenResponseDto> reissueToken(String refreshToken, HttpServletResponse response) {
+        String validationToken = refreshToken.substring(7);
+        if (!jwtUtil.refreshTokenValidation(validationToken)) {
+            throw new RequestException(ErrorCode.JWT_BAD_TOKEN_401);
+        }
+        int consultantId = jwtUtil.getIdFromToken(validationToken);
+        String newAccessToken = jwtUtil.createToken(consultantId, "Access");
+
+        return ResponseDto.status(
+                TokenResponseDto.builder()
+                        .AccessToken(newAccessToken)
+                        .RefreshToken(refreshToken)
+                        .build()
+        );
     }
 }
 

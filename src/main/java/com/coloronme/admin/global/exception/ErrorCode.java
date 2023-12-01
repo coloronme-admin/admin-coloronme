@@ -27,7 +27,11 @@ public enum ErrorCode {
     /*MY PAGE*/
     MY_PAGE_NOT_FOUND_404(HttpStatus.NOT_FOUND, "마이페이지 내용을 찾을 수 없습니다."),
     OLD_PASSWORD_NOT_FOUND_404(HttpStatus.NOT_FOUND, "기존 패스워드를 잘못 입력했습니다."),
-    PASSWORD_CONFIRM_BAD_REQUEST_400(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
+    PASSWORD_CONFIRM_BAD_REQUEST_400(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
+
+
+
+    JWT_BAD_TOKEN_401(HttpStatus.UNAUTHORIZED, "토큰이 유효하지 않습니다.");
 
 
 
