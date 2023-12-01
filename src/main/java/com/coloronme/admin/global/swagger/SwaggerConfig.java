@@ -19,7 +19,7 @@ public class SwaggerConfig {
         Info info = new Info()
                 .title("Coloronme Admin API")
                 .description("Coloronme Admin API 명세서입니다.")
-                .version("V2");
+                .version("V3");
 
         SecurityScheme bearerAuth = new SecurityScheme()
                 .type(SecurityScheme.Type.HTTP)
