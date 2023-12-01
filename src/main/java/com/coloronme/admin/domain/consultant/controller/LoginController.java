@@ -1,7 +1,6 @@
 package com.coloronme.admin.domain.consultant.controller;
 
-import com.coloronme.admin.domain.consultant.dto.TokenRequestDto;
-import com.coloronme.admin.domain.consultant.dto.TokenResponseDto;
+import com.coloronme.admin.domain.consultant.dto.response.TokenResponseDto;
 import com.coloronme.admin.domain.consultant.dto.request.LoginRequestDto;
 import com.coloronme.admin.domain.consultant.dto.request.ConsultantRequestDto;
 import com.coloronme.admin.domain.consultant.dto.response.LoginResponseDto;

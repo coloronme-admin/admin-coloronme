@@ -1,7 +1,6 @@
 package com.coloronme.admin.domain.consultant.service;
 
-import com.coloronme.admin.domain.consultant.dto.TokenRequestDto;
-import com.coloronme.admin.domain.consultant.dto.TokenResponseDto;
+import com.coloronme.admin.domain.consultant.dto.response.TokenResponseDto;
 import com.coloronme.admin.domain.consultant.dto.request.LoginRequestDto;
 import com.coloronme.admin.domain.consultant.dto.request.ConsultantRequestDto;
 import com.coloronme.admin.domain.consultant.dto.response.LoginResponseDto;
@@ -18,10 +17,7 @@ import com.coloronme.admin.domain.consultant.entity.RoleType;
 import com.coloronme.admin.domain.consultant.entity.Consultant;
 
 
-import io.jsonwebtoken.JwtException;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

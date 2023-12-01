@@ -1,4 +1,4 @@
-package com.coloronme.admin.domain.mypage.dto;
+package com.coloronme.admin.domain.mypage.dto.request;
 
 
 import com.coloronme.admin.domain.consultant.entity.Consultant;

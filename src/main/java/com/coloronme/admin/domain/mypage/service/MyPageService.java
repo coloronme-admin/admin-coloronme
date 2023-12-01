@@ -2,10 +2,10 @@ package com.coloronme.admin.domain.mypage.service;
 
 import com.coloronme.admin.domain.consultant.entity.Consultant;
 import com.coloronme.admin.domain.consultant.repository.ConsultantRepository;
-import com.coloronme.admin.domain.mypage.dto.MyPageRequestDto;
-import com.coloronme.admin.domain.mypage.dto.MyPageResponseDto;
-import com.coloronme.admin.domain.mypage.dto.PasswordRequestDto;
-import com.coloronme.admin.domain.mypage.dto.PasswordResponseDto;
+import com.coloronme.admin.domain.mypage.dto.request.MyPageRequestDto;
+import com.coloronme.admin.domain.mypage.dto.response.MyPageResponseDto;
+import com.coloronme.admin.domain.mypage.dto.request.PasswordRequestDto;
+import com.coloronme.admin.domain.mypage.dto.response.PasswordResponseDto;
 import com.coloronme.admin.global.dto.ResponseDto;
 import com.coloronme.admin.global.exception.ErrorCode;
 import com.coloronme.admin.global.exception.RequestException;

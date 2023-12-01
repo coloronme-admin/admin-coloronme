@@ -1,10 +1,10 @@
 package com.coloronme.admin.domain.mypage.controller;
 
 
-import com.coloronme.admin.domain.mypage.dto.MyPageRequestDto;
-import com.coloronme.admin.domain.mypage.dto.MyPageResponseDto;
-import com.coloronme.admin.domain.mypage.dto.PasswordRequestDto;
-import com.coloronme.admin.domain.mypage.dto.PasswordResponseDto;
+import com.coloronme.admin.domain.mypage.dto.request.MyPageRequestDto;
+import com.coloronme.admin.domain.mypage.dto.response.MyPageResponseDto;
+import com.coloronme.admin.domain.mypage.dto.request.PasswordRequestDto;
+import com.coloronme.admin.domain.mypage.dto.response.PasswordResponseDto;
 import com.coloronme.admin.domain.mypage.service.MyPageService;
 import com.coloronme.admin.global.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;

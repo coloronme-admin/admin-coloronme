@@ -1,22 +1,18 @@
-package com.coloronme.admin.domain.mypage.dto;
+package com.coloronme.admin.domain.mypage.dto.response;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Builder
-public class MyPageResponseDto {
+public class PasswordResponseDto {
 
     @Schema
-    String name;
-    @Schema
-    String company;
-    @Schema
-    String email;
+    private String newPassword;
 }

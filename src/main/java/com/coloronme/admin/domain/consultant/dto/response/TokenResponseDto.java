@@ -1,4 +1,4 @@
-package com.coloronme.admin.domain.consultant.dto;
+package com.coloronme.admin.domain.consultant.dto.response;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;

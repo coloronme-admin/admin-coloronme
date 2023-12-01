@@ -1,4 +1,4 @@
-package com.coloronme.admin.domain.mypage.dto;
+package com.coloronme.admin.domain.mypage.dto.request;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
