@@ -35,21 +35,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (accessToken != null) {
             /*access token의 유효기간이 만료된 경우*/
             if (!jwtUtil.tokenValidation(accessToken)) {
-                jwtExceptionHandler(response, "AccessToken Expired", HttpStatus.BAD_REQUEST);
+                jwtExceptionHandler(response, "AccessToken Expired", HttpStatus.UNAUTHORIZED);
                 return;
             }
             /*access token에 들어있는 사용자 정보가 유효하지 않는 경우(DB에 없는 경우)*/
             int consultantId = jwtUtil.getIdFromToken(accessToken);
             if(jwtUtil.checkValidDataByJwt(consultantId)==0){
-                jwtExceptionHandler(response, "Request does not have access token.", HttpStatus.BAD_REQUEST);
+                jwtExceptionHandler(response, "접근 권한이 없습니다.", HttpStatus.FORBIDDEN);
                 return;
             }
             setAuthentication(String.valueOf(jwtUtil.getIdFromToken(accessToken)));
-        } else if (refreshToken != null) {
-            if (!jwtUtil.refreshTokenValidation(refreshToken)) {
-                jwtExceptionHandler(response, "RefreshToken Expired", HttpStatus.BAD_REQUEST);
-                return;
-            }
         }
         filterChain.doFilter(request, response);
     }
