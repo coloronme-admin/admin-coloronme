@@ -26,7 +26,7 @@ public class ConsultController {
     private final UserAuthDetailService userAuthDetailService;
     private final JwtUtil jwtUtil;
 
-    @Operation(summary = "고객 상담 등록", description = "고객 상담 등상")
+    @Operation(summary = "고객 상담 등록", description = "고객 상담 등록")
     @PostMapping("/{userId}")
     public ResponseDto<ConsultUserResponseDto> registerConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                                @Valid @RequestBody ConsultRequestDto consultRequestDto) {
