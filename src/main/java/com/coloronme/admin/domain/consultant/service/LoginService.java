@@ -63,29 +63,28 @@ public class LoginService {
         }
 
         // 엑세스토콘, 리프레쉬토큰 생성
-        JwtDto jwtDto = jwtUtil.createAllToken(consultant.getId());
-        String newRefreshToken = jwtDto.getRefreshToken().substring(7);
+        JwtDto tokenDto = jwtUtil.createAllToken(consultant.getId());
+        String firstAccessToken = tokenDto.getAccessToken();
+        String firstRefreshToken = tokenDto.getRefreshToken().substring(7);
         int consultantId = consultant.getId();
         // 리프레쉬 토큰은 DB에서 찾기
         Optional<RefreshToken> refreshToken = refreshTokenRepository.findByConsultantId(consultantId);
-             /*리프레쉬토큰 null인지 아닌지 에 따라서
-             값이 없으면 newToken 만들어내서 save*/
         /*기존회원로그인*/
         if (refreshToken.isPresent()) {
-            RefreshToken updateToken = refreshToken.get().updateToken(newRefreshToken);
+            RefreshToken updateToken = refreshToken.get().updateToken(firstRefreshToken);
             refreshTokenRepository.save(updateToken);
         /*신규회원로그인*/
         } else {
-            RefreshToken newToken = new RefreshToken(jwtDto.getRefreshToken(), consultant.getId());
+            RefreshToken newToken = new RefreshToken(tokenDto.getRefreshToken(), consultant.getId());
             refreshTokenRepository.save(newToken);
         }
-        setHeader(response, jwtDto.getAccessToken());
 
         return ResponseDto.status(
                 LoginResponseDto.builder()
                         .email(consultant.getEmail())
                         .roleType(consultant.getRoleType())
-                        .refreshToken(jwtDto.getRefreshToken())
+                        .accessToken(firstAccessToken)
+                        .refreshToken(tokenDto.getRefreshToken())
                         .build()
         );
     }
@@ -105,8 +104,8 @@ public class LoginService {
 
         return ResponseDto.status(
                 TokenResponseDto.builder()
-                        .AccessToken(newAccessToken)
-                        .RefreshToken(refreshToken)
+                        .accessToken(newAccessToken)
+                        .refreshToken(refreshToken)
                         .build()
         );
     }
