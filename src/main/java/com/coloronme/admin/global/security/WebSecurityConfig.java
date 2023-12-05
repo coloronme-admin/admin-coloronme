@@ -55,12 +55,12 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowCredentials(false)
+                .allowedOriginPatterns("*")
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                 .exposedHeaders("Authorization")
-                .exposedHeaders("Refresh_Token");
+                .exposedHeaders("Refresh_Token")
+                .allowCredentials(true);
     }
 
     @Bean
