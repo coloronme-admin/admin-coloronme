@@ -18,14 +18,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @Tag(name = "Login Controller" , description = "회원가입/로그인/토큰재발급 컨트롤러")
 public class LoginController {
     private final LoginService loginService;
-//    private final TokenService tokenService;
 
 
     @Operation(summary = "signup", description = "회원가입")
@@ -36,9 +34,7 @@ public class LoginController {
 
     @Operation(summary = "login", description = "로그인")
     @PostMapping("/login")
-    public ResponseDto<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpServletResponse response
-    )
-    {
+    public ResponseDto<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpServletResponse response) {
         return loginService.login(loginRequestDto, response);
     }
 
