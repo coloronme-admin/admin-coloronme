@@ -20,5 +20,7 @@ public class LoginResponseDto {
     @Schema
     private RoleType roleType;
     @Schema
+    private String accessToken;
+    @Schema
     private String refreshToken;
 }

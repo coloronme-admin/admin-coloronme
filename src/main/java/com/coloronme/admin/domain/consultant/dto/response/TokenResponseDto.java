@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 public class TokenResponseDto {
 
     @Schema
-    private String AccessToken;
+    private String accessToken;
     @Schema
-    private String RefreshToken;
+    private String refreshToken;
 
 }
