@@ -10,6 +10,7 @@ import com.coloronme.product.member.repository.UserAuthDetailRepository;
 import com.coloronme.product.member.service.UserAuthDetailService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,6 +28,7 @@ public class ConsultController {
     private final JwtUtil jwtUtil;
 
     @Operation(summary = "고객 상담 등록", description = "고객 상담 등록")
+    @Transactional
     @PostMapping("/{userId}")
     public ResponseDto<ConsultUserResponseDto> registerConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                                @Valid @RequestBody ConsultRequestDto consultRequestDto) {
@@ -54,6 +56,7 @@ public class ConsultController {
     }
 
     @Operation(summary = "고객 상담 수정", description = "고객 상담 수정")
+    @Transactional
     @PatchMapping("/{userId}")
     public ResponseDto<ConsultUserResponseDto> updateConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                  @Valid @RequestBody ConsultRequestDto consultRequestDto) {
