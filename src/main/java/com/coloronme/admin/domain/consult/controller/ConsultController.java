@@ -47,7 +47,6 @@ public class ConsultController {
     }
 
     @Operation(summary = "고객들 상담 조회", description = "고객들 상담 조회")
-
     @GetMapping()
     public ResponseDto<List<ConsultUserResponseDto>> selectConsultUserList(HttpServletRequest request) {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
