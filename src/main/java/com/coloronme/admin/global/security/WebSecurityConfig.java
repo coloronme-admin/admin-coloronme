@@ -55,7 +55,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("*")
+                .allowedOriginPatterns("http://3.36.60.134:8080")
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                 .exposedHeaders("Authorization")
@@ -68,6 +68,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         log.info("SecurityFilterChain 접속 -----------------------------");
         http.csrf((csrf) -> csrf.disable())
                         .httpBasic((httpBasic) -> httpBasic.disable());
+
                 http
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
