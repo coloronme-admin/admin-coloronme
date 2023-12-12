@@ -55,7 +55,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("http://3.36.60.134:8080")
+                .allowedOriginPatterns("http://localhost:3000")
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                 .exposedHeaders("Authorization")
@@ -66,6 +66,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("SecurityFilterChain 접속 -----------------------------");
+
         http.csrf((csrf) -> csrf.disable())
                         .httpBasic((httpBasic) -> httpBasic.disable());
 
