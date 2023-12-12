@@ -27,9 +27,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String accessToken = jwtUtil.getHeaderToken(request, "Access");
         String refreshToken = jwtUtil.getHeaderToken(request, "Refresh");
 
+        String url = request.getRequestURI();
         /*요청에 access token이 없는 경우*/
-        if(accessToken==null){
-            log.error("Request does not have Access Token.");
+        if(accessToken==null & !((url.startsWith("/v3/api-docs") || url.startsWith("/swagger-ui") || url.equals("/health")
+                || url.equals("/api/login") || url.equals("/api/signup") || url.equals("/api/refresh-token")))){
+            jwtExceptionHandler(response, "Not Exist Access Token.", HttpStatus.FORBIDDEN);
+            return;
         }
 
         if (accessToken != null) {
