@@ -53,6 +53,7 @@ public class LoginService {
 
     @Transactional
     public ResponseDto<LoginResponseDto> login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
+        System.out.println("로그인 서비스 들어옴");
 
         Consultant consultant = consultantRepository.findByEmail(loginRequestDto.getEmail()).orElseThrow(
                 () -> new RequestException(ErrorCode.LOGIN_NOT_FOUND_404)
@@ -72,6 +73,7 @@ public class LoginService {
         /*기존회원로그인*/
         if (refreshToken.isPresent()) {
             RefreshToken updateToken = refreshToken.get().updateToken(firstRefreshToken);
+            System.out.println("기존회원 로그인 성공");
             refreshTokenRepository.save(updateToken);
         /*신규회원로그인*/
         } else {

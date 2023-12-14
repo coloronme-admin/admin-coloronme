@@ -65,6 +65,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         log.info("SecurityFilterChain 접속 -----------------------------");
 
         http.csrf((csrf) -> csrf.disable())
