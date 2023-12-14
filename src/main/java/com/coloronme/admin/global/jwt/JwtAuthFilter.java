@@ -29,25 +29,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String url = request.getRequestURI();
         /*요청에 access token이 없는 경우*/
-        if(accessToken==null & !((url.startsWith("/v3/api-docs") || url.startsWith("/swagger-ui") || url.equals("/health")
+        if(!((url.startsWith("/v3/api-docs") || url.startsWith("/swagger-ui") || url.equals("/health")
                 || url.equals("/api/login") || url.equals("/api/signup") || url.equals("/api/refresh-token")))){
-            jwtExceptionHandler(response, "Not Exist Access Token.", HttpStatus.FORBIDDEN);
-            return;
-        }
-
-        if (accessToken != null) {
-            /*access token의 유효기간이 만료된 경우*/
-            if (!jwtUtil.tokenValidation(accessToken)) {
-                jwtExceptionHandler(response, "AccessToken Expired", HttpStatus.UNAUTHORIZED);
+            if(accessToken == null) {
+                jwtExceptionHandler(response, "Not Exist Access Token.", HttpStatus.FORBIDDEN);
                 return;
+            } else {
+                /*access token의 유효기간이 만료된 경우*/
+                if (!jwtUtil.tokenValidation(accessToken)) {
+                    jwtExceptionHandler(response, "AccessToken Expired", HttpStatus.UNAUTHORIZED);
+                    return;
+                }
+                /*access token에 들어있는 사용자 정보가 유효하지 않는 경우(DB에 없는 경우)*/
+                int consultantId = jwtUtil.getIdFromToken(accessToken);
+                if(jwtUtil.checkValidDataByJwt(consultantId)==0){
+                    jwtExceptionHandler(response, "접근 권한이 없습니다.", HttpStatus.FORBIDDEN);
+                    return;
+                }
+                setAuthentication(String.valueOf(jwtUtil.getIdFromToken(accessToken)));
             }
-            /*access token에 들어있는 사용자 정보가 유효하지 않는 경우(DB에 없는 경우)*/
-            int consultantId = jwtUtil.getIdFromToken(accessToken);
-            if(jwtUtil.checkValidDataByJwt(consultantId)==0){
-                jwtExceptionHandler(response, "접근 권한이 없습니다.", HttpStatus.FORBIDDEN);
-                return;
-            }
-            setAuthentication(String.valueOf(jwtUtil.getIdFromToken(accessToken)));
         }
         filterChain.doFilter(request, response);
     }
