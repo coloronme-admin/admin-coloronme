@@ -62,42 +62,26 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOriginPatterns("*")
-//                .allowedHeaders("*")
-//                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
-//                .exposedHeaders("Authorization")
-//                .exposedHeaders("Refresh_Token")
-//                .allowCredentials(true);
-//    }
-
-    @Bean
-    CorsConfigurationSource configurationSource() {
-        return request -> {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Requestor-Type","Content-Type"));
-        configuration.addExposedHeader("Refresh_Token");
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return configuration;
-        };
-    }
+@Override
+public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/**")
+            .allowedOriginPatterns("*", "http://localhost:3000")
+            .allowedHeaders("*")
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
+            .exposedHeaders("Authorization")
+            .exposedHeaders("Refresh_Token")
+            .allowCredentials(true);
+}
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         log.info("SecurityFilterChain 접속 -----------------------------");
 
-        http.cors(corsConfigurer -> corsConfigurer.configurationSource(configurationSource()));
-
         http.csrf((csrf) -> csrf.disable())
-                        .httpBasic((httpBasic) -> httpBasic.disable());
-                http
+                .httpBasic((httpBasic) -> httpBasic.disable());
+
+        http
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
@@ -108,6 +92,4 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
-
 }
