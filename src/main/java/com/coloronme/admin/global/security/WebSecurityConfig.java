@@ -4,8 +4,12 @@ import com.coloronme.admin.global.jwt.JwtAuthFilter;
 import com.coloronme.admin.global.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.filters.CorsFilter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,10 +18,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @Configuration
@@ -52,15 +62,28 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOriginPatterns("*")
-                .allowedHeaders("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
-                .exposedHeaders("Authorization")
-                .exposedHeaders("Refresh_Token")
-                .allowCredentials(true);
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOriginPatterns("*")
+//                .allowedHeaders("*")
+//                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
+//                .exposedHeaders("Authorization")
+//                .exposedHeaders("Refresh_Token")
+//                .allowCredentials(true);
+//    }
+
+    @Bean
+    CorsConfigurationSource configurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Requestor-Type","Content-Type"));
+        configuration.addExposedHeader("Refresh_Token");
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
@@ -68,9 +91,11 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
         log.info("SecurityFilterChain 접속 -----------------------------");
 
-        http.csrf((csrf) -> csrf.disable())
-                        .httpBasic((httpBasic) -> httpBasic.disable());
+        http.cors(Customizer.withDefaults());
 
+        http.csrf((csrf) -> csrf.disable())
+                .httpBasic((Customizer.withDefaults()));
+//                        .httpBasic((httpBasic) -> httpBasic.disable());
                 http
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -82,4 +107,6 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
+
 }
