@@ -75,6 +75,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
     @Bean
     CorsConfigurationSource configurationSource() {
+        return request -> {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
@@ -83,7 +84,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-        return source;
+        return configuration;
+        };
     }
 
     @Bean
@@ -91,11 +93,10 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
         log.info("SecurityFilterChain 접속 -----------------------------");
 
-        http.cors(Customizer.withDefaults());
+        http.cors(corsConfigurer -> corsConfigurer.configurationSource(configurationSource()));
 
         http.csrf((csrf) -> csrf.disable())
-                .httpBasic((Customizer.withDefaults()));
-//                        .httpBasic((httpBasic) -> httpBasic.disable());
+                        .httpBasic((httpBasic) -> httpBasic.disable());
                 http
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
