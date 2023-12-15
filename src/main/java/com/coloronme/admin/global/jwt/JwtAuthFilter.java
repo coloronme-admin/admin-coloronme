@@ -11,11 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
@@ -25,8 +27,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         log.info("JwtAuthFilter 접속");
         String accessToken = jwtUtil.getHeaderToken(request, "Access");
-        System.out.println(accessToken + "accessTokene 들어옴");
-
         String url = request.getRequestURI();
         /*요청에 access token이 없는 경우*/
         if(!((url.startsWith("/v3/api-docs") || url.startsWith("/swagger-ui") || url.equals("/health")

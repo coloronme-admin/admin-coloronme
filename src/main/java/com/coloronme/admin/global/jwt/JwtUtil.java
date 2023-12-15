@@ -110,7 +110,7 @@ public class JwtUtil {
     /*인증 객체 생성*/
     public Authentication createAuthentication(String id) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(id);
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
     /*토큰에서 id 가져오는 기능*/

@@ -2,32 +2,27 @@ package com.coloronme.admin.global.security;
 
 import com.coloronme.admin.global.jwt.JwtAuthFilter;
 import com.coloronme.admin.global.jwt.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.filters.CorsFilter;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 @Slf4j
 @Configuration
@@ -36,13 +31,12 @@ import java.util.List;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig implements WebMvcConfigurer {
-
     private final JwtUtil jwtUtil;
 
     private static final String[] AUTH_WHITELIST = {
             "/api/**", "/graphiql", "/graphql",
             "/swagger-ui/**", "/api-docs", "/swagger-ui-custom.html",
-            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html"
+            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html", "/api/myPages"
     };
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -62,34 +56,29 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-@Override
-public void addCorsMappings(CorsRegistry registry) {
-    registry.addMapping("/**")
-            .allowedOriginPatterns("*", "http://localhost:3000")
-            .allowedHeaders("*")
-            .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
-            .exposedHeaders("Authorization")
-            .exposedHeaders("Refresh_Token")
-            .allowCredentials(true);
-}
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+            .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+                @Override
+                public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+                    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    config.setAllowCredentials(true);
+                    config.setAllowedHeaders(Collections.singletonList("*"));
+                    return config;
+                }
+            }))
+            .csrf(csrf -> csrf
+                            .disable()
 
-        log.info("SecurityFilterChain 접속 -----------------------------");
-
-        http.csrf((csrf) -> csrf.disable())
-                .httpBasic((httpBasic) -> httpBasic.disable());
-
-        http
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","/health", "/api/login", "/api/signup", "/api/refresh-token").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+            ).addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+            .authorizeHttpRequests((requests) -> requests
+                    .requestMatchers("/api/myPages", "/api/password").authenticated()
+                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","/health", "/api/signup", "/api/login", "/api/refresh-token").permitAll())
+            .formLogin(Customizer.withDefaults())
+            .httpBasic(Customizer.withDefaults())
+            .build();
     }
 }

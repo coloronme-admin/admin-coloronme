@@ -35,7 +35,6 @@ public class LoginController {
     @Operation(summary = "login", description = "로그인")
     @PostMapping("/login")
     public ResponseDto<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpServletResponse response) {
-        System.out.println("컨트롤러 로그인 들어옴");
         return loginService.login(loginRequestDto, response);
     }
 

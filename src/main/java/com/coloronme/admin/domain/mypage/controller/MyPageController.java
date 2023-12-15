@@ -29,6 +29,7 @@ public class MyPageController {
         return myPageService.getMyPage(userDetails.getUsername());
     }
 
+
     @Operation(summary = "UpdateMyPage", description = "마이페이지 수정")
     @PatchMapping("/myPages")
     public ResponseDto<MyPageResponseDto> updateMyPage(@RequestBody MyPageRequestDto myPageRequestDto,
