@@ -20,7 +20,6 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
 @Tag(name = "Login Controller" , description = "회원가입/로그인/토큰재발급 컨트롤러")
 public class LoginController {
     private final LoginService loginService;

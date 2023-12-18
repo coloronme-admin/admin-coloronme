@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @Component
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
 @Tag(name = "MyPage Controller" , description = "마이페이지 불러오기/수정/비밀번호 변경 컨트롤러")
 public class MyPageController {
     private final MyPageService myPageService;

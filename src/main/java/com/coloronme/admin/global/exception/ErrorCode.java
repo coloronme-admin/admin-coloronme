@@ -31,7 +31,7 @@ public enum ErrorCode {
 
 
 
-    JWT_BAD_TOKEN_401(HttpStatus.UNAUTHORIZED, "토큰이 유효하지 않습니다.");
+    JWT_BAD_TOKEN_500(HttpStatus.INTERNAL_SERVER_ERROR, "토큰이 유효하지 않습니다.");
 
 
 

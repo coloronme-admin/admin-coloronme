@@ -21,8 +21,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -37,7 +35,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     private static final String[] AUTH_WHITELIST = {
             "/api/**", "/graphiql", "/graphql",
             "/swagger-ui/**", "/api-docs", "/swagger-ui-custom.html",
-            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html", "/api/myPages"
+            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html",
     };
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -76,10 +74,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
             ).addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests((requests) -> requests
-                    .requestMatchers("/api/myPages", "/api/password").authenticated()
-                    .requestMatchers("/members/**").authenticated()
-                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","/health", "/api/signup", "/api/login", "/api/refresh-token").permitAll())
-            .formLogin(Customizer.withDefaults())
+                    .requestMatchers("/myPages", "/password", "/members/**").authenticated()
+                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","/health", "/signup", "/login", "/refresh-token").permitAll())
             .httpBasic(Customizer.withDefaults())
             .build();
     }

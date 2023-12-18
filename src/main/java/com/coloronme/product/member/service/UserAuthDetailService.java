@@ -36,7 +36,6 @@ public class UserAuthDetailService {
         String userExpiredAtData = userAuthDetailData.getUuidExpiredAt();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         LocalDateTime userExpiredAt = LocalDateTime.parse(userExpiredAtData, formatter);
-
         int compare = LocalDateTime.now().compareTo(userExpiredAt);
 
         if(compare > 0) {

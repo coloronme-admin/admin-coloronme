@@ -25,8 +25,8 @@ public class GlobalExceptionHandler {
         return new ErrorResponseDto("error", e.getFieldError().getDefaultMessage());
     }
 
-    @ExceptionHandler(DateTimeParseException.class)
-    public ErrorResponseDto dateTimeParseException(DateTimeParseException e) {
-        return new ErrorResponseDto("error", "유효하지 않은 날짜입니다.");
-    }
+//    @ExceptionHandler(DateTimeParseException.class)
+//    public ErrorResponseDto dateTimeParseException(DateTimeParseException e) {
+//        return new ErrorResponseDto("error", "유효하지 않은 날짜입니다.");
+//    }
 }

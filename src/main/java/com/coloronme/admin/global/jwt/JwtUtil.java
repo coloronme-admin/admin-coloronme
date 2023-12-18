@@ -122,17 +122,6 @@ public class JwtUtil {
                 .getBody()
                 .getSubject());
     }
-
-//    public Authentication getIdFromToken(String token) {
-//        Claims claims = parseClaims(token);
-//
-//    }
-
-//    public Authentication getIdFromRequest(HttpServletRequest request, String type) {
-//        String accessToken = getHeaderToken(request, type);
-//        return getIdFromToken(accessToken);
-//    }
-
     /*request에서 token에 담긴 id 정보 갖고오는 기능*/
     public int getIdFromRequest(HttpServletRequest request, String type) {
         String accessToken = getHeaderToken(request, type);

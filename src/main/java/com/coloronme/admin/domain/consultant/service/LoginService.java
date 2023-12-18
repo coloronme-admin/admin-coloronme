@@ -97,7 +97,7 @@ public class LoginService {
     public ResponseDto<TokenResponseDto> reissueToken(String refreshToken, HttpServletResponse response) {
         String validationToken = refreshToken.substring(7);
         if (!jwtUtil.refreshTokenValidation(validationToken)) {
-            throw new RequestException(ErrorCode.JWT_BAD_TOKEN_401);
+            throw new RequestException(ErrorCode.JWT_BAD_TOKEN_500);
         }
         int consultantId = jwtUtil.getIdFromToken(validationToken);
         String newAccessToken = jwtUtil.createToken(consultantId, "Access");
