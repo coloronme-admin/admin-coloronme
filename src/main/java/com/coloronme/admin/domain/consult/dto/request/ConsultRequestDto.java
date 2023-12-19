@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,6 @@ public class ConsultRequestDto {
     private int personalColorId;
     private String consultedContent;
     private String consultedDrawing;
-    @Future(message = "상담 날짜가 현재보다 이전일 수 없습니다.")
+    @FutureOrPresent(message = "상담 날짜가 현재보다 이전일 수 없습니다.")
     private LocalDateTime consultedDate;
 }

@@ -8,23 +8,33 @@ import com.coloronme.admin.global.jwt.JwtUtil;
 import com.coloronme.product.member.entity.Member;
 import com.coloronme.product.member.repository.UserAuthDetailRepository;
 import com.coloronme.product.member.service.UserAuthDetailService;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
+import java.io.BufferedReader;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/members")
 @RequiredArgsConstructor
+@Slf4j
 public class ConsultController {
     private final ConsultService consultService;
     private final UserAuthDetailService userAuthDetailService;
@@ -36,6 +46,7 @@ public class ConsultController {
         objectMapper.registerModule(new JavaTimeModule());
     }
 
+    /*Dto to Json*/
     public static String convertDtoToJsonString(ConsultRequestDto consultRequestDto) {
         try {
             // ObjectMapper를 사용하여 객체를 JSON 문자열로 변환
@@ -51,15 +62,11 @@ public class ConsultController {
     @Transactional
     @PostMapping("/{userId}")
     public ResponseDto<ConsultUserResponseDto> registerConsultUser(HttpServletRequest request, @PathVariable int userId,
-                                                               @Valid @RequestBody ConsultRequestDto consultRequestDto) {
+                                                               @Valid @RequestBody ConsultRequestDto consultRequestDto) throws IOException {
         System.out.println("ConsultRequestDto : " + consultRequestDto);
         System.out.println("getPersonalColorId : " + consultRequestDto.getPersonalColorId());
         System.out.println("getConsultedDate : " + consultRequestDto.getConsultedDate());
         System.out.println("getConsultedContent : " + consultRequestDto.getConsultedContent());
-
-        String jsonString = convertDtoToJsonString(consultRequestDto);
-
-        System.out.println("jsonString : " + jsonString);
 
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         ConsultUserResponseDto consultUserResponseDto = consultService.registerConsultUser(consultantId, userId, consultRequestDto);
