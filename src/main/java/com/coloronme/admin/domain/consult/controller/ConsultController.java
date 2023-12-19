@@ -32,6 +32,11 @@ public class ConsultController {
     @PostMapping("/{userId}")
     public ResponseDto<ConsultUserResponseDto> registerConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                                @Valid @RequestBody ConsultRequestDto consultRequestDto) {
+        System.out.println("ConsultRequestDto" + consultRequestDto);
+        System.out.println("getPersonalColorId" + consultRequestDto.getPersonalColorId());
+        System.out.println("getConsultedDate" + consultRequestDto.getConsultedDate());
+        System.out.println("getConsultedContent" + consultRequestDto.getConsultedContent());
+
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         ConsultUserResponseDto consultUserResponseDto = consultService.registerConsultUser(consultantId, userId, consultRequestDto);
         return ResponseDto.status(consultUserResponseDto);
@@ -59,6 +64,12 @@ public class ConsultController {
     @PatchMapping("/{userId}")
     public ResponseDto<ConsultUserResponseDto> updateConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                  @Valid @RequestBody ConsultRequestDto consultRequestDto) {
+
+        System.out.println("ConsultRequestDto" + consultRequestDto);
+        System.out.println("getPersonalColorId" + consultRequestDto.getPersonalColorId());
+        System.out.println("getConsultedDate" + consultRequestDto.getConsultedDate());
+        System.out.println("getConsultedContent" + consultRequestDto.getConsultedContent());
+
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         ConsultUserResponseDto consultUserResponseDto = consultService.updateConsultUser(consultantId, userId, consultRequestDto);
         return ResponseDto.status(consultUserResponseDto);

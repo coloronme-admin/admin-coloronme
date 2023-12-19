@@ -1,5 +1,6 @@
 package com.coloronme.admin.domain.consult.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.Future;
@@ -9,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.text.Format;
 import java.time.LocalDateTime;
 
 @Builder
@@ -20,6 +22,7 @@ public class ConsultRequestDto {
     private int personalColorId;
     private String consultedContent;
     private String consultedDrawing;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     @Future(message = "상담 날짜가 현재보다 이전일 수 없습니다.")
     private LocalDateTime consultedDate;
 }
