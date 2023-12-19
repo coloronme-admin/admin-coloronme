@@ -8,6 +8,9 @@ import com.coloronme.admin.global.jwt.JwtUtil;
 import com.coloronme.product.member.entity.Member;
 import com.coloronme.product.member.repository.UserAuthDetailRepository;
 import com.coloronme.product.member.service.UserAuthDetailService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -27,15 +30,36 @@ public class ConsultController {
     private final UserAuthDetailService userAuthDetailService;
     private final JwtUtil jwtUtil;
 
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    static {
+        // Java 8의 날짜 및 시간 유형을 처리하는 모듈 등록
+        objectMapper.registerModule(new JavaTimeModule());
+    }
+
+    public static String convertDtoToJsonString(ConsultRequestDto consultRequestDto) {
+        try {
+            // ObjectMapper를 사용하여 객체를 JSON 문자열로 변환
+            return objectMapper.writeValueAsString(consultRequestDto);
+        } catch (JsonProcessingException e) {
+            // 예외 처리: JSON 변환 중에 오류가 발생한 경우
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @Operation(summary = "고객 상담 등록", description = "고객 상담 등록")
     @Transactional
     @PostMapping("/{userId}")
     public ResponseDto<ConsultUserResponseDto> registerConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                                @Valid @RequestBody ConsultRequestDto consultRequestDto) {
-        System.out.println("ConsultRequestDto" + consultRequestDto);
-        System.out.println("getPersonalColorId" + consultRequestDto.getPersonalColorId());
-        System.out.println("getConsultedDate" + consultRequestDto.getConsultedDate());
-        System.out.println("getConsultedContent" + consultRequestDto.getConsultedContent());
+        System.out.println("ConsultRequestDto : " + consultRequestDto);
+        System.out.println("getPersonalColorId : " + consultRequestDto.getPersonalColorId());
+        System.out.println("getConsultedDate : " + consultRequestDto.getConsultedDate());
+        System.out.println("getConsultedContent : " + consultRequestDto.getConsultedContent());
+
+        String jsonString = convertDtoToJsonString(consultRequestDto);
+
+        System.out.println("jsonString : " + jsonString);
 
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         ConsultUserResponseDto consultUserResponseDto = consultService.registerConsultUser(consultantId, userId, consultRequestDto);
@@ -69,6 +93,8 @@ public class ConsultController {
         System.out.println("getPersonalColorId" + consultRequestDto.getPersonalColorId());
         System.out.println("getConsultedDate" + consultRequestDto.getConsultedDate());
         System.out.println("getConsultedContent" + consultRequestDto.getConsultedContent());
+
+
 
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         ConsultUserResponseDto consultUserResponseDto = consultService.updateConsultUser(consultantId, userId, consultRequestDto);
