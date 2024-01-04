@@ -9,6 +9,7 @@ import com.coloronme.admin.domain.mypage.service.MyPageService;
 import com.coloronme.admin.global.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,7 +32,7 @@ public class MyPageController {
 
     @Operation(summary = "UpdateMyPage", description = "마이페이지 수정")
     @PatchMapping("/myPages")
-    public ResponseDto<MyPageResponseDto> updateMyPage(@RequestBody MyPageRequestDto myPageRequestDto,
+    public ResponseDto<MyPageResponseDto> updateMyPage(@RequestBody @Valid MyPageRequestDto myPageRequestDto,
                                        @AuthenticationPrincipal UserDetails userDetails) {
         return myPageService.updateMyPage(myPageRequestDto, userDetails.getUsername());
     }
