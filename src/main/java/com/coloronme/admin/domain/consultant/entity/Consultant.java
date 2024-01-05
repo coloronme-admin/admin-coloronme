@@ -56,6 +56,20 @@ public class Consultant {
         this.email = myPageRequestDto.getEmail();
         this.updatedAt = LocalDateTime.now();
     }
+
+    public void updateName(MyPageRequestDto myPageRequestDto) {
+        this.name = myPageRequestDto.getName();
+        this.updatedAt = LocalDateTime.now();
+    }
+    public void updateCompany(MyPageRequestDto myPageRequestDto) {
+        this.company = myPageRequestDto.getCompany();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void updateEmail(MyPageRequestDto myPageRequestDto) {
+        this.email = myPageRequestDto.getEmail();
+        this.updatedAt = LocalDateTime.now();
+    }
     public void updatePassword(PasswordRequestDto passwordRequestDto) {
         this.password = passwordRequestDto.getNewPassword();
     }

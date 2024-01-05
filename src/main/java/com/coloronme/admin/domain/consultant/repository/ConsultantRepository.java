@@ -9,7 +9,6 @@ import java.util.Optional;
 @Repository
 public interface ConsultantRepository extends JpaRepository<Consultant, Integer> {
     Optional<Consultant> findByEmail(String email);
-
     Optional<Consultant> findById(int id);
 
     Optional<Consultant> findByPassword(String password);

@@ -47,6 +47,7 @@ public class LoginService {
 
         return ResponseDto.status(
                 SignupResponseDto.builder()
+                        .email(consultant.getEmail())
                         .build()
         );
     }

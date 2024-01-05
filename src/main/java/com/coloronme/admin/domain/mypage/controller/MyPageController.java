@@ -1,6 +1,5 @@
 package com.coloronme.admin.domain.mypage.controller;
 
-
 import com.coloronme.admin.domain.mypage.dto.request.MyPageRequestDto;
 import com.coloronme.admin.domain.mypage.dto.response.MyPageResponseDto;
 import com.coloronme.admin.domain.mypage.dto.request.PasswordRequestDto;
@@ -29,10 +28,9 @@ public class MyPageController {
         return myPageService.getMyPage(userDetails.getUsername());
     }
 
-
     @Operation(summary = "UpdateMyPage", description = "마이페이지 수정")
     @PatchMapping("/myPages")
-    public ResponseDto<MyPageResponseDto> updateMyPage(@RequestBody @Valid MyPageRequestDto myPageRequestDto,
+    public ResponseDto<?> updateMyPage(@RequestBody @Valid MyPageRequestDto myPageRequestDto,
                                        @AuthenticationPrincipal UserDetails userDetails) {
         return myPageService.updateMyPage(myPageRequestDto, userDetails.getUsername());
     }

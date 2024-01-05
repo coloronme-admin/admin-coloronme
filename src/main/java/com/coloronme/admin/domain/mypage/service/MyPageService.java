@@ -46,19 +46,27 @@ public class MyPageService {
 
     //마이 페이지 수정
     @Transactional
-    public ResponseDto<MyPageResponseDto> updateMyPage(MyPageRequestDto myPageRequestDto, String email) {
+
+    public ResponseDto<?> updateMyPage( MyPageRequestDto myPageRequestDto, String email) {
         Consultant consultant = getConsultant(email);
 
-        consultant.update(myPageRequestDto);
+        if(myPageRequestDto.getName() != null) {
+            consultant.updateName(myPageRequestDto);
+        }
+        if(myPageRequestDto.getCompany() != null) {
+            consultant.updateCompany(myPageRequestDto);
+        }
+        if(myPageRequestDto.getEmail() != null) {
+            consultant.updateEmail(myPageRequestDto);
+        }
         return ResponseDto.status(
                 MyPageResponseDto.builder()
                         .name(consultant.getName())
                         .company(consultant.getCompany())
                         .email(consultant.getEmail())
                         .build()
-        );
-    }
-
+                    );
+                }
     //비밀번호 변경
     @Transactional
     public ResponseDto<PasswordResponseDto> updatePassword(PasswordRequestDto passwordRequestDto, String email) {
