@@ -122,21 +122,14 @@ public class ConsultService {
                 throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
             }
 
-            Optional<PersonalColor> personalColor = personalColorRepository.findById(consult.getPersonalColorId());
-            if (personalColor.isEmpty()) {
-                log.error("PERSONAL COLOR NOT FOUND.");
-                throw new RequestException(ErrorCode.PERSONAL_COLOR_NOT_FOUND_404);
-            }
-
             Member memberData = member.get();
-            PersonalColor personalColorData = personalColor.get();
             ConsultUserResponseDto consultUserResponseDto = ConsultUserResponseDto.builder()
                     .memberId(consult.getMemberId())
                     .nickname(memberData.getNickname())
                     .email(memberData.getEmail())
                     .consultedDate(consult.getConsultedDate())
                     .profileImageUrl(memberData.getProfileImageUrl())
-                    .personalColorId(personalColorData.getId())
+                    .personalColorId(consult.getPersonalColorId())
                     .age(memberData.getAge())
                     .genderEnum(memberData.getGender())
                     .consultedContent(consult.getConsultedContent())
