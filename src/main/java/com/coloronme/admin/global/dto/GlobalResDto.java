@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GlobalResDto {
-    private String msg;
-    private int statusCode;
+    private String status;
+    private String message;
 }
