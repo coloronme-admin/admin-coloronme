@@ -45,7 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 /*access token에 들어있는 사용자 정보가 유효하지 않는 경우(DB에 없는 경우)*/
                 int consultantId = jwtUtil.getIdFromToken(accessToken);
                 if(jwtUtil.checkValidDataByJwt(consultantId)==0){
-                    jwtExceptionHandler(response, "접근 권한이 없습니다.", HttpStatus.FORBIDDEN);
+                    jwtExceptionHandler(response, "접근 권한이 없습니다.", HttpStatus.UNAUTHORIZED);
                     return;
                 }
                 setAuthentication(String.valueOf(jwtUtil.getIdFromToken(accessToken)));
