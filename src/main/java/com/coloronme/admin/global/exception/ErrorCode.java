@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ErrorCode {
     /*CONSULTANT*/
-    EMAIL_DUPLICATION_409(HttpStatus.CONFLICT, "이미 가입된 회원입니다."),
+    USER_DUPLICATION_409(HttpStatus.CONFLICT, "이미 가입된 회원입니다."),
     CONSULTANT_NOT_FOUND_404(HttpStatus.NOT_FOUND, "진단자를 찾을 수 없습니다."),
     PASSWORD_NOT_FOUND_404(HttpStatus.NOT_FOUND, "비밀번호를 찾을 수 없습니다."),
     LOGIN_NOT_FOUND_404(HttpStatus.NOT_FOUND, "아이디 또는 비밀번호를 잘못 입력했습니다."),
@@ -28,7 +28,7 @@ public enum ErrorCode {
     MY_PAGE_NOT_FOUND_404(HttpStatus.NOT_FOUND, "마이페이지 내용을 찾을 수 없습니다."),
     OLD_PASSWORD_NOT_FOUND_404(HttpStatus.NOT_FOUND, "기존 패스워드를 잘못 입력했습니다."),
     PASSWORD_CONFIRM_BAD_REQUEST_400(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
-
+    EMAIL_DUPLICATION_409(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
 
 
     JWT_BAD_TOKEN_500(HttpStatus.INTERNAL_SERVER_ERROR, "토큰이 유효하지 않습니다.");

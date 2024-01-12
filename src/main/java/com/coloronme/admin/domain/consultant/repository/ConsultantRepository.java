@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface ConsultantRepository extends JpaRepository<Consultant, Integer> {
     Optional<Consultant> findByEmail(String email);
     Optional<Consultant> findById(int id);
-
+    boolean existsByEmail(String email);
     Optional<Consultant> findByPassword(String password);
 }

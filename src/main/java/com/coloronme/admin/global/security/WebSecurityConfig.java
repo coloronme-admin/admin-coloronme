@@ -75,7 +75,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
             ).addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests((requests) -> requests
                     .requestMatchers("/myPages", "/password", "/members/**").authenticated()
-                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","/health", "/signup", "/login", "/refresh-token").permitAll())
+                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","/health", "/signup", "/login", "/refresh-token", "/emailCheck").permitAll())
             .httpBasic(Customizer.withDefaults())
             .build();
     }
