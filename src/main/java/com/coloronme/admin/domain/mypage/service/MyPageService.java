@@ -2,6 +2,7 @@ package com.coloronme.admin.domain.mypage.service;
 
 import com.coloronme.admin.domain.consultant.entity.Consultant;
 import com.coloronme.admin.domain.consultant.repository.ConsultantRepository;
+import com.coloronme.admin.domain.mypage.dto.request.EmailCheckDto;
 import com.coloronme.admin.domain.mypage.dto.request.MyPageRequestDto;
 import com.coloronme.admin.domain.mypage.dto.response.MyPageResponseDto;
 import com.coloronme.admin.domain.mypage.dto.request.PasswordRequestDto;
@@ -47,16 +48,16 @@ public class MyPageService {
     //마이 페이지 수정
     @Transactional
 
-    public ResponseDto<?> updateMyPage( MyPageRequestDto myPageRequestDto, String email) {
+    public ResponseDto<?> updateMyPage(MyPageRequestDto myPageRequestDto, String email) {
         Consultant consultant = getConsultant(email);
 
-        if(myPageRequestDto.getName() != null) {
+        if (myPageRequestDto.getName() != null) {
             consultant.updateName(myPageRequestDto);
         }
-        if(myPageRequestDto.getCompany() != null) {
+        if (myPageRequestDto.getCompany() != null) {
             consultant.updateCompany(myPageRequestDto);
         }
-        if(myPageRequestDto.getEmail() != null) {
+        if (myPageRequestDto.getEmail() != null) {
             consultant.updateEmail(myPageRequestDto);
         }
         return ResponseDto.status(
@@ -65,8 +66,9 @@ public class MyPageService {
                         .company(consultant.getCompany())
                         .email(consultant.getEmail())
                         .build()
-                    );
-                }
+        );
+    }
+
     //비밀번호 변경
     @Transactional
     public ResponseDto<PasswordResponseDto> updatePassword(PasswordRequestDto passwordRequestDto, String email) {
@@ -86,8 +88,19 @@ public class MyPageService {
         }
         return ResponseDto.status(
                 PasswordResponseDto.builder()
+
                         .newPassword(consultant.getPassword())
                         .build()
         );
+    }
+
+    //이메일 중복 체크
+    public ResponseDto<String> emailCheck(String email) {
+        System.out.println(email);
+        if (consultantRepository.existsByEmail(email)) {
+            return ResponseDto.status("중복된 이메일입니다.");
+        } else {
+            return ResponseDto.status("사용 가능한 이메일입니다.");
+        }
     }
 }

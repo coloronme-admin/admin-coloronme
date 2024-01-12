@@ -46,6 +46,8 @@ dependencies {
 
 	/*dto to json*/
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7.1'
+	/*redis*/
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {

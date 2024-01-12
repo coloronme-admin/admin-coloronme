@@ -1,5 +1,6 @@
 package com.coloronme.admin.domain.mypage.controller;
 
+import com.coloronme.admin.domain.mypage.dto.request.EmailCheckDto;
 import com.coloronme.admin.domain.mypage.dto.request.MyPageRequestDto;
 import com.coloronme.admin.domain.mypage.dto.response.MyPageResponseDto;
 import com.coloronme.admin.domain.mypage.dto.request.PasswordRequestDto;
@@ -42,4 +43,9 @@ public class MyPageController {
         return myPageService.updatePassword(passwordRequestDto,userDetails.getUsername());
     }
 
+    @Operation(summary = "EmailCheck", description = "이메일 중복 체크")
+    @PostMapping("/emailCheck")
+    public ResponseDto<String> emailCheck(@RequestBody EmailCheckDto emailCheckDto) {
+        return myPageService.emailCheck(emailCheckDto.getEmail());
+    }
 }
