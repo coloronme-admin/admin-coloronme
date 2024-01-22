@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.format.DateTimeParseException;
 
@@ -25,6 +26,7 @@ public class GlobalExceptionHandler {
         return new ErrorResponseDto("error", e.getFieldError().getDefaultMessage());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DateTimeParseException.class)
     public ErrorResponseDto dateTimeParseException(DateTimeParseException e) {
         return new ErrorResponseDto("error", "유효하지 않은 날짜입니다.");
