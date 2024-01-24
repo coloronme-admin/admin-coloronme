@@ -6,10 +6,8 @@ import com.coloronme.admin.domain.mainpage.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -20,8 +18,10 @@ public class MainPageService {
     /*퍼스널 컬러*/
     public List<ColorChartResponseDto> getUserDateByColor(int consultantId, MainPageRequestDto mainPageRequestDto) {
 
+        /*DB에서 데이터 추출*/
         List<Object[]> resultList = consultRepository.getUserDataByColor(consultantId, mainPageRequestDto.getFrom(), mainPageRequestDto.getTo());
 
+        /*추출한 데이터를 DTO에 담기*/
         List<ColorChartResponseDto> colorChartList = resultList.stream()
                 .map(result -> new ColorChartResponseDto(
                         (String) result[0],
@@ -32,6 +32,7 @@ public class MainPageService {
 
         int limit = mainPageRequestDto.getTop();
 
+        /*정렬 수보다 많으면 나머지 데이터는 ETC로 만듦*/
         if(colorChartList.size() > limit) {
 
             List<ColorChartResponseDto> colorChartResultList = new LinkedList<>();
@@ -62,6 +63,19 @@ public class MainPageService {
 
     /*요일 및 시간대*/
     public IntervalChartResponseDto getUserDataByInterval(int consultantId, MainPageRequestDto mainPageRequestDto) {
+
+
+
+
+
+
+
+
+
+
+
+
+
         return null;
     }
 
