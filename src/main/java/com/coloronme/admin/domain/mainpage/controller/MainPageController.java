@@ -1,6 +1,5 @@
 package com.coloronme.admin.domain.mainpage.controller;
 
-import com.coloronme.admin.domain.mainpage.dto.DataType;
 import com.coloronme.admin.domain.mainpage.dto.request.MainPageRequestDto;
 import com.coloronme.admin.domain.mainpage.service.MainPageService;
 import com.coloronme.admin.global.dto.ResponseDto;
@@ -9,14 +8,9 @@ import com.coloronme.admin.global.exception.RequestException;
 import com.coloronme.admin.global.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.Arrays;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,7 +26,7 @@ public class MainPageController {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
 
         switch (mainPageRequestDto.getType()) {
-            case "color", default -> {
+            case "color"-> {
                 return ResponseDto.status(mainPageService.getUserDateByColor(consultantId, mainPageRequestDto));
             }
             case "channel" -> {
@@ -49,7 +43,7 @@ public class MainPageController {
             }
             case "month" -> {
                 return ResponseDto.status(mainPageService.getUserDataByMonth(consultantId, mainPageRequestDto));
-            }
+            }default -> throw new RequestException(ErrorCode.INVALID_ENUM_TYPE_BAD_REQUEST_400);
         }
     }
 }
