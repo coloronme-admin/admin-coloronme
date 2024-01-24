@@ -5,8 +5,6 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,10 +21,10 @@ public class EnumValidator implements ConstraintValidator<ValueOfEnum, CharSeque
 
     @Override
     public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
+        value = value.toString().toUpperCase();
         if (value == null) {
             return true;
         }
-
-        return acceptedValues.contains(value.toString());
+        return acceptedValues.contains(value);
     }
 }

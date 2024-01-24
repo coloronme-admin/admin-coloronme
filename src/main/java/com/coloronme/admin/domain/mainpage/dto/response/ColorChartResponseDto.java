@@ -1,6 +1,14 @@
 package com.coloronme.admin.domain.mainpage.dto.response;
 
-import com.coloronme.admin.domain.mainpage.dto.request.MainPageRequestDto;
 
-public class ColorChartResponseDto extends MainPageRequestDto {
+import lombok.*;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class ColorChartResponseDto {
+    private String name;
+    private int count;
+    private double percentage;
 }
