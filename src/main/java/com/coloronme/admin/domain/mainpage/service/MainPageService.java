@@ -91,35 +91,36 @@ public class MainPageService {
             for(int i=0 ; i<consultListByDate.size() ;i++ ){
                 Consult consult = consultListByDate.get(i);
                 LocalDateTime consultedDate = consult.getConsultedDate();
+                List<IntervalChartResponseDto.IntervalChartData> intervalChartDataList;
                 switch(consultedDate.getDayOfWeek().toString()) {
                     case "MONDAY" -> {
-                        List<IntervalChartResponseDto.IntervalChartData> intervalChartDataList = intervalChartResultList.get(0).getData();
-
-                        IntervalChartResponseDto.IntervalChartData intervalChartData = new IntervalChartResponseDto.IntervalChartData();
+                        intervalChartDataList = intervalChartResultList.get(0).getData();
 
 
                     }  case "TUESDAY" -> {
-                        List<IntervalChartResponseDto.IntervalChartData> intervalChartDataList = intervalChartResultList.get(1).getData();;
+                        intervalChartDataList = intervalChartResultList.get(1).getData();;
 
                     }  case "WEDNESDAY" -> {
-                        List<IntervalChartResponseDto.IntervalChartData> intervalChartDataList = intervalChartResultList.get(2).getData();;
+                        intervalChartDataList = intervalChartResultList.get(2).getData();;
 
                     }  case "THURSDAY" -> {
-                        List<IntervalChartResponseDto.IntervalChartData> intervalChartDataList = intervalChartResultList.get(3).getData();;
+                        intervalChartDataList = intervalChartResultList.get(3).getData();;
 
                     }  case "FRIDAY" -> {
-                        List<IntervalChartResponseDto.IntervalChartData> intervalChartDataList = intervalChartResultList.get(4).getData();;
+                        intervalChartDataList = intervalChartResultList.get(4).getData();;
 
                     }  case "SATURDAY" -> {
-                        List<IntervalChartResponseDto.IntervalChartData> intervalChartDataList = intervalChartResultList.get(5).getData();;
+                        intervalChartDataList = intervalChartResultList.get(5).getData();;
 
                     }  case "SUNDAY" -> {
-                        List<IntervalChartResponseDto.IntervalChartData> intervalChartDataList = intervalChartResultList.get(6).getData();;
-
+                        intervalChartDataList = intervalChartResultList.get(6).getData();;
                     }
+
+                    intervalChartDataList.get(consultedDate.getHour()).setCount(intervalChartDataList.get(consultedDate.getHour()).getCount()+1);
                 }
 
-                intervalChartResultList.add(intervalChartResponseDto);
+
+
             }
         }
         return null;
