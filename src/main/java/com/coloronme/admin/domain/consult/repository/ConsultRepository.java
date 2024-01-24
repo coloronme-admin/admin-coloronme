@@ -19,14 +19,28 @@ public interface ConsultRepository extends JpaRepository<Consult, Integer> {
 
     @Query(value = """
             SELECT
-            pc.code, COUNT(c), ROUND(COUNT(c) * 100.0 / (SELECT COUNT(subC) FROM "Consult" subC WHERE subC."consultantId" = :consultantId AND subC."consultedDate" BETWEEN :from AND :to), 1)
+            pc.code, COUNT(c), ROUND(COUNT(c) * 100.0 / (SELECT COUNT(subC) FROM "Consult" subC WHERE subC."consultantId" = :consultantId AND subC."consultedDate" BETWEEN date(:from) AND date(:to)+1), 1)
             FROM "Consult" c
             JOIN "PersonalColor" pc ON c."personalColorId" = pc.id
-            WHERE c."consultantId" = :consultantId AND c."consultedDate" BETWEEN :from AND :to
+            WHERE c."consultantId" = :consultantId AND c."consultedDate" BETWEEN date(:from) AND date(:to)+1
             GROUP BY c."personalColorId", pc.code
             ORDER BY COUNT(c) DESC""", nativeQuery = true)
     List<Object[]> getUserDataByColor(@Param("consultantId") int consultantId,
-                                                   @Param("from") LocalDate from,
-                                                   @Param("to") LocalDate to);
+                                      @Param("from") LocalDate from, @Param("to") LocalDate to);
 
+    @Query(value = """
+            SELECT COUNT(c)
+            FROM "Consult" c
+            WHERE c."consultantId" = :consultantId AND c."consultedDate" BETWEEN date(:from) AND date(:to)+1
+            """, nativeQuery = true)
+    int getUserDataCountByDate(@Param("consultantId")int consultantId,
+                               @Param("from") LocalDate from, @Param("to") LocalDate to);
+
+    @Query(value = """
+            SELECT *
+            FROM "Consult" c
+            WHERE c."consultantId" = :consultantId AND c."consultedDate" BETWEEN date(:from) AND date(:to)+1
+            """, nativeQuery = true)
+    List<Consult> getUserDataByDate(@Param("consultantId")int consultantId,
+                                    @Param("from") LocalDate from, @Param("to") LocalDate to);
 }
