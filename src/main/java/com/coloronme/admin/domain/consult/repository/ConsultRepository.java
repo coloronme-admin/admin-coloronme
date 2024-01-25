@@ -26,7 +26,7 @@ public interface ConsultRepository extends JpaRepository<Consult, Integer> {
             GROUP BY c."personalColorId", pc.code
             ORDER BY COUNT(c) DESC""", nativeQuery = true)
     List<Object[]> getUserDataByColor(@Param("consultantId") int consultantId,
-                                      @Param("from") LocalDate from, @Param("to") LocalDate to);
+                                      @Param("from") String from, @Param("to") String to);
 
     @Query(value = """
             SELECT COUNT(c)
@@ -34,7 +34,7 @@ public interface ConsultRepository extends JpaRepository<Consult, Integer> {
             WHERE c."consultantId" = :consultantId AND c."consultedDate" BETWEEN date(:from) AND date(:to)+1
             """, nativeQuery = true)
     int getUserDataCountByDate(@Param("consultantId")int consultantId,
-                               @Param("from") LocalDate from, @Param("to") LocalDate to);
+                               @Param("from") String from, @Param("to") String to);
 
     @Query(value = """
             SELECT *
@@ -42,5 +42,14 @@ public interface ConsultRepository extends JpaRepository<Consult, Integer> {
             WHERE c."consultantId" = :consultantId AND c."consultedDate" BETWEEN date(:from) AND date(:to)+1
             """, nativeQuery = true)
     List<Consult> getUserDataByDate(@Param("consultantId")int consultantId,
-                                    @Param("from") LocalDate from, @Param("to") LocalDate to);
+                                    @Param("from") String from, @Param("to") String to);
+
+    @Query(value = """
+            SELECT * FROM "Consult"
+            WHERE EXTRACT(DOW FROM "consultedDate") = :dateNumber
+            AND "consultantId" = :consultantId
+            AND "consultedDate" BETWEEN date(:from) AND date(:to)+1
+            """, nativeQuery = true)
+    List<Consult> getUserDataByDateNumber(@Param("consultantId") int consultantId, @Param("dateNumber") int dateNumber,
+                                          @Param("from") String from, @Param("to") String to);
 }

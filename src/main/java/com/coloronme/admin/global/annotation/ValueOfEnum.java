@@ -1,4 +1,4 @@
-package com.coloronme.admin.global.enumHandler;
+package com.coloronme.admin.global.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

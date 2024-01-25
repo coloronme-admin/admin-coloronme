@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -61,7 +59,7 @@ public class MainPageService {
                 ColorChartResponseDto colorChartResponseDto = new ColorChartResponseDto();
                 colorChartResponseDto.setName("ETC");
                 colorChartResponseDto.setCount(count);
-                colorChartResponseDto.setPercentage(percentage);
+                colorChartResponseDto.setPercentage(Math.round(percentage*10)/10.0);
 
                 colorChartResultList.add(colorChartResponseDto);
 
@@ -79,49 +77,23 @@ public class MainPageService {
         if(!consultListByDate.isEmpty()) {
             List<IntervalChartResponseDto> intervalChartResultList = new LinkedList<>();
 
-            DayOfWeek day = DayOfWeek.MONDAY;
+            DayOfWeek day = DayOfWeek.SUNDAY;
 
             /*미리 MONDAY,, 요일 객체, 시간대 객체 설정*/
             for(int i=0 ; i<WEEK ; i++) {
                 IntervalChartResponseDto intervalChartResponseDto = new IntervalChartResponseDto(HOUR);
                 intervalChartResponseDto.setName(day.plus(i).toString());
+                /*지정 기간의 요일별 상담 내용*/
+                List<Consult> consultDataList = consultRepository.getUserDataByDateNumber(consultantId, i,
+                        mainPageRequestDto.getFrom(), mainPageRequestDto.getTo());
+                /*요일별 리스트를 시간대 별로 저장*/
+                for(Consult consult : consultDataList) {
+                    int time = consult.getConsultedDate().getHour();
+                    intervalChartResponseDto.getData().get(time).setCount(intervalChartResponseDto.getData().get(time).getCount()+1);
+                }
                 intervalChartResultList.add(intervalChartResponseDto);
             }
-
-            for(int i=0 ; i<consultListByDate.size() ;i++ ){
-                Consult consult = consultListByDate.get(i);
-                LocalDateTime consultedDate = consult.getConsultedDate();
-                List<IntervalChartResponseDto.IntervalChartData> intervalChartDataList;
-                switch(consultedDate.getDayOfWeek().toString()) {
-                    case "MONDAY" -> {
-                        intervalChartDataList = intervalChartResultList.get(0).getData();
-
-
-                    }  case "TUESDAY" -> {
-                        intervalChartDataList = intervalChartResultList.get(1).getData();;
-
-                    }  case "WEDNESDAY" -> {
-                        intervalChartDataList = intervalChartResultList.get(2).getData();;
-
-                    }  case "THURSDAY" -> {
-                        intervalChartDataList = intervalChartResultList.get(3).getData();;
-
-                    }  case "FRIDAY" -> {
-                        intervalChartDataList = intervalChartResultList.get(4).getData();;
-
-                    }  case "SATURDAY" -> {
-                        intervalChartDataList = intervalChartResultList.get(5).getData();;
-
-                    }  case "SUNDAY" -> {
-                        intervalChartDataList = intervalChartResultList.get(6).getData();;
-                    }
-
-                    intervalChartDataList.get(consultedDate.getHour()).setCount(intervalChartDataList.get(consultedDate.getHour()).getCount()+1);
-                }
-
-
-
-            }
+            return intervalChartResultList;
         }
         return null;
     }

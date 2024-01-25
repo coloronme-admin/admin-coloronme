@@ -1,7 +1,9 @@
 package com.coloronme.admin.domain.mainpage.dto.request;
 
 import com.coloronme.admin.domain.mainpage.dto.DataType;
-import com.coloronme.admin.global.enumHandler.ValueOfEnum;
+import com.coloronme.admin.global.annotation.ValueOfDate;
+import com.coloronme.admin.global.annotation.ValueOfEnum;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,13 +15,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 public class MainPageRequestDto {
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @ValueOfDate
     @NotNull(message = "시작일을 입력해 주세요.")
-    private LocalDate from;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private String from;
+    @ValueOfDate(isTo = true)
     @NotNull(message = "종료일을 입력해 주세요.")
-    @PastOrPresent(message = "to가 현재 날짜를 초과했습니다.")
-    private LocalDate to;
+    private String to;
     @NotNull(message = "정렬 데이터 수를 입력해 주세요.")
     @Min(value = 0, message = "올바른 데이터 수를 입력해 주세요.")
     private int top;
