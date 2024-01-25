@@ -50,4 +50,3 @@ public class DateValidator implements ConstraintValidator<ValueOfDate, String> {
         return true;
     }
 }
-
