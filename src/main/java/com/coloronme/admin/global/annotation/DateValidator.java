@@ -10,12 +10,10 @@ import java.time.format.DateTimeFormatter;
 public class DateValidator implements ConstraintValidator<ValueOfDate, String> {
 
     private boolean isTo;
-    private String message;
 
     @Override
     public void initialize(ValueOfDate constraintAnnotation) {
         isTo = constraintAnnotation.isTo();
-        message = constraintAnnotation.message();
     }
 
     @Override

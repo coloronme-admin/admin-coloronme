@@ -3,10 +3,8 @@ package com.coloronme.admin.domain.mainpage.dto.request;
 import com.coloronme.admin.domain.mainpage.dto.DataType;
 import com.coloronme.admin.global.annotation.ValueOfDate;
 import com.coloronme.admin.global.annotation.ValueOfEnum;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
