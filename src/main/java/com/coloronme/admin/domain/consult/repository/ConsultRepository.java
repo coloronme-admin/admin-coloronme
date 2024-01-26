@@ -1,13 +1,11 @@
 package com.coloronme.admin.domain.consult.repository;
 
 import com.coloronme.admin.domain.consult.entity.Consult;
-import com.coloronme.admin.domain.mainpage.dto.response.ColorChartResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +25,13 @@ public interface ConsultRepository extends JpaRepository<Consult, Integer> {
             ORDER BY COUNT(c) DESC""", nativeQuery = true)
     List<Object[]> getUserDataByColor(@Param("consultantId") int consultantId,
                                       @Param("from") String from, @Param("to") String to);
+
+    @Query(value = """
+            SELECT u.gender FROM "Consult" c
+            JOIN "User" u ON c."memberId" = u.id
+            WHERE c."consultantId" = :consultantId AND c."consultedDate" BETWEEN date(:from) AND date(:to)+1""", nativeQuery = true)
+    List<Object[]> getUserDataByGender(@Param("consultantId") int consultantId,
+                                       @Param("from") String from, @Param("to") String to);
 
     @Query(value = """
             SELECT COUNT(c)
@@ -52,4 +57,7 @@ public interface ConsultRepository extends JpaRepository<Consult, Integer> {
             """, nativeQuery = true)
     List<Consult> getUserDataByDateNumber(@Param("consultantId") int consultantId, @Param("dateNumber") int dateNumber,
                                           @Param("from") String from, @Param("to") String to);
+
+
+
 }
