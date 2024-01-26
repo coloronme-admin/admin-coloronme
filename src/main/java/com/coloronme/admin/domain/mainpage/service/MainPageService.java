@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -100,7 +101,44 @@ public class MainPageService {
 
     /*성별*/
     public GenderChartResponseDto getUserDataByGender(int consultantId, MainPageRequestDto mainPageRequestDto) {
-        return null;
+
+        List<Object[]> resultList = consultRepository.getUserDataByGender(consultantId, mainPageRequestDto.getFrom(), mainPageRequestDto.getTo());
+
+
+        int totalCount = resultList.size();
+        int maleCount = 0;
+        int femaleCount = 0;
+        int unknownCount = 0;
+
+        if (resultList != null) {
+            for (Object[] result : resultList) {
+                if (result != null) {
+                    for (Object obj : result) {
+                        if (obj == null) {
+                            unknownCount++;
+                            continue;
+                        }
+                        String gender = obj.toString();
+                        if (gender.equals("MALE")) {
+                            maleCount++;
+                        } else if (gender.equals("FEMALE")) {
+                            femaleCount++;
+                        }
+                    }
+                } else {
+                    unknownCount++;
+                }
+            }
+        }
+        int lastMaleCount = totalCount > 0 ? maleCount * 100 / totalCount : 0;
+        int lastFemaleCount = totalCount > 0 ? femaleCount * 100 / totalCount : 0;
+        int lastUnknownCount = totalCount > 0 ? unknownCount * 100 / totalCount : 0;
+
+        return GenderChartResponseDto.builder()
+                .male(lastMaleCount)
+                .female(lastFemaleCount)
+                .unknown(lastUnknownCount)
+                .build();
     }
 
     /*연령대*/
