@@ -32,6 +32,12 @@ public interface ConsultRepository extends JpaRepository<Consult, Integer> {
             WHERE c."consultantId" = :consultantId AND c."consultedDate" BETWEEN date(:from) AND date(:to)+1""", nativeQuery = true)
     List<Object[]> getUserDataByGender(@Param("consultantId") int consultantId,
                                        @Param("from") String from, @Param("to") String to);
+    @Query(value = """
+            SELECT u.age FROM "Consult" c
+            JOIN "User" u ON c."memberId" = u.id
+            WHERE c."consultantId" = :consultantId AND c."consultedDate" BETWEEN date(:from) AND date(:to)+1""", nativeQuery = true)
+    List<Object[]> getUserDataByAge(@Param("consultantId") int consultantId,
+                                       @Param("from") String from, @Param("to") String to);
 
     @Query(value = """
             SELECT COUNT(c)
