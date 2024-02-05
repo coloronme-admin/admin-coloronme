@@ -100,12 +100,97 @@ public class MainPageService {
 
     /*성별*/
     public GenderChartResponseDto getUserDataByGender(int consultantId, MainPageRequestDto mainPageRequestDto) {
-        return null;
+
+        List<Object[]> resultList = consultRepository.getUserDataByGender(consultantId, mainPageRequestDto.getFrom(), mainPageRequestDto.getTo());
+
+
+        int totalCount = resultList.size();
+        int maleCount = 0;
+        int femaleCount = 0;
+        int unknownCount = 0;
+
+        if (resultList != null) {
+            for (Object[] result : resultList) {
+                if (result != null) {
+                    for (Object obj : result) {
+                        if (obj == null) {
+                            unknownCount++;
+                            continue;
+                        }
+                        String gender = obj.toString();
+                        if (gender.equals("MALE")) {
+                            maleCount++;
+                        } else if (gender.equals("FEMALE")) {
+                            femaleCount++;
+                        }
+                    }
+                } else {
+                    unknownCount++;
+                }
+            }
+        }
+        int lastMaleCount = totalCount > 0 ? maleCount * 100 / totalCount : 0;
+        int lastFemaleCount = totalCount > 0 ? femaleCount * 100 / totalCount : 0;
+        int lastUnknownCount = totalCount > 0 ? unknownCount * 100 / totalCount : 0;
+
+        return GenderChartResponseDto.builder()
+                .male(lastMaleCount)
+                .female(lastFemaleCount)
+                .unknown(lastUnknownCount)
+                .build();
     }
 
     /*연령대*/
     public AgeChartResponseDto getUserDataByAge(int consultantId, MainPageRequestDto mainPageRequestDto) {
-        return null;
+
+        List<Object[]> resultList = consultRepository.getUserDataByAge(consultantId, mainPageRequestDto.getFrom(), mainPageRequestDto.getTo());
+
+        int totalCount = 0;
+        int teenCount = 0;
+        int twentiesCount = 0;
+        int thirtiesCount = 0;
+        int fortiesCount = 0;
+        int fiftiesCount = 0;
+        int sixtiesOverCount = 0;
+
+        if (resultList != null) {
+            for (Object[] result : resultList) {
+                if (result != null) {
+                    for (Object obj : result) {
+                        int age = Integer.parseInt(obj.toString());
+                        if (age >= 10 && age <= 19) {
+                            teenCount++;
+                        } else if (age >= 20 && age <= 29) {
+                            twentiesCount++;
+                        } else if (age >= 30 && age <= 39) {
+                            thirtiesCount++;
+                        } else if (age >= 40 && age <= 49) {
+                            fortiesCount++;
+                        } else if (age >= 50 && age <= 59) {
+                            fiftiesCount++;
+                        } else if (age >= 60 && age <= 99) {
+                            sixtiesOverCount++;
+                        }
+                        totalCount++;
+                    }
+                }
+            }
+        }
+        int lastTeenCount = totalCount > 0 ? teenCount * 100 / totalCount : 0;
+        int lastTwentiesCount = totalCount > 0 ? twentiesCount * 100 / totalCount : 0;
+        int lastThirtiesCount = totalCount > 0 ? thirtiesCount * 100 / totalCount : 0;
+        int lastFortiesCount = totalCount > 0 ? fortiesCount * 100 / totalCount : 0;
+        int lastFiftiesCount = totalCount > 0 ? fiftiesCount * 100 / totalCount : 0;
+        int lastSixtiesOverCount = totalCount > 0 ? sixtiesOverCount * 100 / totalCount : 0;
+
+        return AgeChartResponseDto.builder()
+                .ten(lastTeenCount)
+                .twenty(lastTwentiesCount)
+                .thirty(lastThirtiesCount)
+                .forty(lastFortiesCount)
+                .fifty(lastFiftiesCount)
+                .sixtyOver(lastSixtiesOverCount)
+                .build();
     }
 
     /*유입 채널*/
