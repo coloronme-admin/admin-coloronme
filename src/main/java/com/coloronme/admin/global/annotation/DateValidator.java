@@ -10,9 +10,13 @@ import java.time.format.DateTimeFormatter;
 public class DateValidator implements ConstraintValidator<ValueOfDate, String> {
 
     private boolean isTo;
+    private boolean isFrom;
+    private LocalDate from;
+    private LocalDate to;
 
     @Override
     public void initialize(ValueOfDate constraintAnnotation) {
+        isFrom = constraintAnnotation.isFrom();
         isTo = constraintAnnotation.isTo();
     }
 
@@ -21,17 +25,21 @@ public class DateValidator implements ConstraintValidator<ValueOfDate, String> {
         if(!date.isEmpty()) {
             try {
                 LocalDate parseDate = LocalDate.from(LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
+                if(isFrom) {
+                    from = parseDate;
+                } else {
+                    to = parseDate;
+                }
+
                 int year = parseDate.getYear();
-                int month = parseDate.getMonthValue();
                 int day = parseDate.getDayOfMonth();
 
                 if (year < 1900) {
                     return false;
                 }
-                if (month < 1 || month > 12) {
-                    return false;
-                }
-                if (day < 1 || day > parseDate.lengthOfMonth()) {
+
+                if (day > parseDate.lengthOfMonth()) {
                     return false;
                 }
 
@@ -41,6 +49,7 @@ public class DateValidator implements ConstraintValidator<ValueOfDate, String> {
                             .addConstraintViolation();
                     return false;
                 }
+
             } catch (DateTimeException e) {
                 return false;
             }

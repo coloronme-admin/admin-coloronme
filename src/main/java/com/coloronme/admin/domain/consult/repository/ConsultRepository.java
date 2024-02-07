@@ -57,13 +57,19 @@ public interface ConsultRepository extends JpaRepository<Consult, Integer> {
 
     @Query(value = """
             SELECT * FROM "Consult"
-            WHERE EXTRACT(DOW FROM "consultedDate") = :dateNumber
+            WHERE EXTRACT(DOW FROM "consultedDate") = :dayNumber
             AND "consultantId" = :consultantId
             AND "consultedDate" BETWEEN date(:from) AND date(:to)+1
             """, nativeQuery = true)
-    List<Consult> getUserDataByDateNumber(@Param("consultantId") int consultantId, @Param("dateNumber") int dateNumber,
+    List<Consult> getUserDataByDay(@Param("consultantId") int consultantId, @Param("dayNumber") int dayNumber,
                                           @Param("from") String from, @Param("to") String to);
 
-
-
+    @Query(value = """
+            SELECT * FROM "Consult"
+            WHERE EXTRACT(HOUR FROM "consultedDate") = :time
+            AND "consultantId" = :consultantId
+            AND "consultedDate" BETWEEN date(:from) AND date(:to)+1
+            """, nativeQuery = true)
+    List<Consult> getUserDataByTime(@Param("consultantId") int consultantId, @Param("time") int time,
+                                    @Param("from") String from, @Param("to") String to);
 }

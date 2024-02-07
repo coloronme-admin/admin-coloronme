@@ -2,6 +2,7 @@ package com.coloronme.admin.domain.mainpage.service;
 
 import com.coloronme.admin.domain.consult.entity.Consult;
 import com.coloronme.admin.domain.consult.repository.ConsultRepository;
+import com.coloronme.admin.domain.mainpage.dto.PrincipalType;
 import com.coloronme.admin.domain.mainpage.dto.request.MainPageRequestDto;
 import com.coloronme.admin.domain.mainpage.dto.response.*;
 import lombok.RequiredArgsConstructor;
@@ -74,28 +75,48 @@ public class MainPageService {
 
         List<Consult> consultListByDate = consultRepository.getUserDataByDate(consultantId, mainPageRequestDto.getFrom(), mainPageRequestDto.getTo());
 
-        if(!consultListByDate.isEmpty()) {
-            List<IntervalChartResponseDto> intervalChartResultList = new LinkedList<>();
+        if (consultListByDate.isEmpty()) {
+            return null;
+        }
 
-            DayOfWeek day = DayOfWeek.SUNDAY;
+        List<IntervalChartResponseDto> intervalChartResultList = new LinkedList<>();
+        DayOfWeek day = DayOfWeek.SUNDAY;
 
+        if (mainPageRequestDto.getPrincipal().equalsIgnoreCase("DAY")) {
             /*미리 MONDAY,, 요일 객체, 시간대 객체 설정*/
-            for(int i=0 ; i<WEEK ; i++) {
-                IntervalChartResponseDto intervalChartResponseDto = new IntervalChartResponseDto(HOUR);
-                intervalChartResponseDto.setName(day.plus(i).toString());
+            for (int i = 0; i < WEEK; i++) {
+                IntervalChartResponseDto intervalChartResponseDto = new IntervalChartResponseDto(PrincipalType.DAY, HOUR);
+                intervalChartResponseDto.setId(day.plus(i).toString());
                 /*지정 기간의 요일별 상담 내용*/
-                List<Consult> consultDataList = consultRepository.getUserDataByDateNumber(consultantId, i,
+                List<Consult> consultDataList = consultRepository.getUserDataByDay(consultantId, i,
                         mainPageRequestDto.getFrom(), mainPageRequestDto.getTo());
                 /*요일별 리스트를 시간대 별로 저장*/
-                for(Consult consult : consultDataList) {
+                for (Consult consult : consultDataList) {
                     int time = consult.getConsultedDate().getHour();
-                    intervalChartResponseDto.getData().get(time).setCount(intervalChartResponseDto.getData().get(time).getCount()+1);
+                    intervalChartResponseDto.getData().get(time).setY(intervalChartResponseDto.getData().get(time).getY() + 1);
                 }
                 intervalChartResultList.add(intervalChartResponseDto);
             }
-            return intervalChartResultList;
+        } else if (mainPageRequestDto.getPrincipal().equalsIgnoreCase("TIME")) {
+
+            for(int i=0 ; i<24 ; i++) {
+                IntervalChartResponseDto intervalChartResponseDto = new IntervalChartResponseDto(PrincipalType.TIME, WEEK);
+                intervalChartResponseDto.setId(String.valueOf(i));
+                /*지정 기간의 시간별 상담 내용*/
+                List<Consult> consultDataList = consultRepository.getUserDataByTime(consultantId, i,
+                        mainPageRequestDto.getFrom(), mainPageRequestDto.getTo());
+                /*시간별 리스트를 요일별로 저장*/
+                for (Consult consult : consultDataList) {
+                    int date = consult.getConsultedDate().getDayOfWeek().getValue();
+                    if(date == 7) {
+                        date = 0;
+                    }
+                    intervalChartResponseDto.getData().get(date).setY(intervalChartResponseDto.getData().get(date).getY() + 1);
+                }
+                intervalChartResultList.add(intervalChartResponseDto);
+            }
         }
-        return null;
+        return intervalChartResultList;
     }
 
     /*성별*/
@@ -200,6 +221,10 @@ public class MainPageService {
 
     /*6개월간 진단 추이*/
     public MonthChartResponseDto getUserDataByMonth(int consultantId, MainPageRequestDto mainPageRequestDto) {
+        return null;
+    }
+
+    public MonthChartResponseDto getUserDataByDay(int consultantId, MainPageRequestDto mainPageRequestDto) {
         return null;
     }
 }

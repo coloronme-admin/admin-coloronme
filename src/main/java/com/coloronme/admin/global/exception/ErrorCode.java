@@ -31,7 +31,7 @@ public enum ErrorCode {
     EMAIL_DUPLICATION_409(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
 
     /*MainPage*/
-    INVALID_LOCALDATE_BAD_REQUEST_400(HttpStatus.BAD_REQUEST, "현재 날짜보다 이후일 수 없습니다."),
+    INVALID_LOCALDATE_BAD_REQUEST_400(HttpStatus.BAD_REQUEST, "from은 to보다 이후일 수 없습니다."),
     INVALID_ENUM_TYPE_BAD_REQUEST_400(HttpStatus.BAD_REQUEST, "유효하지 않은 타입입니다."),
 
     /*JWT*/

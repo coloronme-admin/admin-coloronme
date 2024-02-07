@@ -21,10 +21,10 @@ public class EnumValidator implements ConstraintValidator<ValueOfEnum, CharSeque
 
     @Override
     public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
-        value = value.toString().toUpperCase();
         if (value == null) {
             return true;
         }
+        value = value.toString().toUpperCase();
         return acceptedValues.contains(value);
     }
 }
