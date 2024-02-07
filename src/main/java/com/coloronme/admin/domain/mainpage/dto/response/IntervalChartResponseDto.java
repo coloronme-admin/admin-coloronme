@@ -1,10 +1,13 @@
 package com.coloronme.admin.domain.mainpage.dto.response;
 
+import com.coloronme.admin.domain.mainpage.dto.PrincipalType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.parameters.P;
 
+import java.time.DayOfWeek;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,14 +16,23 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class IntervalChartResponseDto {
-    private String name;
+    private String id;
     private List<IntervalChartData> data = new LinkedList<>();
 
-    public IntervalChartResponseDto(int hour) {
-        for(int i=0 ; i<hour ; i++) {
-            IntervalChartData intervalChartData = new IntervalChartData();
-            intervalChartData.setTime(i);
-            this.data.add(intervalChartData);
+    public IntervalChartResponseDto(PrincipalType principalType, int number) {
+        if(principalType.equals(PrincipalType.DAY)){
+            for (int i = 0; i < number; i++) {
+                IntervalChartData intervalChartData = new IntervalChartData();
+                intervalChartData.setX(String.valueOf(i));
+                this.data.add(intervalChartData);
+            }
+        } else {
+            DayOfWeek day = DayOfWeek.SUNDAY;
+            for (int i = 0; i < number; i++) {
+                IntervalChartData intervalChartData = new IntervalChartData();
+                intervalChartData.setX(day.plus(i).toString());
+                this.data.add(intervalChartData);
+            }
         }
     }
 
@@ -29,7 +41,7 @@ public class IntervalChartResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class IntervalChartData {
-        private int time;
-        private int count;
+        private String x;
+        private int y;
     }
 }

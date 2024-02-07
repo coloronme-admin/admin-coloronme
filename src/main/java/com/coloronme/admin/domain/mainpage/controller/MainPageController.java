@@ -20,8 +20,10 @@ public class MainPageController {
     private final JwtUtil jwtUtil;
 
     @GetMapping("/data/users")
-    public ResponseDto<?> getUserData(@ModelAttribute @Valid MainPageRequestDto mainPageRequestDto,
+    public ResponseDto<?> getUserChartData(@ModelAttribute @Valid MainPageRequestDto mainPageRequestDto,
             HttpServletRequest request) {
+
+        mainPageRequestDto.invalidCheckFromTo();
 
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
 
@@ -43,7 +45,8 @@ public class MainPageController {
             }
             case "month" -> {
                 return ResponseDto.status(mainPageService.getUserDataByMonth(consultantId, mainPageRequestDto));
-            }default -> throw new RequestException(ErrorCode.INVALID_ENUM_TYPE_BAD_REQUEST_400);
+            }
+            default -> throw new RequestException(ErrorCode.INVALID_ENUM_TYPE_BAD_REQUEST_400);
         }
     }
 }

@@ -23,4 +23,5 @@ public @interface ValueOfDate {
     Class<? extends Payload>[] payload() default{};
 
     boolean isTo() default false;
+    boolean isFrom() default false;
 }

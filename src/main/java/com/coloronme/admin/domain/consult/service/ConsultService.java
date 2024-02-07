@@ -115,8 +115,8 @@ public class ConsultService {
 
         List<ConsultUserResponseDto> consultUserList = new LinkedList<>();
         for(Consult consult : consultList) {
+            System.out.println("memberId : " + consult.getMemberId());
             Optional<Member> member = memberRepository.findById(consult.getMemberId());
-
             if(member.isEmpty()) {
                 log.error("USER NOT FOUND.");
                 throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
