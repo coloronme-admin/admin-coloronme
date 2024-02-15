@@ -123,7 +123,9 @@ public class MainPageService {
     public GenderChartResponseDto getUserDataByGender(int consultantId, MainPageRequestDto mainPageRequestDto) {
 
         List<Object[]> resultList = consultRepository.getUserDataByGender(consultantId, mainPageRequestDto.getFrom(), mainPageRequestDto.getTo());
-
+        if (resultList == null || resultList.isEmpty()) {
+            return null;
+        }
 
         int totalCount = resultList.size();
         int maleCount = 0;
@@ -165,6 +167,9 @@ public class MainPageService {
     public AgeChartResponseDto getUserDataByAge(int consultantId, MainPageRequestDto mainPageRequestDto) {
 
         List<Object[]> resultList = consultRepository.getUserDataByAge(consultantId, mainPageRequestDto.getFrom(), mainPageRequestDto.getTo());
+        if (resultList == null || resultList.isEmpty()) {
+            return null;
+        }
 
         int totalCount = 0;
         int teenCount = 0;
