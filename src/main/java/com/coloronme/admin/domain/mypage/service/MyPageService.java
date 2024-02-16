@@ -96,7 +96,6 @@ public class MyPageService {
 
     //이메일 중복 체크
     public ResponseDto<String> emailCheck(String email) {
-        System.out.println(email);
         if (consultantRepository.existsByEmail(email)) {
             throw new RequestException(ErrorCode.EMAIL_DUPLICATION_409);
         } else {
