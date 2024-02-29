@@ -72,4 +72,20 @@ public interface ConsultRepository extends JpaRepository<Consult, Integer> {
             """, nativeQuery = true)
     List<Consult> getUserDataByTime(@Param("consultantId") int consultantId, @Param("time") int time,
                                     @Param("from") String from, @Param("to") String to);
+
+    @Query(value = """
+            SELECT
+                COALESCE(COUNT("consultedDate"), 0) AS count
+            FROM generate_series(
+                DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '5 month',
+                DATE_TRUNC('month', CURRENT_DATE),
+                INTERVAL '1 month'
+            ) AS generated_month
+            LEFT JOIN "Consult" ON DATE_TRUNC('month', "consultedDate") = generated_month AND "consultantId" = :consultantId
+            GROUP BY generated_month
+            ORDER BY generated_month
+            """, nativeQuery = true)
+    List<Integer> getUserDataByMonth(@Param("consultantId") int consultantId);
+
+
 }

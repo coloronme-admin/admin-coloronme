@@ -19,6 +19,7 @@ public class MainPageService {
     private final ConsultRepository consultRepository;
     private final int WEEK = 7; /*월, 화, 수, 목, 금, 토, 일*/
     private final int HOUR = 24;
+    private final int MONTH = 6; /*최근 6개월 추이*/
 
     /*퍼스널 컬러*/
     public List<ColorChartResponseDto> getUserDateByColor(int consultantId, MainPageRequestDto mainPageRequestDto) {
@@ -219,17 +220,44 @@ public class MainPageService {
                 .build();
     }
 
-    /*유입 채널*/
-    public ChannelChartResponseDto getUserDataByChannel(int consultantId, MainPageRequestDto mainPageRequestDto) {
-        return null;
-    }
-
     /*6개월간 진단 추이*/
     public MonthChartResponseDto getUserDataByMonth(int consultantId, MainPageRequestDto mainPageRequestDto) {
-        return null;
+        /*월별 데이터 갯수 목록*/
+        List<Integer> monthDataCount = consultRepository.getUserDataByMonth(consultantId);
+
+        /*전월 대비 증감율*/
+        double growthRate;
+        /*월별 증가율 평균*/
+        double augmentation = 0;
+
+        /*직전 대비 현재 월 상담 수 증가율*/
+        /*현재 월 데이터 수가 0개인 경우*/
+        if (monthDataCount.get(MONTH-2) == 0) {
+            growthRate = Math.round(((double) (monthDataCount.get(MONTH - 1) - monthDataCount.get(MONTH - 2)) / monthDataCount.get(MONTH - 1))*1000) / 10.0;
+        } else {
+            growthRate = Math.round(((double) (monthDataCount.get(MONTH - 1) - monthDataCount.get(MONTH - 2)) / monthDataCount.get(MONTH - 2))*1000) / 10.0;
+        }
+
+        /*6개월간 평균 증가율*/
+        for(int i=0 ; i<MONTH-1 ; i++){
+            if(monthDataCount.get(i)==0) {
+                augmentation += (double) (monthDataCount.get(i + 1) - monthDataCount.get(i)) / monthDataCount.get(i+1);
+            } else {
+                augmentation += (double) (monthDataCount.get(i + 1) - monthDataCount.get(i)) / monthDataCount.get(i);
+            }
+        }
+
+        augmentation = Math.round(augmentation / MONTH * 1000) / 10.0;
+
+        return MonthChartResponseDto.builder()
+                .period(monthDataCount)
+                .increaseThanRightBefore(growthRate)
+                .fullPeriod(augmentation)
+                .build();
     }
 
-    public MonthChartResponseDto getUserDataByDay(int consultantId, MainPageRequestDto mainPageRequestDto) {
+    /*유입 채널*/
+    public ChannelChartResponseDto getUserDataByChannel(int consultantId, MainPageRequestDto mainPageRequestDto) {
         return null;
     }
 }
