@@ -1,20 +1,11 @@
 package com.coloronme.admin.domain.consult.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.text.Format;
 import java.time.LocalDateTime;
 
-@Builder
+@Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,4 +15,5 @@ public class ConsultRequestDto {
     private String consultedContent;
     private String consultedDrawing;
     private LocalDateTime consultedDate;
+    private String uuid;
 }
