@@ -15,10 +15,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -52,6 +54,9 @@ public class ConsultService {
         /*진단 정보를 처음 등록하는 경우*/
         if(consult.isEmpty()) {
             memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
+            /*uuid 등록*/
+            UUID uuid = UUID.randomUUID();
+            consultRequestDto.setUuid(uuid.toString());
             consultData = new Consult(consultantId, userId, personalColor.get().getId(), consultRequestDto);
             consultUserRepository.save(consultData);
         } else {

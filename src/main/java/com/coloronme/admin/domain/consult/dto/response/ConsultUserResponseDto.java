@@ -20,5 +20,6 @@ public class ConsultUserResponseDto {
     private GenderEnum genderEnum;
     private String consultedContent;
     private String consultedDrawing;
+    private String uuid;
 }
   

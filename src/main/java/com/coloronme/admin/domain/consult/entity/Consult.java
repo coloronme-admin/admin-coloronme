@@ -40,6 +40,7 @@ public class Consult {
     private LocalDateTime updatedAt;
     @Column(name="`deletedAt`")
     private LocalDateTime deletedAt;
+    private String uuid;
 
     public Consult(int consultantId, int memberId, int personalColorId, ConsultRequestDto consultRequestDto) {
         this.consultantId = consultantId;
@@ -47,6 +48,7 @@ public class Consult {
         this.personalColorId = personalColorId;
         this.consultedContent = consultRequestDto.getConsultedContent();
         this.consultedDate = consultRequestDto.getConsultedDate();
+        this.uuid = consultRequestDto.getUuid();
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
