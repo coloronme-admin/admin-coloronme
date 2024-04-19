@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.nio.channels.MembershipKey;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -228,5 +229,38 @@ public class ConsultService {
         }
 
         return consultUserResponseDto;
+    }
+
+    public ConsultUserResponseDto selectConsultUserByUuid(String uuid) {
+        Optional<Consult> consult = consultRepository.findByUuid(uuid);
+
+        if(consult.isEmpty()) {
+            log.error("CONSULT NOT FOUND.");
+            throw new RequestException(ErrorCode.CONSULT_NOT_FOUND_404);
+        }
+
+        Consult consultData = consult.get();
+
+        Optional<Member> member = memberRepository.findById(consultData.getMemberId());
+        if(member.isEmpty()) {
+            log.error("USER NOT FOUND.");
+            throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
+        }
+
+        Member memberData = member.get();
+
+        return ConsultUserResponseDto.builder()
+                .memberId(consultData.getMemberId())
+                .nickname(memberData.getNickname())
+                .email(memberData.getEmail())
+                .consultedDate(consultData.getConsultedDate())
+                .profileImageUrl(memberData.getProfileImageUrl())
+                .personalColorId(consultData.getPersonalColorId())
+                .age(memberData.getAge())
+                .genderEnum(memberData.getGender())
+                .consultedContent(consultData.getConsultedContent())
+                .consultedDrawing(consultData.getConsultedDrawing())
+                .uuid(consultData.getUuid())
+                .build();
     }
 }

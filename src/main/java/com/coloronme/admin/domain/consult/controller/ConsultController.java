@@ -50,12 +50,20 @@ public class ConsultController {
         return ResponseDto.status(consultUserResponseDto);
     }
 
-    @Operation(summary = "고객 상담 조회", description = "고객 상담 조회")
+    @Operation(summary = "사용자 ID로 고객 상담 조회", description = "사용자 ID로 고객 상담 조회")
     @GetMapping("/{userId}")
     public ResponseDto<ConsultUserResponseDto> selectConsultUserByUserId(HttpServletRequest request,
                                                                          @PathVariable int userId) {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         ConsultUserResponseDto consultUserResponseDto = consultService.selectConsultUserByUserId(userId, consultantId);
+        return ResponseDto.status(consultUserResponseDto);
+    }
+
+    @Operation(summary = "UUID로 고객 상담 조회", description = "UUID로 고객 상담 조회")
+    @GetMapping("/uuid/{uuid}")
+    public ResponseDto<ConsultUserResponseDto> selectConsultUserByUserId(HttpServletRequest request,
+                                                                         @PathVariable String uuid) {
+        ConsultUserResponseDto consultUserResponseDto = consultService.selectConsultUserByUuid(uuid);
         return ResponseDto.status(consultUserResponseDto);
     }
 

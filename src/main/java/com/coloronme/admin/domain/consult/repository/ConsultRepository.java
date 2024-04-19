@@ -88,4 +88,5 @@ public interface ConsultRepository extends JpaRepository<Consult, Integer> {
     List<Integer> getUserDataByMonth(@Param("consultantId") int consultantId);
 
 
+    Optional<Consult> findByUuid(String uuid);
 }
