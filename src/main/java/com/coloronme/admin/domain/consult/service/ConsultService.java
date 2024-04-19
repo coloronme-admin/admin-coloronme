@@ -81,6 +81,7 @@ public class ConsultService {
                 .personalColorId(consultData.getPersonalColorId())
                 .consultedContent(consultData.getConsultedContent())
                 .consultedDrawing(consultData.getConsultedDrawing())
+                .uuid(consultData.getUuid())
                 .build();
     }
 
