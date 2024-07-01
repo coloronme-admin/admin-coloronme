@@ -67,6 +67,7 @@ public class ConsultService {
             consultData.setConsultedDate(consultRequestDto.getConsultedDate());
             consultData.setConsultedContent(consultRequestDto.getConsultedContent());
             consultData.setConsultedDrawing(consultRequestDto.getConsultedDrawing());
+            consultData.setConsultedFile(consultRequestDto.getConsultedFile());
             consultData.setUpdatedAt(LocalDateTime.now());
             memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
         }
@@ -83,6 +84,7 @@ public class ConsultService {
                 .consultedContent(consultData.getConsultedContent())
                 .consultedDrawing(consultData.getConsultedDrawing())
                 .uuid(consultData.getUuid())
+                .consultedFile(consultData.getConsultedFile())
                 .build();
     }
 
@@ -113,6 +115,7 @@ public class ConsultService {
                 .personalColorId(consultData.getPersonalColorId())
                 .consultedContent(consultData.getConsultedContent())
                 .consultedDrawing(consultData.getConsultedDrawing())
+                .consultedFile(consultData.getConsultedFile())
                 .build();
     }
 
@@ -140,6 +143,7 @@ public class ConsultService {
                     .genderEnum(memberData.getGender())
                     .consultedContent(consult.getConsultedContent())
                     .consultedDrawing(consult.getConsultedDrawing())
+                    .consultedFile(consult.getConsultedFile())
                     .build();
 
             consultUserList.add(consultUserResponseDto);
@@ -170,6 +174,7 @@ public class ConsultService {
         consultData.setPersonalColorId(personalColor.get().getId());
         consultData.setConsultedContent(consultRequestDto.getConsultedContent());
         consultData.setConsultedDrawing(consultRequestDto.getConsultedDrawing());
+        consultData.setConsultedFile(consultRequestDto.getConsultedFile());
         consultData.setUpdatedAt(LocalDateTime.now());
 
         Member memberData = member.get();
@@ -186,6 +191,7 @@ public class ConsultService {
                 .genderEnum(memberData.getGender())
                 .consultedContent(consultData.getConsultedContent())
                 .consultedDrawing(consultData.getConsultedDrawing())
+                .consultedFile(consultData.getConsultedFile())
                 .build();
     }
 
@@ -207,6 +213,7 @@ public class ConsultService {
                     .genderEnum(member.getGender())
                     .consultedContent(null)
                     .consultedDrawing(null)
+                    .consultedFile(null)
                     .build();
 
         /*이전 진단 내역이 있는 경우에는 이전 내용을 같이 보내줌*/
@@ -225,6 +232,7 @@ public class ConsultService {
                     .genderEnum(member.getGender())
                     .consultedContent(consultData.getConsultedContent())
                     .consultedDrawing(consultData.getConsultedDrawing())
+                    .consultedFile(consultData.getConsultedFile())
                     .build();
         }
 
@@ -260,6 +268,7 @@ public class ConsultService {
                 .genderEnum(memberData.getGender())
                 .consultedContent(consultData.getConsultedContent())
                 .consultedDrawing(consultData.getConsultedDrawing())
+                .consultedFile(consultData.getConsultedFile())
                 .uuid(consultData.getUuid())
                 .build();
     }
