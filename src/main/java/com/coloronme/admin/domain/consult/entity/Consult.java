@@ -1,6 +1,7 @@
 package com.coloronme.admin.domain.consult.entity;
 
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
+import com.coloronme.product.color.Color;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -43,6 +45,9 @@ public class Consult {
 
     @Column(name="`consultedFile`")
     private String consultedFile;
+
+    @OneToMany(mappedBy = "consult", cascade = CascadeType.ALL)
+    private List<ConsultColor> consultColors;
 
     @NotNull
     @Column(name="`createdAt`")

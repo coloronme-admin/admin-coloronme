@@ -72,20 +72,7 @@ public class ConsultService {
             memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
         }
 
-        return ConsultUserResponseDto.builder()
-                .memberId(consultData.getMemberId())
-                .nickname(memberData.getNickname())
-                .profileImageUrl(memberData.getProfileImageUrl())
-                .email(memberData.getEmail())
-                .consultedDate(consultData.getConsultedDate())
-                .age(memberData.getAge())
-                .genderEnum(memberData.getGender())
-                .personalColorId(consultData.getPersonalColorId())
-                .consultedContent(consultData.getConsultedContent())
-                .consultedDrawing(consultData.getConsultedDrawing())
-                .uuid(consultData.getUuid())
-                .consultedFile(consultData.getConsultedFile())
-                .build();
+        return createConsultUserResponseDto(consultData, memberData);
     }
 
     public ConsultUserResponseDto selectConsultUserByUserId(int userId, int consultantId) {
@@ -104,19 +91,7 @@ public class ConsultService {
         Member memberData = member.get();
         Consult consultData = consult.get();
 
-        return ConsultUserResponseDto.builder()
-                .memberId(consultData.getMemberId())
-                .nickname(memberData.getNickname())
-                .profileImageUrl(memberData.getProfileImageUrl())
-                .email(memberData.getEmail())
-                .consultedDate(consultData.getConsultedDate())
-                .age(memberData.getAge())
-                .genderEnum(memberData.getGender())
-                .personalColorId(consultData.getPersonalColorId())
-                .consultedContent(consultData.getConsultedContent())
-                .consultedDrawing(consultData.getConsultedDrawing())
-                .consultedFile(consultData.getConsultedFile())
-                .build();
+        return createConsultUserResponseDto(consultData, memberData);
     }
 
     public List<ConsultUserResponseDto> selectConsultUserList(int consultantId) {
@@ -132,19 +107,7 @@ public class ConsultService {
             }
 
             Member memberData = member.get();
-            ConsultUserResponseDto consultUserResponseDto = ConsultUserResponseDto.builder()
-                    .memberId(consult.getMemberId())
-                    .nickname(memberData.getNickname())
-                    .email(memberData.getEmail())
-                    .consultedDate(consult.getConsultedDate())
-                    .profileImageUrl(memberData.getProfileImageUrl())
-                    .personalColorId(consult.getPersonalColorId())
-                    .age(memberData.getAge())
-                    .genderEnum(memberData.getGender())
-                    .consultedContent(consult.getConsultedContent())
-                    .consultedDrawing(consult.getConsultedDrawing())
-                    .consultedFile(consult.getConsultedFile())
-                    .build();
+            ConsultUserResponseDto consultUserResponseDto = createConsultUserResponseDto(consult, memberData);
 
             consultUserList.add(consultUserResponseDto);
         }
@@ -180,19 +143,7 @@ public class ConsultService {
         Member memberData = member.get();
         memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
 
-        return ConsultUserResponseDto.builder()
-                .memberId(consultData.getMemberId())
-                .nickname(memberData.getNickname())
-                .email(memberData.getEmail())
-                .consultedDate(consultData.getConsultedDate())
-                .profileImageUrl(memberData.getProfileImageUrl())
-                .personalColorId(consultData.getPersonalColorId())
-                .age(memberData.getAge())
-                .genderEnum(memberData.getGender())
-                .consultedContent(consultData.getConsultedContent())
-                .consultedDrawing(consultData.getConsultedDrawing())
-                .consultedFile(consultData.getConsultedFile())
-                .build();
+        return createConsultUserResponseDto(consultData, memberData);
     }
 
     public ConsultUserResponseDto verifyUserQr(int consultantId, Member member) {
@@ -221,19 +172,7 @@ public class ConsultService {
 
             Consult consultData = consult.get();
 
-            consultUserResponseDto = ConsultUserResponseDto.builder()
-                    .memberId(member.getId())
-                    .nickname(member.getNickname())
-                    .email(member.getEmail())
-                    .profileImageUrl(member.getProfileImageUrl())
-                    .consultedDate(consultData.getConsultedDate())
-                    .personalColorId(consultData.getPersonalColorId())
-                    .age(member.getAge())
-                    .genderEnum(member.getGender())
-                    .consultedContent(consultData.getConsultedContent())
-                    .consultedDrawing(consultData.getConsultedDrawing())
-                    .consultedFile(consultData.getConsultedFile())
-                    .build();
+            consultUserResponseDto = createConsultUserResponseDto(consultData, member);
         }
 
         return consultUserResponseDto;
@@ -257,6 +196,10 @@ public class ConsultService {
 
         Member memberData = member.get();
 
+        return createConsultUserResponseDto(consultData, memberData);
+    }
+
+    private ConsultUserResponseDto createConsultUserResponseDto (Consult consultData, Member memberData) {
         return ConsultUserResponseDto.builder()
                 .memberId(consultData.getMemberId())
                 .nickname(memberData.getNickname())
