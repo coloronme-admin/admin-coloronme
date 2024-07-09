@@ -21,5 +21,6 @@ public class ConsultUserResponseDto {
     private String consultedContent;
     private String consultedDrawing;
     private String uuid;
+    private String consultedFile;
 }
   

@@ -17,12 +17,21 @@ import java.util.List;
 public class PersonalColor {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String code;
+
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="`colorGroup`", nullable = false, columnDefinition = "`ColorGroup`")
+    private ColorGroup colorGroup;
+
     @Column(name="`createdAt`")
     private LocalDateTime createdAt;
+
     @Column(name="`updatedAt`")
     private LocalDateTime updatedAt;
+
     @Column(name="`deletedAt`")
     private LocalDateTime deletedAt;
 }

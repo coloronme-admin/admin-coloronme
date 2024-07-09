@@ -16,4 +16,5 @@ public class ConsultRequestDto {
     private String consultedDrawing;
     private LocalDateTime consultedDate;
     private String uuid;
+    private String consultedFile;
 }

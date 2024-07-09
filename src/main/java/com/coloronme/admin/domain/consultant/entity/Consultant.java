@@ -21,19 +21,27 @@ public class Consultant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String name;
+
     private String company;
+
     private String email;
+
     @Column(name = "password", nullable = false)
     private String password;
+
     @Enumerated(EnumType.STRING)
     @Column(name="`roleType`", nullable = false, columnDefinition = "`RoleType`")
     private RoleType roleType;
+
     @CreatedDate
     @Column(name="`createdAt`", nullable = false)
     private LocalDateTime createdAt;
+
     @Column(name="`updatedAt`", nullable = false)
     private LocalDateTime updatedAt;
+
     @Column(name="`deletedAt`", nullable = false)
     private LocalDateTime deletedAt;
 
