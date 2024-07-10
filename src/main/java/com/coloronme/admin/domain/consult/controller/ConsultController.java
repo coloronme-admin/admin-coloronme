@@ -81,7 +81,7 @@ public class ConsultController {
     public ResponseDto<ConsultUserResponseDto> updateConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                  @Valid @RequestBody ConsultRequestDto consultRequestDto) {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
-        ConsultUserResponseDto consultUserResponseDto = consultService.updateConsultUser(consultantId, userId, consultRequestDto);
+        ConsultUserResponseDto consultUserResponseDto = consultService.updateConsultUser(userId, consultRequestDto);
         return ResponseDto.status(consultUserResponseDto);
     }
 
