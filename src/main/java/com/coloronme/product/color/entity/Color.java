@@ -1,5 +1,6 @@
 package com.coloronme.product.color.entity;
 
+import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
 import com.coloronme.admin.domain.consult.entity.Consult;
 import com.coloronme.admin.domain.consult.entity.ConsultColor;
 import jakarta.persistence.*;
@@ -27,6 +28,9 @@ public class Color {
 
     @Column(name="`worstColorId`")
     private Integer worstColorId;
+
+    @OneToMany(mappedBy = "color")
+    private List<ConsultColor> consultColors;
 
     @Column(name="`createdAt`")
     private LocalDateTime createdAt;

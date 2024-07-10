@@ -1,15 +1,13 @@
 package com.coloronme.admin.domain.consult.entity;
 
+import com.coloronme.product.color.entity.Color;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "`ConsultColor`")
 @Getter
-@Builder
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConsultColor {
@@ -18,9 +16,11 @@ public class ConsultColor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name="`colorId`")
-    private Integer colorId;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="`colorId`")
+    private Color color;
 
-    @Column(name="`consultId`")
-    private Integer consultId;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="`consultId`")
+    private Consult consult;
 }

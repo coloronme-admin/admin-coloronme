@@ -1,5 +1,6 @@
 package com.coloronme.admin.domain.consult.entity;
 
+import com.coloronme.admin.domain.consult.dto.request.ColorRequestDto;
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -43,6 +45,9 @@ public class Consult {
     private String consultedDrawing;
 
     private String uuid;
+
+    @OneToMany(mappedBy = "consult")
+    private List<ConsultColor> consultColors;
 
     @Column(name="`consultedFile`")
     private String consultedFile;
