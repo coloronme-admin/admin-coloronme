@@ -20,6 +20,7 @@ public enum ErrorCode {
 
     /*PERSONAL COLOR*/
     PERSONAL_COLOR_NOT_FOUND_404(HttpStatus.NOT_FOUND, "퍼스널 컬러를 찾을 수 없습니다."),
+    PERSONAL_COLOR_TYPE_NOT_FOUND_404(HttpStatus.NOT_FOUND, "퍼스널 컬러 타입을 찾을 수 없습니다."),
 
     /*PERSONAL COLOR*/
     CONSULT_NOT_FOUND_404(HttpStatus.NOT_FOUND, "진단 내역을 찾을 수 없습니다."),
@@ -33,6 +34,9 @@ public enum ErrorCode {
     /*MainPage*/
     INVALID_LOCALDATE_BAD_REQUEST_400(HttpStatus.BAD_REQUEST, "from은 to보다 이후일 수 없습니다."),
     INVALID_ENUM_TYPE_BAD_REQUEST_400(HttpStatus.BAD_REQUEST, "유효하지 않은 타입입니다."),
+
+    /*Color*/
+    COLOR_NOT_FOUND_404(HttpStatus.NOT_FOUND, "컬러를 찾을 수 없습니다."),
 
     /*JWT*/
     JWT_BAD_TOKEN_500(HttpStatus.INTERNAL_SERVER_ERROR, "토큰이 유효하지 않습니다.");

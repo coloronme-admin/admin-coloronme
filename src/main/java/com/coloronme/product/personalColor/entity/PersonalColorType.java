@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 public class PersonalColorType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name="`consultantId`")
-    private int consultantId;
+    private Integer consultantId;
 
     @Column(name="`personalColorTypeName`")
     private String personalColorTypeName;

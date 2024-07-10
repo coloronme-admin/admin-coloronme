@@ -1,4 +1,4 @@
-package com.coloronme.product.color;
+package com.coloronme.product.color.entity;
 
 import com.coloronme.admin.domain.consult.entity.Consult;
 import com.coloronme.admin.domain.consult.entity.ConsultColor;
@@ -16,20 +16,17 @@ import java.util.List;
 public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String name;
     private String code;
     private String r;
     private String g;
     private String b;
     @Column(name = "`personalColorId`")
-    private int personalColorId;
+    private Integer personalColorId;
 
     @Column(name="`worstColorId`")
-    private int worstColorId;
-
-    @OneToMany(mappedBy = "color", cascade = CascadeType.ALL)
-    private List<ConsultColor> consultColors;
+    private Integer worstColorId;
 
     @Column(name="`createdAt`")
     private LocalDateTime createdAt;
