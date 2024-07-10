@@ -47,33 +47,22 @@ public class ConsultService {
         /*진단 정보를 처음 등록하는 경우*/
         if(consult.isEmpty()) {
 
-            Optional<Member> user = memberRepository.findById(userId);
-            if (user.isEmpty()) {
-                log.error("USER NOT FOUND.");
-                throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
-            }
+            Member member = memberRepository.findById(userId)
+                    .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
 
-            Optional<PersonalColor> personalColor = personalColorRepository.findById(consultRequestDto.getPersonalColorId());
-            if (personalColor.isEmpty()) {
-                log.error("PERSONAL COLOR NOT FOUND.");
-                throw new RequestException(ErrorCode.PERSONAL_COLOR_NOT_FOUND_404);
-            }
+            PersonalColor personalColor = personalColorRepository.findById(consultRequestDto.getPersonalColorId())
+                    .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_NOT_FOUND_404));
 
-            Optional<PersonalColorType> personalColorType = personalColorTypeRepository.findById(consultRequestDto.getPersonalColorTypeId());
-            if (personalColorType.isEmpty()) {
-                log.error("PERSONAL COLOR TYPE NOT FOUND.");
-                throw new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404);
-            }
+            PersonalColorType personalColorType = personalColorTypeRepository.findById(consultRequestDto.getPersonalColorTypeId())
+                    .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
 
-            Member memberData = user.get();
-
-            memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
+            member.setPersonalColorId(consultRequestDto.getPersonalColorId());
 
             /*uuid 생성*/
             UUID uuid = UUID.randomUUID();
             consultRequestDto.setUuid(uuid.toString());
 
-            Consult consultData = new Consult(consultantId, userId, personalColor.get().getId(), consultRequestDto);
+            Consult consultData = new Consult(consultantId, userId, personalColor.getId(), consultRequestDto);
 
             List<ConsultColor> consultColors = new ArrayList<>();
 
@@ -81,25 +70,21 @@ public class ConsultService {
 
             for(ColorRequestDto colorRequestDto : consultRequestDto.getColors()) {
 
-                Optional<Color> color = colorRepository.findById(colorRequestDto.getColorId());
-                if(color.isEmpty()) {
-                    throw new RequestException(ErrorCode.COLOR_NOT_FOUND_404);
-                }
-
-                Color colorData = color.get();
+                Color color = colorRepository.findById(colorRequestDto.getColorId())
+                        .orElseThrow(() -> new RequestException(ErrorCode.COLOR_NOT_FOUND_404));
 
                 ConsultColor consultColor = new ConsultColor();
                 consultColor.setConsult(consultData);
-                consultColor.setColor(colorData);
+                consultColor.setColor(color);
 
                 consultColors.add(consultColor);
 
                 ColorResponseDto colorResponseDto = ColorResponseDto.builder()
-                        .colorId(colorData.getId())
-                        .name(colorData.getName())
-                        .r(colorData.getR())
-                        .g(colorData.getG())
-                        .b(colorData.getB())
+                        .colorId(color.getId())
+                        .name(color.getName())
+                        .r(color.getR())
+                        .g(color.getG())
+                        .b(color.getB())
                         .build();
 
                 colorList.add(colorResponseDto);
@@ -110,7 +95,7 @@ public class ConsultService {
             /*consult 등록*/
             consultUserRepository.save(consultData);
 
-            return createConsultUserResponseDto(consultData, memberData, colorList);
+            return createConsultUserResponseDto(consultData, member, colorList);
 
         } else {
             /*진단 정보가 이미 있는 경우 수정*/
@@ -119,44 +104,31 @@ public class ConsultService {
     }
 
     public ConsultUserResponseDto selectConsultUserByUserId(int userId, int consultantId) {
-        Optional<Member> member = memberRepository.findById(userId);
-        if(member.isEmpty()) {
-            log.error("USER NOT FOUND.");
-            throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
-        }
+        Member member = memberRepository.findById(userId)
+                .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
 
-        Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(userId, consultantId);
-        if(consult.isEmpty()) {
-            log.error("CONSULT NOT FOUND.");
-            throw new RequestException(ErrorCode.CONSULT_NOT_FOUND_404);
-        }
-
-        Member memberData = member.get();
-        Consult consultData = consult.get();
+        Consult consult = consultRepository.findByMemberId(userId)
+                .orElseThrow(() -> new RequestException(ErrorCode.CONSULT_NOT_FOUND_404));
 
         List<ColorResponseDto> colorList = new ArrayList<>();
 
-        for(ConsultColor consultColor : consultData.getConsultColors()) {
+        for(ConsultColor consultColor : consult.getConsultColors()) {
 
-            Optional<Color> color = colorRepository.findById(consultColor.getColor().getId());
-            if(color.isEmpty()) {
-                throw new RequestException(ErrorCode.COLOR_NOT_FOUND_404);
-            }
-
-            Color colorData = color.get();
+            Color color = colorRepository.findById(consultColor.getColor().getId())
+                    .orElseThrow(() -> new RequestException(ErrorCode.COLOR_NOT_FOUND_404));
 
             ColorResponseDto colorResponseDto = ColorResponseDto.builder()
-                    .colorId(colorData.getId())
-                    .name(colorData.getName())
-                    .r(colorData.getR())
-                    .g(colorData.getG())
-                    .b(colorData.getB())
+                    .colorId(color.getId())
+                    .name(color.getName())
+                    .r(color.getR())
+                    .g(color.getG())
+                    .b(color.getB())
                     .build();
 
             colorList.add(colorResponseDto);
         }
 
-        return createConsultUserResponseDto(consultData, memberData, colorList);
+        return createConsultUserResponseDto(consult, member, colorList);
     }
 
     public List<ConsultUserResponseDto> selectConsultUserList(int consultantId) {
@@ -165,37 +137,29 @@ public class ConsultService {
 
         List<ConsultUserResponseDto> consultUserList = new LinkedList<>();
         for(Consult consult : consultList) {
-            Optional<Member> member = memberRepository.findById(consult.getMemberId());
-            if(member.isEmpty()) {
-                log.error("USER NOT FOUND.");
-                throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
-            }
 
-            Member memberData = member.get();
+            Member member = memberRepository.findById(consult.getMemberId())
+                    .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
 
             List<ColorResponseDto> colorList = new ArrayList<>();
 
             for(ConsultColor consultColor : consult.getConsultColors()) {
 
-                Optional<Color> color = colorRepository.findById(consultColor.getColor().getId());
-                if(color.isEmpty()) {
-                    throw new RequestException(ErrorCode.COLOR_NOT_FOUND_404);
-                }
-
-                Color colorData = color.get();
+                Color color = colorRepository.findById(consultColor.getColor().getId())
+                        .orElseThrow(() -> new RequestException(ErrorCode.COLOR_NOT_FOUND_404));
 
                 ColorResponseDto colorResponseDto = ColorResponseDto.builder()
-                        .colorId(colorData.getId())
-                        .name(colorData.getName())
-                        .r(colorData.getR())
-                        .g(colorData.getG())
-                        .b(colorData.getB())
+                        .colorId(color.getId())
+                        .name(color.getName())
+                        .r(color.getR())
+                        .g(color.getG())
+                        .b(color.getB())
                         .build();
 
                 colorList.add(colorResponseDto);
             }
 
-            ConsultUserResponseDto consultUserResponseDto = createConsultUserResponseDto(consult, memberData, colorList);
+            ConsultUserResponseDto consultUserResponseDto = createConsultUserResponseDto(consult, member, colorList);
 
             consultUserList.add(consultUserResponseDto);
         }
@@ -204,70 +168,57 @@ public class ConsultService {
 
     @Transactional
     public ConsultUserResponseDto updateConsultUser(int userId, ConsultRequestDto consultRequestDto) {
-        Optional<Member> member = memberRepository.findById(userId);
-        if(member.isEmpty()) {
-            log.error("USER NOT FOUND.");
-            throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
-        }
+        Member member = memberRepository.findById(userId)
+                .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
 
-        Optional<Consult> consult = consultRepository.findByMemberId(userId);
-        if(consult.isEmpty()) {
-            log.error("CONSULT NOT FOUND.");
-            throw new RequestException(ErrorCode.CONSULT_NOT_FOUND_404);
-        }
+        PersonalColor personalColor = personalColorRepository.findById(consultRequestDto.getPersonalColorId())
+                .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_NOT_FOUND_404));
 
-        Optional<PersonalColor> personalColor = personalColorRepository.findById(consultRequestDto.getPersonalColorId());
-        if (personalColor.isEmpty()) {
-            log.error("PERSONAL COLOR NOT FOUND.");
-            throw new RequestException(ErrorCode.PERSONAL_COLOR_NOT_FOUND_404);
-        }
+        Consult consult = consultRepository.findByMemberId(userId)
+                .orElseThrow(() -> new RequestException(ErrorCode.CONSULT_NOT_FOUND_404));
 
-        Consult consultData = consult.get();
-        consultData.setPersonalColorId(personalColor.get().getId());
-        consultData.setConsultedContent(consultRequestDto.getConsultedContent());
-        consultData.setConsultedDrawing(consultRequestDto.getConsultedDrawing());
-        consultData.setConsultedFile(consultRequestDto.getConsultedFile());
-        consultData.setUpdatedAt(LocalDateTime.now());
+        consult.setPersonalColorId(personalColor.getId());
+        consult.setConsultedContent(consultRequestDto.getConsultedContent());
+        consult.setConsultedDrawing(consultRequestDto.getConsultedDrawing());
+        consult.setConsultedFile(consultRequestDto.getConsultedFile());
+        consult.setUpdatedAt(LocalDateTime.now());
 
-        Member memberData = member.get();
-        memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
+        member.setPersonalColorId(consultRequestDto.getPersonalColorId());
 
-        /*기존 ConsultColor Data는 삭제후 재생성*/
-        List<ConsultColor> consultColors = consultColorRepository.findByConsultId(consult.get().getId());
+        /*기존 ConsultColor 데이터는 삭제*/
+        List<ConsultColor> consultColors = consultColorRepository.findByConsultId(consult.getId());
         consultColorRepository.deleteAllInBatch(consultColors);
 
-        List<ConsultColor> newConsultColors = new ArrayList<>();
+        /*수정될 새로운 컬러 LIST*/
+        consultColors = new ArrayList<>();
         List<ColorResponseDto> colorList = new ArrayList<>();
 
         for(ColorRequestDto colorRequestDto : consultRequestDto.getColors()) {
-            Optional<Color> color = colorRepository.findById(colorRequestDto.getColorId());
-            if(color.isEmpty()) {
-                throw new RequestException(ErrorCode.COLOR_NOT_FOUND_404);
-            }
 
-            Color colorData = color.get();
+            Color color = colorRepository.findById(colorRequestDto.getColorId())
+                    .orElseThrow(() -> new RequestException(ErrorCode.COLOR_NOT_FOUND_404));
 
             ConsultColor consultColor = new ConsultColor();
-            consultColor.setConsult(consultData);
-            consultColor.setColor(colorData);
+            consultColor.setConsult(consult);
+            consultColor.setColor(color);
 
-            newConsultColors.add(consultColor);
+            consultColors.add(consultColor);
 
             ColorResponseDto colorResponseDto = ColorResponseDto.builder()
-                    .colorId(colorData.getId())
-                    .name(colorData.getName())
-                    .r(colorData.getR())
-                    .g(colorData.getG())
-                    .b(colorData.getB())
+                    .colorId(color.getId())
+                    .name(color.getName())
+                    .r(color.getR())
+                    .g(color.getG())
+                    .b(color.getB())
                     .build();
 
             colorList.add(colorResponseDto);
         }
 
-        consultData.setConsultColors(newConsultColors);
-        consultRepository.save(consultData);
+        consult.setConsultColors(consultColors);
+        consultRepository.save(consult);
 
-        return createConsultUserResponseDto(consultData, memberData, colorList);
+        return createConsultUserResponseDto(consult, member, colorList);
     }
 
     public ConsultUserResponseDto verifyUserQr(int consultantId, Member member) {
@@ -288,60 +239,49 @@ public class ConsultService {
     }
 
     public ConsultUserResponseDto selectConsultUserByUuid(String uuid) {
-        Optional<Consult> consult = consultRepository.findByUuid(uuid);
+        Consult consult = consultRepository.findByUuid(uuid)
+                .orElseThrow(() -> new RequestException(ErrorCode.CONSULT_NOT_FOUND_404));
 
-        if(consult.isEmpty()) {
-            log.error("CONSULT NOT FOUND.");
-            throw new RequestException(ErrorCode.CONSULT_NOT_FOUND_404);
-        }
+        Member member = memberRepository.findById(consult.getMemberId())
+                .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
 
-        Consult consultData = consult.get();
-
-        Optional<Member> member = memberRepository.findById(consultData.getMemberId());
-        if(member.isEmpty()) {
-            log.error("USER NOT FOUND.");
-            throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
-        }
-
-        Member memberData = member.get();
-
-        return createConsultUserResponseDto(consultData, memberData, null);
+        return createConsultUserResponseDto(consult, member, null);
     }
 
-    private ConsultUserResponseDto createConsultUserResponseDto (Consult consultData, Member memberData, List<ColorResponseDto> colorList) {
+    private ConsultUserResponseDto createConsultUserResponseDto (Consult consult, Member member, List<ColorResponseDto> colorList) {
 
         ConsultUserResponseDto consultUserResponseDto = null;
 
-        if(consultData == null) {
+        if(consult == null) {
             consultUserResponseDto = ConsultUserResponseDto.builder()
-                    .memberId(memberData.getId())
-                    .nickname(memberData.getNickname())
-                    .email(memberData.getEmail())
-                    .profileImageUrl(memberData.getProfileImageUrl())
+                    .memberId(member.getId())
+                    .nickname(member.getNickname())
+                    .email(member.getEmail())
+                    .profileImageUrl(member.getProfileImageUrl())
                     .consultedDate(null)
                     .personalColorId(1)
-                    .age(memberData.getAge())
+                    .age(member.getAge())
                     .colorList(null)
-                    .genderEnum(memberData.getGender())
+                    .genderEnum(member.getGender())
                     .consultedContent(null)
                     .consultedDrawing(null)
                     .consultedFile(null)
                     .build();
         } else {
             consultUserResponseDto = ConsultUserResponseDto.builder()
-                    .memberId(consultData.getMemberId())
-                    .nickname(memberData.getNickname())
-                    .email(memberData.getEmail())
-                    .consultedDate(consultData.getConsultedDate())
-                    .profileImageUrl(memberData.getProfileImageUrl())
-                    .personalColorId(consultData.getPersonalColorId())
-                    .age(memberData.getAge())
+                    .memberId(consult.getMemberId())
+                    .nickname(member.getNickname())
+                    .email(member.getEmail())
+                    .consultedDate(consult.getConsultedDate())
+                    .profileImageUrl(member.getProfileImageUrl())
+                    .personalColorId(consult.getPersonalColorId())
+                    .age(member.getAge())
                     .colorList(colorList)
-                    .genderEnum(memberData.getGender())
-                    .consultedContent(consultData.getConsultedContent())
-                    .consultedDrawing(consultData.getConsultedDrawing())
-                    .consultedFile(consultData.getConsultedFile())
-                    .uuid(consultData.getUuid())
+                    .genderEnum(member.getGender())
+                    .consultedContent(consult.getConsultedContent())
+                    .consultedDrawing(consult.getConsultedDrawing())
+                    .consultedFile(consult.getConsultedFile())
+                    .uuid(consult.getUuid())
                     .build();
         }
 
