@@ -41,42 +41,41 @@ public class ConsultService {
 
     @Transactional
     public ConsultUserResponseDto registerConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
-        Optional<Member> user = memberRepository.findById(userId);
-        if (user.isEmpty()) {
-            log.error("USER NOT FOUND.");
-            throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
-        }
-
-        Optional<PersonalColor> personalColor = personalColorRepository.findById(consultRequestDto.getPersonalColorId());
-        if (personalColor.isEmpty()) {
-            log.error("PERSONAL COLOR NOT FOUND.");
-            throw new RequestException(ErrorCode.PERSONAL_COLOR_NOT_FOUND_404);
-        }
-
-        Optional<PersonalColorType> personalColorType = personalColorTypeRepository.findById(consultRequestDto.getPersonalColorTypeId());
-        if (personalColorType.isEmpty()) {
-            log.error("PERSONAL COLOR TYPE NOT FOUND.");
-            throw new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404);
-        }
-
-        Member memberData = user.get();
 
         Optional<Consult> consult = consultRepository.findByMemberId(userId);
 
-        Consult consultData;
-
-        List<ColorResponseDto> colorList = new ArrayList<>();
-
         /*진단 정보를 처음 등록하는 경우*/
         if(consult.isEmpty()) {
+
+            Optional<Member> user = memberRepository.findById(userId);
+            if (user.isEmpty()) {
+                log.error("USER NOT FOUND.");
+                throw new RequestException(ErrorCode.USER_NOT_FOUND_404);
+            }
+
+            Optional<PersonalColor> personalColor = personalColorRepository.findById(consultRequestDto.getPersonalColorId());
+            if (personalColor.isEmpty()) {
+                log.error("PERSONAL COLOR NOT FOUND.");
+                throw new RequestException(ErrorCode.PERSONAL_COLOR_NOT_FOUND_404);
+            }
+
+            Optional<PersonalColorType> personalColorType = personalColorTypeRepository.findById(consultRequestDto.getPersonalColorTypeId());
+            if (personalColorType.isEmpty()) {
+                log.error("PERSONAL COLOR TYPE NOT FOUND.");
+                throw new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404);
+            }
+
+            Member memberData = user.get();
+
             memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
             /*uuid 등록*/
             UUID uuid = UUID.randomUUID();
             consultRequestDto.setUuid(uuid.toString());
-            consultData = new Consult(consultantId, userId, personalColor.get().getId(), consultRequestDto);
-            System.out.println("여기 거치나?1");
+            Consult consultData = new Consult(consultantId, userId, personalColor.get().getId(), consultRequestDto);
 
-            Consult createdConult = consultUserRepository.save(consultData);
+            Consult createdConsult = consultUserRepository.save(consultData);
+
+            List<ColorResponseDto> colorList = new ArrayList<>();
 
             for(ColorRequestDto colorRequestDto : consultRequestDto.getColors()) {
 
@@ -99,60 +98,18 @@ public class ConsultService {
 
                 ConsultColor consultColor = ConsultColor.builder()
                         .colorId(color.get().getId())
-                        .consultId(createdConult.getId())
+                        .consultId(createdConsult.getId())
                         .build();
 
                 consultColorRepository.save(consultColor);
             }
 
+            return createConsultUserResponseDto(consultData, memberData, colorList);
 
         } else {
-            System.out.println("여기 거치나?2");
-            /*진단 정보가 이미 있는 경우 수정 작업으로 변경*/
-            consultData = consult.get();
-            consultData.setPersonalColorId(personalColor.get().getId());
-            consultData.setConsultedDate(consultRequestDto.getConsultedDate());
-            consultData.setConsultedContent(consultRequestDto.getConsultedContent());
-            consultData.setConsultedDrawing(consultRequestDto.getConsultedDrawing());
-            consultData.setConsultedFile(consultRequestDto.getConsultedFile());
-            memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
-            consultData.setPersonalColorTypeId(consultRequestDto.getPersonalColorTypeId());
-            consultData.setUpdatedAt(LocalDateTime.now());
-
-            /*기존 ConsultColor Data는 삭제후 재생성*/
-            List<ConsultColor> consultColors = consultColorRepository.findByConsultId(consult.get().getId());
-            consultColorRepository.deleteAllInBatch(consultColors);
-
-            /*수정된 데이터로 재생성*/
-            for(ColorRequestDto colorRequestDto : consultRequestDto.getColors()) {
-
-                Optional<Color> color = colorRepository.findById(colorRequestDto.getColorId());
-                if(color.isEmpty()) {
-                    throw new RequestException(ErrorCode.COLOR_NOT_FOUND_404);
-                }
-
-                Color colorData = color.get();
-
-                ColorResponseDto colorResponseDto = ColorResponseDto.builder()
-                        .colorId(colorData.getId())
-                        .name(colorData.getName())
-                        .r(colorData.getR())
-                        .g(colorData.getG())
-                        .b(colorData.getB())
-                        .build();
-
-                colorList.add(colorResponseDto);
-
-                ConsultColor consultColor = ConsultColor.builder()
-                        .colorId(color.get().getId())
-                        .consultId(consult.get().getId())
-                        .build();
-
-                consultColorRepository.save(consultColor);
-            }
+            /*진단 정보가 이미 있는 경우 수정*/
+            return updateConsultUser(userId, consultRequestDto);
         }
-
-        return createConsultUserResponseDto(consultData, memberData, colorList);
     }
 
     public ConsultUserResponseDto selectConsultUserByUserId(int userId, int consultantId) {
@@ -195,7 +152,7 @@ public class ConsultService {
     }
 
     @Transactional
-    public ConsultUserResponseDto updateConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
+    public ConsultUserResponseDto updateConsultUser(int userId, ConsultRequestDto consultRequestDto) {
         Optional<Member> member = memberRepository.findById(userId);
         if(member.isEmpty()) {
             log.error("USER NOT FOUND.");
@@ -224,7 +181,40 @@ public class ConsultService {
         Member memberData = member.get();
         memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
 
-        return createConsultUserResponseDto(consultData, memberData, null);
+        /*기존 ConsultColor Data는 삭제후 재생성*/
+        List<ConsultColor> consultColors = consultColorRepository.findByConsultId(consult.get().getId());
+        consultColorRepository.deleteAllInBatch(consultColors);
+
+        List<ColorResponseDto> colorList = new ArrayList<>();
+
+        /*수정된 데이터로 재생성*/
+        for(ColorRequestDto colorRequestDto : consultRequestDto.getColors()) {
+
+            Optional<Color> color = colorRepository.findById(colorRequestDto.getColorId());
+            if(color.isEmpty()) {
+                throw new RequestException(ErrorCode.COLOR_NOT_FOUND_404);
+            }
+
+            Color colorData = color.get();
+
+            ColorResponseDto colorResponseDto = ColorResponseDto.builder()
+                    .colorId(colorData.getId())
+                    .name(colorData.getName())
+                    .r(colorData.getR())
+                    .g(colorData.getG())
+                    .b(colorData.getB())
+                    .build();
+
+            colorList.add(colorResponseDto);
+
+            ConsultColor consultColor = ConsultColor.builder()
+                    .colorId(color.get().getId())
+                    .consultId(consult.get().getId())
+                    .build();
+
+            consultColorRepository.save(consultColor);
+        }
+        return createConsultUserResponseDto(consultData, memberData, colorList);
     }
 
     public ConsultUserResponseDto verifyUserQr(int consultantId, Member member) {
@@ -234,28 +224,13 @@ public class ConsultService {
 
         /*이전 진단 내역이 없는 경우에는 진단 내용을 null 값으로 보냄*/
         if(consult.isEmpty()) {
-            consultUserResponseDto = ConsultUserResponseDto.builder()
-                    .memberId(member.getId())
-                    .nickname(member.getNickname())
-                    .email(member.getEmail())
-                    .profileImageUrl(member.getProfileImageUrl())
-                    .consultedDate(null)
-                    .personalColorId(1)
-                    .age(member.getAge())
-                    .genderEnum(member.getGender())
-                    .consultedContent(null)
-                    .consultedDrawing(null)
-                    .consultedFile(null)
-                    .build();
+            consultUserResponseDto = createConsultUserResponseDto(null, member, null);
 
         /*이전 진단 내역이 있는 경우에는 이전 내용을 같이 보내줌*/
         } else {
-
             Consult consultData = consult.get();
-
             consultUserResponseDto = createConsultUserResponseDto(consultData, member, null);
         }
-
         return consultUserResponseDto;
     }
 
@@ -281,20 +256,42 @@ public class ConsultService {
     }
 
     private ConsultUserResponseDto createConsultUserResponseDto (Consult consultData, Member memberData, List<ColorResponseDto> colorList) {
-        return ConsultUserResponseDto.builder()
-                .memberId(consultData.getMemberId())
-                .nickname(memberData.getNickname())
-                .email(memberData.getEmail())
-                .consultedDate(consultData.getConsultedDate())
-                .profileImageUrl(memberData.getProfileImageUrl())
-                .personalColorId(consultData.getPersonalColorId())
-                .age(memberData.getAge())
-                .colorList(colorList)
-                .genderEnum(memberData.getGender())
-                .consultedContent(consultData.getConsultedContent())
-                .consultedDrawing(consultData.getConsultedDrawing())
-                .consultedFile(consultData.getConsultedFile())
-                .uuid(consultData.getUuid())
-                .build();
+
+        ConsultUserResponseDto consultUserResponseDto = null;
+
+        if(consultData == null) {
+            consultUserResponseDto = ConsultUserResponseDto.builder()
+                    .memberId(memberData.getId())
+                    .nickname(memberData.getNickname())
+                    .email(memberData.getEmail())
+                    .profileImageUrl(memberData.getProfileImageUrl())
+                    .consultedDate(null)
+                    .personalColorId(1)
+                    .age(memberData.getAge())
+                    .colorList(null)
+                    .genderEnum(memberData.getGender())
+                    .consultedContent(null)
+                    .consultedDrawing(null)
+                    .consultedFile(null)
+                    .build();
+        } else {
+            consultUserResponseDto = ConsultUserResponseDto.builder()
+                    .memberId(consultData.getMemberId())
+                    .nickname(memberData.getNickname())
+                    .email(memberData.getEmail())
+                    .consultedDate(consultData.getConsultedDate())
+                    .profileImageUrl(memberData.getProfileImageUrl())
+                    .personalColorId(consultData.getPersonalColorId())
+                    .age(memberData.getAge())
+                    .colorList(colorList)
+                    .genderEnum(memberData.getGender())
+                    .consultedContent(consultData.getConsultedContent())
+                    .consultedDrawing(consultData.getConsultedDrawing())
+                    .consultedFile(consultData.getConsultedFile())
+                    .uuid(consultData.getUuid())
+                    .build();
+        }
+
+        return consultUserResponseDto;
     }
 }
