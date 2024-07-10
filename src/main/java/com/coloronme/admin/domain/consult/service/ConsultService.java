@@ -46,14 +46,14 @@ public class ConsultService {
 
         /*진단 정보를 처음 등록하는 경우*/
         if(consult.isEmpty()) {
-
+            /*유효성 검사*/
             Member member = memberRepository.findById(userId)
                     .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
 
             PersonalColor personalColor = personalColorRepository.findById(consultRequestDto.getPersonalColorId())
                     .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_NOT_FOUND_404));
 
-            PersonalColorType personalColorType = personalColorTypeRepository.findById(consultRequestDto.getPersonalColorTypeId())
+            personalColorTypeRepository.findById(consultRequestDto.getPersonalColorTypeId())
                     .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
 
             member.setPersonalColorId(consultRequestDto.getPersonalColorId());
@@ -65,7 +65,6 @@ public class ConsultService {
             Consult consultData = new Consult(consultantId, userId, personalColor.getId(), consultRequestDto);
 
             List<ConsultColor> consultColors = new ArrayList<>();
-
             List<ColorResponseDto> colorList = new ArrayList<>();
 
             for(ColorRequestDto colorRequestDto : consultRequestDto.getColors()) {
@@ -103,7 +102,8 @@ public class ConsultService {
         }
     }
 
-    public ConsultUserResponseDto selectConsultUserByUserId(int userId, int consultantId) {
+    public ConsultUserResponseDto selectConsultUserByUserId(int userId) {
+        /*유효성 검사*/
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
 
@@ -137,7 +137,7 @@ public class ConsultService {
 
         List<ConsultUserResponseDto> consultUserList = new LinkedList<>();
         for(Consult consult : consultList) {
-
+            /*유효성 검사*/
             Member member = memberRepository.findById(consult.getMemberId())
                     .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
 
@@ -168,6 +168,7 @@ public class ConsultService {
 
     @Transactional
     public ConsultUserResponseDto updateConsultUser(int userId, ConsultRequestDto consultRequestDto) {
+        /*유효성 검사*/
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
 
@@ -186,11 +187,9 @@ public class ConsultService {
         member.setPersonalColorId(consultRequestDto.getPersonalColorId());
 
         /*기존 ConsultColor 데이터는 삭제*/
-        List<ConsultColor> consultColors = consultColorRepository.findByConsultId(consult.getId());
-        consultColorRepository.deleteAllInBatch(consultColors);
+        List<ConsultColor> consultColors = consult.getConsultColors();
+        consultColors.clear();
 
-        /*수정될 새로운 컬러 LIST*/
-        consultColors = new ArrayList<>();
         List<ColorResponseDto> colorList = new ArrayList<>();
 
         for(ColorRequestDto colorRequestDto : consultRequestDto.getColors()) {
@@ -239,6 +238,7 @@ public class ConsultService {
     }
 
     public ConsultUserResponseDto selectConsultUserByUuid(String uuid) {
+        /*유효성 검사*/
         Consult consult = consultRepository.findByUuid(uuid)
                 .orElseThrow(() -> new RequestException(ErrorCode.CONSULT_NOT_FOUND_404));
 

@@ -29,7 +29,7 @@ public class Color {
     @Column(name="`worstColorId`")
     private Integer worstColorId;
 
-    @OneToMany(mappedBy = "color")
+    @OneToMany(mappedBy = "color", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ConsultColor> consultColors;
 
     @Column(name="`createdAt`")
