@@ -46,7 +46,7 @@ public class Consult {
 
     private String uuid;
 
-    @OneToMany(mappedBy = "consult")
+    @OneToMany(mappedBy = "consult", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ConsultColor> consultColors;
 
     @Column(name="`consultedFile`")
