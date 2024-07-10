@@ -19,6 +19,7 @@ public class ConsultUserResponseDto {
     private LocalDateTime consultedDate;
     private Integer personalColorId;
     private List<ColorResponseDto> colorList;
+    private Integer personalColorTypeId;
     private String age;
     private GenderEnum genderEnum;
     private String consultedContent;
