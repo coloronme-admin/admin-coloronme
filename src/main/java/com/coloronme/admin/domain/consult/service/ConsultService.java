@@ -37,7 +37,6 @@ public class ConsultService {
     private final ConsultRepository consultRepository;
     private final PersonalColorTypeRepository personalColorTypeRepository;
     private final ColorRepository colorRepository;
-    private final ConsultColorRepository consultColorRepository;
 
     @Transactional
     public ConsultUserResponseDto registerConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
