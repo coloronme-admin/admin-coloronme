@@ -1,9 +1,11 @@
 package com.coloronme.admin.domain.consult.dto.response;
 
+import com.coloronme.product.color.entity.Color;
 import com.coloronme.product.member.enums.GenderEnum;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 @Getter
@@ -16,7 +18,8 @@ public class ConsultUserResponseDto {
     private String profileImageUrl;
     private LocalDateTime consultedDate;
     private Integer personalColorId;
-    private Integer age;
+    private List<ColorResponseDto> colorList;
+    private String age;
     private GenderEnum genderEnum;
     private String consultedContent;
     private String consultedDrawing;

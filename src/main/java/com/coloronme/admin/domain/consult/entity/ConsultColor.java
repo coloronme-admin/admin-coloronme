@@ -1,25 +1,26 @@
 package com.coloronme.admin.domain.consult.entity;
 
-import com.coloronme.product.color.Color;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "`ConsultColor`")
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ConsultColor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="`colorId`")
-    private Color color;
+    @Column(name="`colorId`")
+    private Integer colorId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="`consultId`")
-    private Consult consult;
+    @Column(name="`consultId`")
+    private Integer consultId;
 }
