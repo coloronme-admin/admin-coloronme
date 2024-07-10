@@ -68,12 +68,14 @@ public class ConsultService {
             Member memberData = user.get();
 
             memberData.setPersonalColorId(consultRequestDto.getPersonalColorId());
-            /*uuid 등록*/
+
+            /*uuid 생성*/
             UUID uuid = UUID.randomUUID();
             consultRequestDto.setUuid(uuid.toString());
+
             Consult consultData = new Consult(consultantId, userId, personalColor.get().getId(), consultRequestDto);
 
-            Consult createdConsult = consultUserRepository.save(consultData);
+            List<ConsultColor> consultColors = new ArrayList<>();
 
             List<ColorResponseDto> colorList = new ArrayList<>();
 
@@ -86,6 +88,12 @@ public class ConsultService {
 
                 Color colorData = color.get();
 
+                ConsultColor consultColor = new ConsultColor();
+                consultColor.setConsult(consultData);
+                consultColor.setColor(colorData);
+
+                consultColors.add(consultColor);
+
                 ColorResponseDto colorResponseDto = ColorResponseDto.builder()
                         .colorId(colorData.getId())
                         .name(colorData.getName())
@@ -95,14 +103,12 @@ public class ConsultService {
                         .build();
 
                 colorList.add(colorResponseDto);
-
-                ConsultColor consultColor = ConsultColor.builder()
-                        .colorId(color.get().getId())
-                        .consultId(createdConsult.getId())
-                        .build();
-
-                consultColorRepository.save(consultColor);
             }
+
+            consultData.setConsultColors(consultColors);
+
+            /*consult 등록*/
+            consultUserRepository.save(consultData);
 
             return createConsultUserResponseDto(consultData, memberData, colorList);
 
@@ -128,7 +134,29 @@ public class ConsultService {
         Member memberData = member.get();
         Consult consultData = consult.get();
 
-        return createConsultUserResponseDto(consultData, memberData, null);
+        List<ColorResponseDto> colorList = new ArrayList<>();
+
+        for(ConsultColor consultColor : consultData.getConsultColors()) {
+
+            Optional<Color> color = colorRepository.findById(consultColor.getColor().getId());
+            if(color.isEmpty()) {
+                throw new RequestException(ErrorCode.COLOR_NOT_FOUND_404);
+            }
+
+            Color colorData = color.get();
+
+            ColorResponseDto colorResponseDto = ColorResponseDto.builder()
+                    .colorId(colorData.getId())
+                    .name(colorData.getName())
+                    .r(colorData.getR())
+                    .g(colorData.getG())
+                    .b(colorData.getB())
+                    .build();
+
+            colorList.add(colorResponseDto);
+        }
+
+        return createConsultUserResponseDto(consultData, memberData, colorList);
     }
 
     public List<ConsultUserResponseDto> selectConsultUserList(int consultantId) {
@@ -144,7 +172,30 @@ public class ConsultService {
             }
 
             Member memberData = member.get();
-            ConsultUserResponseDto consultUserResponseDto = createConsultUserResponseDto(consult, memberData, null);
+
+            List<ColorResponseDto> colorList = new ArrayList<>();
+
+            for(ConsultColor consultColor : consult.getConsultColors()) {
+
+                Optional<Color> color = colorRepository.findById(consultColor.getColor().getId());
+                if(color.isEmpty()) {
+                    throw new RequestException(ErrorCode.COLOR_NOT_FOUND_404);
+                }
+
+                Color colorData = color.get();
+
+                ColorResponseDto colorResponseDto = ColorResponseDto.builder()
+                        .colorId(colorData.getId())
+                        .name(colorData.getName())
+                        .r(colorData.getR())
+                        .g(colorData.getG())
+                        .b(colorData.getB())
+                        .build();
+
+                colorList.add(colorResponseDto);
+            }
+
+            ConsultUserResponseDto consultUserResponseDto = createConsultUserResponseDto(consult, memberData, colorList);
 
             consultUserList.add(consultUserResponseDto);
         }
@@ -185,17 +236,22 @@ public class ConsultService {
         List<ConsultColor> consultColors = consultColorRepository.findByConsultId(consult.get().getId());
         consultColorRepository.deleteAllInBatch(consultColors);
 
+        List<ConsultColor> newConsultColors = new ArrayList<>();
         List<ColorResponseDto> colorList = new ArrayList<>();
 
-        /*수정된 데이터로 재생성*/
         for(ColorRequestDto colorRequestDto : consultRequestDto.getColors()) {
-
             Optional<Color> color = colorRepository.findById(colorRequestDto.getColorId());
             if(color.isEmpty()) {
                 throw new RequestException(ErrorCode.COLOR_NOT_FOUND_404);
             }
 
             Color colorData = color.get();
+
+            ConsultColor consultColor = new ConsultColor();
+            consultColor.setConsult(consultData);
+            consultColor.setColor(colorData);
+
+            newConsultColors.add(consultColor);
 
             ColorResponseDto colorResponseDto = ColorResponseDto.builder()
                     .colorId(colorData.getId())
@@ -206,14 +262,11 @@ public class ConsultService {
                     .build();
 
             colorList.add(colorResponseDto);
-
-            ConsultColor consultColor = ConsultColor.builder()
-                    .colorId(color.get().getId())
-                    .consultId(consult.get().getId())
-                    .build();
-
-            consultColorRepository.save(consultColor);
         }
+
+        consultData.setConsultColors(newConsultColors);
+        consultRepository.save(consultData);
+
         return createConsultUserResponseDto(consultData, memberData, colorList);
     }
 
