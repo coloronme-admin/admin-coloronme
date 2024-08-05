@@ -231,7 +231,25 @@ public class ConsultService {
         /*이전 진단 내역이 있는 경우에는 이전 내용을 같이 보내줌*/
         } else {
             Consult consultData = consult.get();
-            consultUserResponseDto = createConsultUserResponseDto(consultData, member, null);
+
+            List<ColorResponseDto> colorList = new ArrayList<>();
+
+            for(ConsultColor consultColor : consultData.getConsultColors()) {
+
+                Color color = colorRepository.findById(consultColor.getColor().getId())
+                        .orElseThrow(() -> new RequestException(ErrorCode.COLOR_NOT_FOUND_404));
+
+                ColorResponseDto colorResponseDto = ColorResponseDto.builder()
+                        .colorId(color.getId())
+                        .name(color.getName())
+                        .r(color.getR())
+                        .g(color.getG())
+                        .b(color.getB())
+                        .build();
+
+                colorList.add(colorResponseDto);
+            }
+            consultUserResponseDto = createConsultUserResponseDto(consultData, member, colorList);
         }
         return consultUserResponseDto;
     }
