@@ -24,6 +24,10 @@ public class PersonalColorType {
     @Column(name="`personalColorTypeGroup`")
     private String personalColorTypeGroup;
 
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name="`personalColorGroupId`")
+    private PersonalColorGroup personalColorGroup;
+
     @Column(name="`createdAt`")
     private LocalDateTime createdAt;
 
