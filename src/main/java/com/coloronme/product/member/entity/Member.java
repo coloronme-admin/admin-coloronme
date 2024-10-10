@@ -33,7 +33,7 @@ public class Member {
     private Integer userAuthDetailId;
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
-    private String age;
+    private int age;
     @Column(name="`createdAt`")
     private LocalDateTime createdAt;
     @Column(name="`updatedAt`")
