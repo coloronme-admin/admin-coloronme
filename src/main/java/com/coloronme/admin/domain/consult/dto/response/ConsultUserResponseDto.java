@@ -20,7 +20,7 @@ public class ConsultUserResponseDto {
     private Integer personalColorId;
     private List<ColorResponseDto> colors;
     private Integer personalColorTypeId;
-    private String age;
+    private Integer age;
     private GenderEnum genderEnum;
     private String consultedContent;
     private String consultedDrawing;
