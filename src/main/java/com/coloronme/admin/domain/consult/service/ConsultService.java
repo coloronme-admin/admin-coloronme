@@ -287,7 +287,7 @@ public class ConsultService {
                 return PersonalColorGroupResponseDto.builder()
                         .personalColorGroupId(personalColorGroup.getId())
                         .personalColorGroupName(personalColorGroup.getPersonalColorGroupName())
-                        .personalColorType(personalColorTypeList)
+                        .personalColorTypes(personalColorTypeList)
                         .build();
 
             }).collect(Collectors.toList());
