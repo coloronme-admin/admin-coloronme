@@ -3,11 +3,9 @@ package com.coloronme.admin.domain.consult.service;
 import com.coloronme.admin.domain.consult.dto.request.ColorRequestDto;
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
 import com.coloronme.admin.domain.consult.dto.response.ColorResponseDto;
-import com.coloronme.admin.domain.consult.dto.response.ConsultResponseDto;
 import com.coloronme.admin.domain.consult.dto.response.ConsultUserResponseDto;
 import com.coloronme.admin.domain.consult.entity.Consult;
 import com.coloronme.admin.domain.consult.entity.ConsultColor;
-import com.coloronme.admin.domain.consult.repository.ConsultColorRepository;
 import com.coloronme.product.color.entity.Color;
 import com.coloronme.product.color.repository.ColorRepository;
 import com.coloronme.product.member.entity.Member;
@@ -16,7 +14,6 @@ import com.coloronme.product.personalColor.dto.PersonalColorTypeDto;
 import com.coloronme.product.personalColor.entity.PersonalColor;
 import com.coloronme.admin.domain.consult.repository.ConsultRepository;
 import com.coloronme.product.personalColor.entity.PersonalColorGroup;
-import com.coloronme.product.personalColor.entity.PersonalColorType;
 import com.coloronme.product.personalColor.repository.PersonalColorGroupRepository;
 import com.coloronme.product.personalColor.repository.PersonalColorRepository;
 import com.coloronme.product.member.repository.MemberRepository;
@@ -46,7 +43,7 @@ public class ConsultService {
     private final PersonalColorGroupRepository personalColorGroupRepository;
 
     @Transactional
-    public ConsultResponseDto registerConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
+    public ConsultUserResponseDto registerConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
 
         Optional<Consult> consult = consultRepository.findByMemberId(userId);
 
@@ -100,7 +97,7 @@ public class ConsultService {
             /*consult 등록*/
             consultUserRepository.save(consultData);
 
-            return createConsultResponse(consultantId, createConsultUserResponseDto(consultData, member, colorList));
+            return createConsultUserResponseDto(consultantId, consultData, member, colorList);
 
         } else {
             /*진단 정보가 이미 있는 경우 수정*/
@@ -134,7 +131,7 @@ public class ConsultService {
             colorList.add(colorResponseDto);
         }
 
-        return createConsultUserResponseDto(consult, member, colorList);
+        return createConsultUserResponseDto(null, consult, member, colorList);
     }
 
     public List<ConsultUserResponseDto> selectConsultUserList(int consultantId) {
@@ -165,7 +162,7 @@ public class ConsultService {
                 colorList.add(colorResponseDto);
             }
 
-            ConsultUserResponseDto consultUserResponseDto = createConsultUserResponseDto(consult, member, colorList);
+            ConsultUserResponseDto consultUserResponseDto = createConsultUserResponseDto(null, consult, member, colorList);
 
             consultUserList.add(consultUserResponseDto);
         }
@@ -173,7 +170,7 @@ public class ConsultService {
     }
 
     @Transactional
-    public ConsultResponseDto updateConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
+    public ConsultUserResponseDto updateConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
         /*유효성 검사*/
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
@@ -223,17 +220,17 @@ public class ConsultService {
         consult.setConsultColors(consultColors);
         consultRepository.save(consult);
 
-        return createConsultResponse(consultantId, createConsultUserResponseDto(consult, member, colorList));
+        return createConsultUserResponseDto(consultantId, consult, member, colorList);
     }
 
-    public ConsultResponseDto verifyUserQr(int consultantId, Member member) {
+    public ConsultUserResponseDto verifyUserQr(int consultantId, Member member) {
         Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(member.getId(), consultantId);
 
         ConsultUserResponseDto consultUserResponseDto;
 
         /*이전 진단 내역이 없는 경우에는 진단 내용을 null 값으로 보냄*/
         if(consult.isEmpty()) {
-            consultUserResponseDto = createConsultUserResponseDto(null, member, null);
+            consultUserResponseDto = createConsultUserResponseDto(consultantId, null, member, null);
 
         /*이전 진단 내역이 있는 경우에는 이전 내용을 같이 보내줌*/
         } else {
@@ -256,9 +253,9 @@ public class ConsultService {
 
                 colorList.add(colorResponseDto);
             }
-            consultUserResponseDto = createConsultUserResponseDto(consultData, member, colorList);
+            consultUserResponseDto = createConsultUserResponseDto(consultantId, consultData, member, colorList);
         }
-        return createConsultResponse(consultantId, consultUserResponseDto);
+        return consultUserResponseDto;
     }
 
     public ConsultUserResponseDto selectConsultUserByUuid(String uuid) {
@@ -269,74 +266,69 @@ public class ConsultService {
         Member member = memberRepository.findById(consult.getMemberId())
                 .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
 
-        return createConsultUserResponseDto(consult, member, null);
+        return createConsultUserResponseDto(null, consult, member, null);
     }
 
     /*진단자 + 진단 정보에 필요한 Response 양식*/
-    private ConsultUserResponseDto createConsultUserResponseDto (Consult consult, Member member, List<ColorResponseDto> colorList) {
+    private ConsultUserResponseDto createConsultUserResponseDto (Integer consultantId, Consult consult, Member member, List<ColorResponseDto> colorList) {
 
-        ConsultUserResponseDto consultUserResponseDto = null;
+        ConsultUserResponseDto consultUserResponseDto = new ConsultUserResponseDto();
+
+        if(consultantId != null) {
+            List<PersonalColorGroup> personalColorGroups = personalColorGroupRepository.findAllByConsultantIdWithTypes(consultantId);
+
+            List<PersonalColorGroupResponseDto> personalColorGroupList = personalColorGroups.stream().map(personalColorGroup -> {
+                /*각 PersonalColorType을 personalColorTypeList 변환하여 리스트에 추가*/
+                List<PersonalColorTypeDto> personalColorTypeList = personalColorGroup.getPersonalColorTypes().stream()
+                        .filter(type -> type.getConsultantId().equals(consultantId))
+                        .map(type -> new PersonalColorTypeDto(type.getId(), type.getPersonalColorTypeName()))
+                        .collect(Collectors.toList());
+
+                return PersonalColorGroupResponseDto.builder()
+                        .personalColorGroupId(personalColorGroup.getId())
+                        .personalColorGroupName(personalColorGroup.getPersonalColorGroupName())
+                        .personalColorType(personalColorTypeList)
+                        .build();
+
+            }).collect(Collectors.toList());
+
+            consultUserResponseDto.setPersonalColorGroups(personalColorGroupList);
+
+        }
 
         if(consult == null) {
-            consultUserResponseDto = ConsultUserResponseDto.builder()
-                    .memberId(member.getId())
-                    .nickname(member.getNickname())
-                    .email(member.getEmail())
-                    .profileImageUrl(member.getProfileImageUrl())
-                    .consultedDate(null)
-                    .personalColorId(1)
-                    .age(member.getAge())
-                    .colors(null)
-                    .personalColorTypeId(null)
-                    .genderEnum(member.getGender())
-                    .consultedContent(null)
-                    .consultedDrawing(null)
-                    .consultedFile(null)
-                    .build();
+            consultUserResponseDto.setMemberId(member.getId());
+            consultUserResponseDto.setNickname(member.getNickname());
+            consultUserResponseDto.setEmail(member.getEmail());
+            consultUserResponseDto.setProfileImageUrl(member.getProfileImageUrl());
+            consultUserResponseDto.setConsultedDate(null);
+            consultUserResponseDto.setPersonalColorId(1);
+            consultUserResponseDto.setAge(member.getAge());
+            consultUserResponseDto.setColors(null);
+            consultUserResponseDto.setPersonalColorTypeId(null);
+            consultUserResponseDto.setGenderEnum(member.getGender());
+            consultUserResponseDto.setConsultedContent(null);
+            consultUserResponseDto.setConsultedDate(null);
+            consultUserResponseDto.setConsultedDrawing(null);
+            consultUserResponseDto.setConsultedFile(null);
         } else {
-            consultUserResponseDto = ConsultUserResponseDto.builder()
-                    .memberId(consult.getMemberId())
-                    .nickname(member.getNickname())
-                    .email(member.getEmail())
-                    .consultedDate(consult.getConsultedDate())
-                    .profileImageUrl(member.getProfileImageUrl())
-                    .personalColorId(consult.getPersonalColorId())
-                    .age(member.getAge())
-                    .colors(colorList)
-                    .personalColorTypeId(consult.getPersonalColorTypeId())
-                    .genderEnum(member.getGender())
-                    .consultedContent(consult.getConsultedContent())
-                    .consultedDrawing(consult.getConsultedDrawing())
-                    .consultedFile(consult.getConsultedFile())
-                    .uuid(consult.getUuid())
-                    .build();
+            consultUserResponseDto.setMemberId(consult.getMemberId());
+            consultUserResponseDto.setNickname(member.getNickname());
+            consultUserResponseDto.setEmail(member.getEmail());
+            consultUserResponseDto.setProfileImageUrl(member.getProfileImageUrl());
+            consultUserResponseDto.setConsultedDate(consult.getConsultedDate());
+            consultUserResponseDto.setPersonalColorId(consult.getPersonalColorId());
+            consultUserResponseDto.setAge(member.getAge());
+            consultUserResponseDto.setColors(colorList);
+            consultUserResponseDto.setPersonalColorTypeId(consult.getPersonalColorTypeId());
+            consultUserResponseDto.setGenderEnum(member.getGender());
+            consultUserResponseDto.setConsultedContent(consult.getConsultedContent());
+            consultUserResponseDto.setConsultedDate(consult.getConsultedDate());
+            consultUserResponseDto.setConsultedDrawing(consult.getConsultedDrawing());
+            consultUserResponseDto.setConsultedFile(consult.getConsultedFile());
+            consultUserResponseDto.setUuid(consult.getUuid());
         }
 
         return consultUserResponseDto;
-    }
-
-    /*퍼스널컬러 타입 + 진단 정보에 필요한 Response 양식*/
-    private ConsultResponseDto createConsultResponse(Integer consultantId, ConsultUserResponseDto consultUserResponseDto) {
-        List<PersonalColorGroup> personalColorGroups = personalColorGroupRepository.findAllByConsultantIdWithTypes(consultantId);
-
-        List<PersonalColorGroupResponseDto> personalColorGroupList = personalColorGroups.stream().map(personalColorGroup -> {
-            /*각 PersonalColorType을 personalColorTypeList 변환하여 리스트에 추가*/
-            List<PersonalColorTypeDto> personalColorTypeList = personalColorGroup.getPersonalColorTypes().stream()
-                    .filter(type -> type.getConsultantId().equals(consultantId))
-                    .map(type -> new PersonalColorTypeDto(type.getId(), type.getPersonalColorTypeName()))
-                    .collect(Collectors.toList());
-
-            return PersonalColorGroupResponseDto.builder()
-                    .personalColorGroupId(personalColorGroup.getId())
-                    .personalColorGroupName(personalColorGroup.getPersonalColorGroupName())
-                    .personalColorType(personalColorTypeList)
-                    .build();
-
-        }).collect(Collectors.toList());
-
-        return ConsultResponseDto.builder()
-                .consultUserResponseDto(consultUserResponseDto)
-                .personalColorGroups(personalColorGroupList)
-                .build();
     }
 }

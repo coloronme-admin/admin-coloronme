@@ -14,5 +14,5 @@ import java.util.List;
 public class PersonalColorGroupResponseDto {
     private Integer personalColorGroupId;
     private String personalColorGroupName;
-    private List<PersonalColorTypeDto> personalColorType;
+    private List<PersonalColorTypeDto> personalColorTypes;
 }
