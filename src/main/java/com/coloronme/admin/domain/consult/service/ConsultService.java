@@ -110,9 +110,9 @@ public class ConsultService {
                 .orElseThrow(() -> new RequestException(ErrorCode.CONSULT_NOT_FOUND_404));
 
         List<ColorResponseDto> colorList = new ArrayList<>();
-        System.out.println("selectConsultUserByUserId");
+
         for(ConsultColor consultColor : consult.getConsultColors()) {
-            System.out.println(consult.getConsultColors());
+
             Color color = colorRepository.findById(consultColor.getColor().getId())
                     .orElseThrow(() -> new RequestException(ErrorCode.COLOR_NOT_FOUND_404));
 
