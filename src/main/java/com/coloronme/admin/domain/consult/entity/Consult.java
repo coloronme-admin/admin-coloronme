@@ -1,7 +1,7 @@
 package com.coloronme.admin.domain.consult.entity;
 
+import com.coloronme.admin.domain.consult.dto.request.ColorRequestDto;
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
-import com.coloronme.product.color.Color;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,16 +20,19 @@ import java.util.List;
 @Table(name = "`Consult`")
 public class Consult {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name="`consultantId`")
-    private int consultantId;
+    private Integer consultantId;
 
     @Column(name="`memberId`")
-    private int memberId;
+    private Integer memberId;
 
     @Column(name="`personalColorId`")
-    private int personalColorId;
+    private Integer personalColorId;
+
+    @Column(name="`personalColorTypeId`")
+    private Integer personalColorTypeId;
 
     @NotNull
     @Column(name="`consultedDate`")
@@ -43,11 +46,11 @@ public class Consult {
 
     private String uuid;
 
+    @OneToMany(mappedBy = "consult", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ConsultColor> consultColors;
+
     @Column(name="`consultedFile`")
     private String consultedFile;
-
-    @OneToMany(mappedBy = "consult", cascade = CascadeType.ALL)
-    private List<ConsultColor> consultColors;
 
     @NotNull
     @Column(name="`createdAt`")
@@ -64,6 +67,7 @@ public class Consult {
         this.consultantId = consultantId;
         this.memberId = memberId;
         this.personalColorId = personalColorId;
+        this.personalColorTypeId = consultRequestDto.getPersonalColorTypeId();
         this.consultedContent = consultRequestDto.getConsultedContent();
         this.consultedDate = consultRequestDto.getConsultedDate();
         this.uuid = consultRequestDto.getUuid();

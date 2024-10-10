@@ -1,14 +1,10 @@
 package com.coloronme.product.personalColor.entity;
 
-import com.coloronme.product.color.Color;
-import com.coloronme.product.member.entity.Member;
-import com.coloronme.product.mood.Mood;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -16,7 +12,7 @@ import java.util.List;
 @Table(name = "`PersonalColor`")
 public class PersonalColor {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String code;
 
