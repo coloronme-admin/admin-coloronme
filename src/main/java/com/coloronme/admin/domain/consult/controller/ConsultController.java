@@ -1,6 +1,7 @@
 package com.coloronme.admin.domain.consult.controller;
 
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
+import com.coloronme.admin.domain.consult.dto.response.ConsultResponseDto;
 import com.coloronme.admin.domain.consult.dto.response.ConsultUserResponseDto;
 import com.coloronme.admin.domain.consult.service.ConsultService;
 import com.coloronme.admin.global.dto.ResponseDto;
@@ -43,11 +44,11 @@ public class ConsultController {
     @Operation(summary = "고객 상담 등록", description = "고객 상담 등록")
     @Transactional
     @PostMapping("/{userId}")
-    public ResponseDto<ConsultUserResponseDto> registerConsultUser(HttpServletRequest request, @PathVariable int userId,
+    public ResponseDto<ConsultResponseDto> registerConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                                @Valid @RequestBody ConsultRequestDto consultRequestDto) throws IOException {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
-        ConsultUserResponseDto consultUserResponseDto = consultService.registerConsultUser(consultantId, userId, consultRequestDto);
-        return ResponseDto.status(consultUserResponseDto);
+        ConsultResponseDto consultResponseDto = consultService.registerConsultUser(consultantId, userId, consultRequestDto);
+        return ResponseDto.status(consultResponseDto);
     }
 
     @Operation(summary = "사용자 ID로 고객 상담 조회", description = "사용자 ID로 고객 상담 조회")
@@ -77,18 +78,19 @@ public class ConsultController {
     @Operation(summary = "고객 상담 수정", description = "고객 상담 수정")
     @Transactional
     @PatchMapping("/{userId}")
-    public ResponseDto<ConsultUserResponseDto> updateConsultUser(HttpServletRequest request, @PathVariable int userId,
+    public ResponseDto<ConsultResponseDto> updateConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                  @Valid @RequestBody ConsultRequestDto consultRequestDto) {
-        ConsultUserResponseDto consultUserResponseDto = consultService.updateConsultUser(userId, consultRequestDto);
-        return ResponseDto.status(consultUserResponseDto);
+        int consultantId = jwtUtil.getIdFromRequest(request, "Access");
+        ConsultResponseDto consultResponseDto = consultService.updateConsultUser(consultantId, userId, consultRequestDto);
+        return ResponseDto.status(consultResponseDto);
     }
 
     @Operation(summary = "QR 고객 확인", description = "QR 고객 확인")
     @GetMapping("/qr/{uuid}")
-    public ResponseDto<ConsultUserResponseDto> verifyUserQr(HttpServletRequest request, @PathVariable String uuid){
+    public ResponseDto<ConsultResponseDto> verifyUserQr(HttpServletRequest request, @PathVariable String uuid){
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         Member member = userAuthDetailService.verifyUserQr(uuid);
-        ConsultUserResponseDto consultUserResponseDto = consultService.verifyUserQr(consultantId, member);
-        return ResponseDto.status(consultUserResponseDto);
+        ConsultResponseDto consultResponseDto = consultService.verifyUserQr(consultantId, member);
+        return ResponseDto.status(consultResponseDto);
     }
 }
