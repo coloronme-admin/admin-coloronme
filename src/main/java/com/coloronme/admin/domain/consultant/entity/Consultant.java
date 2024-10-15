@@ -4,6 +4,7 @@ import com.coloronme.admin.domain.consultant.dto.request.ConsultantRequestDto;
 import com.coloronme.admin.domain.mypage.dto.request.MyPageRequestDto;
 
 import com.coloronme.admin.domain.mypage.dto.request.PasswordRequestDto;
+import com.coloronme.product.personalColor.entity.ColorGroup;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,6 +36,10 @@ public class Consultant {
     @Column(name="`roleType`", nullable = false, columnDefinition = "`RoleType`")
     private RoleType roleType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name="`colorGroup`", nullable = false, columnDefinition = "`ColorGroup`")
+    private ColorGroup colorGroup;
+
     @CreatedDate
     @Column(name="`createdAt`", nullable = false)
     private LocalDateTime createdAt;
@@ -56,6 +61,7 @@ public class Consultant {
         this.name = getName();
         this.company = getCompany();
         this.password = consultantRequestDto.getPassword();
+        this.colorGroup = consultantRequestDto.getColorGroup();
     }
 
     public void update(MyPageRequestDto myPageRequestDto) {
