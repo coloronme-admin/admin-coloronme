@@ -21,9 +21,6 @@ public class PersonalColorType {
     @Column(name="`personalColorTypeName`")
     private String personalColorTypeName;
 
-    @Column(name="`personalColorTypeGroup`")
-    private String personalColorTypeGroup;
-
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name="`personalColorGroupId`")
     private PersonalColorGroup personalColorGroup;
