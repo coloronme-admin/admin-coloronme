@@ -1,7 +1,7 @@
 package com.coloronme.admin.domain.consultant.dto.request;
 
 import com.coloronme.admin.global.annotation.ValueOfEnum;
-import com.coloronme.product.personalColor.entity.ColorGroup;
+import com.coloronme.product.personalColor.dto.ColorGroup;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

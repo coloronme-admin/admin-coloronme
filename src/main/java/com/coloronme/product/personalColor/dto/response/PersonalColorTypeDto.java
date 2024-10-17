@@ -1,4 +1,4 @@
-package com.coloronme.product.personalColor.dto;
+package com.coloronme.product.personalColor.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package com.coloronme.admin.domain.consultant.dto.response;
 
 
 import com.coloronme.admin.domain.consultant.entity.RoleType;
-import com.coloronme.product.personalColor.entity.ColorGroup;
+import com.coloronme.product.personalColor.dto.ColorGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

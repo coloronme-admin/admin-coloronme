@@ -4,7 +4,7 @@ import com.coloronme.admin.domain.consultant.dto.request.ConsultantRequestDto;
 import com.coloronme.admin.domain.mypage.dto.request.MyPageRequestDto;
 
 import com.coloronme.admin.domain.mypage.dto.request.PasswordRequestDto;
-import com.coloronme.product.personalColor.entity.ColorGroup;
+import com.coloronme.product.personalColor.dto.ColorGroup;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

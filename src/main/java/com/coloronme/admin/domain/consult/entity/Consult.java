@@ -1,6 +1,5 @@
 package com.coloronme.admin.domain.consult.entity;
 
-import com.coloronme.admin.domain.consult.dto.request.ColorRequestDto;
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

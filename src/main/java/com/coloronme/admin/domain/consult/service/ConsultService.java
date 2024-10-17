@@ -1,16 +1,16 @@
 package com.coloronme.admin.domain.consult.service;
 
-import com.coloronme.admin.domain.consult.dto.request.ColorRequestDto;
+import com.coloronme.product.color.dto.ColorRequestDto;
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
-import com.coloronme.admin.domain.consult.dto.response.ColorResponseDto;
+import com.coloronme.product.color.dto.ColorResponseDto;
 import com.coloronme.admin.domain.consult.dto.response.ConsultUserResponseDto;
 import com.coloronme.admin.domain.consult.entity.Consult;
 import com.coloronme.admin.domain.consult.entity.ConsultColor;
 import com.coloronme.product.color.entity.Color;
 import com.coloronme.product.color.repository.ColorRepository;
 import com.coloronme.product.member.entity.Member;
-import com.coloronme.product.personalColor.dto.PersonalColorGroupResponseDto;
-import com.coloronme.product.personalColor.dto.PersonalColorTypeDto;
+import com.coloronme.product.personalColor.dto.response.PersonalColorGroupResponseDto;
+import com.coloronme.product.personalColor.dto.response.PersonalColorTypeDto;
 import com.coloronme.product.personalColor.entity.PersonalColor;
 import com.coloronme.admin.domain.consult.repository.ConsultRepository;
 import com.coloronme.product.personalColor.entity.PersonalColorGroup;
