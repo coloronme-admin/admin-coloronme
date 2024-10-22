@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+/*색상군이 추가될 때마다 이짓을?*/
 public class PersonalColorResponseDto {
     /*PCCS*/
     private List<ColorResponseDto> p; /*페일*/
@@ -61,7 +62,7 @@ public class PersonalColorResponseDto {
             this.bs = new ArrayList<>();
             this.dkg = new ArrayList<>();
             this.dp = new ArrayList<>();
-            this.gk = new ArrayList<>();
+            this.dk = new ArrayList<>();
             this.bk = new ArrayList<>();
         }
     }

@@ -21,8 +21,8 @@ public class ColorGroupResponseDto {
 
     public ColorGroupResponseDto(ColorGroup colorGroup) {
         if (colorGroup == ColorGroup.ALL) {
-            this.pccs = new PersonalColorResponseDto(colorGroup);
-            this.ks = new PersonalColorResponseDto(colorGroup);
+            this.pccs = new PersonalColorResponseDto(ColorGroup.PCCS);
+            this.ks = new PersonalColorResponseDto(ColorGroup.KS);
         } else if (colorGroup == ColorGroup.KS) {
             this.ks = new PersonalColorResponseDto(colorGroup);
         } else if (colorGroup == ColorGroup.PCCS) {
