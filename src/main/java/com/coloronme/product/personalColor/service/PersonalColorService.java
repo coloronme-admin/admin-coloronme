@@ -8,7 +8,6 @@ import com.coloronme.product.personalColor.dto.response.PersonalColorDto;
 import com.coloronme.product.personalColor.dto.response.PersonalColorResponseDto;
 import com.coloronme.product.personalColor.repository.PersonalColorRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ public class PersonalColorService {
     public ColorGroupResponseDto getColorGroupListByType(PersonalColorRequestDto personalColorRequestDto) {
         /*1. type 확인 all | pccs | ks */
         ColorGroup type = personalColorRequestDto.getType();
-        System.out.println("personalColorRequestDto.getType() : " + personalColorRequestDto.getType());
 
         /*return 값 받을 응답 객체*/
         ColorGroupResponseDto colorGroupResponseDto = new ColorGroupResponseDto(type);
@@ -48,10 +46,8 @@ public class PersonalColorService {
         return personalColorResponseDto;
     }
 
-
     private void setPersonalColorByType(ColorGroupResponseDto colorGroupResponseDto, ColorGroup type) {
         List<PersonalColorDto> personalColorList = personalColorRepository.findPersonalColorByType(type);
-        System.out.println("personalColorName:" + personalColorList.get(1).getPersonalColorName());
 
         if(type == ColorGroup.PCCS) {
             for (PersonalColorDto personalColor : personalColorList) {
