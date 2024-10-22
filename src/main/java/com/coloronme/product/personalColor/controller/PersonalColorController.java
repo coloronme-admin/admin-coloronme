@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/color")
@@ -24,9 +25,14 @@ public class PersonalColorController {
 
     /*색상군 조회*/
     @GetMapping("/group")
-    public ResponseDto<ColorGroupResponseDto> getColorGroupList(HttpServletRequest httpServletRequest,
-                                                                @Valid PersonalColorRequestDto personalColorRequestDto){
-        ColorGroupResponseDto colorGroupResponseDto = personalColorService.getColorGroupList(personalColorRequestDto);
-        return ResponseDto.status(colorGroupResponseDto);
+    public ResponseDto<?> getColorGroupList(HttpServletRequest httpServletRequest,
+                                                  @Valid PersonalColorRequestDto personalColorRequestDto){
+        if(personalColorRequestDto.getGroup() == null) {
+            ColorGroupResponseDto colorGroupResponseDto = personalColorService.getColorGroupListByType(personalColorRequestDto);
+            return ResponseDto.status(colorGroupResponseDto);
+        } else {
+            PersonalColorResponseDto personalColorResponseDto = personalColorService.getColorGroupListByTypeAndGroup(personalColorRequestDto);
+            return ResponseDto.status(personalColorResponseDto);
+        }
     }
 }

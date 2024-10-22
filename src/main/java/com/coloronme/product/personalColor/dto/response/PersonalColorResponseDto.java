@@ -36,6 +36,10 @@ public class PersonalColorResponseDto {
     private List<ColorResponseDto> gk; /*다크*/
     private List<ColorResponseDto> bk; /*블랙키쉬*/
 
+    public PersonalColorResponseDto() {
+
+    }
+
     public PersonalColorResponseDto(ColorGroup colorGroup) {
         if(colorGroup == ColorGroup.PCCS) {
             this.p = new ArrayList<>();
