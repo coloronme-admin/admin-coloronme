@@ -14,7 +14,9 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-/*색상군이 추가될 때마다 이짓을?*/
+/*
+색상군이 추가될 때마다 이짓을?
+*/
 public class PersonalColorResponseDto {
     /*PCCS*/
     private List<ColorResponseDto> p; /*페일*/

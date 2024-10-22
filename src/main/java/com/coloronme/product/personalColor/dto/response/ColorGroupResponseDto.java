@@ -1,15 +1,10 @@
 package com.coloronme.product.personalColor.dto.response;
 
-import com.coloronme.product.color.dto.ColorResponseDto;
 import com.coloronme.product.personalColor.dto.ColorGroup;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.parameters.P;
-
-import java.util.List;
 
 @Setter
 @Getter

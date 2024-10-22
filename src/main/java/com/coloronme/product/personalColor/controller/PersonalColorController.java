@@ -5,15 +5,11 @@ import com.coloronme.admin.global.jwt.JwtUtil;
 import com.coloronme.product.personalColor.dto.request.PersonalColorRequestDto;
 import com.coloronme.product.personalColor.dto.response.ColorGroupResponseDto;
 import com.coloronme.product.personalColor.dto.response.PersonalColorResponseDto;
-import com.coloronme.product.personalColor.dto.response.PersonalColorTypeDto;
 import com.coloronme.product.personalColor.service.PersonalColorService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/color")
