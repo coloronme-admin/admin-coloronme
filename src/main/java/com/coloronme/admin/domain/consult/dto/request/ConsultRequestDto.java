@@ -1,5 +1,6 @@
 package com.coloronme.admin.domain.consult.dto.request;
 
+import com.coloronme.product.color.dto.ColorRequestDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 

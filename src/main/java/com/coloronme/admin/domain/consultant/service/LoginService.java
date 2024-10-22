@@ -48,6 +48,7 @@ public class LoginService {
         return ResponseDto.status(
                 SignupResponseDto.builder()
                         .email(consultant.getEmail())
+                        .colorGroup(consultant.getColorGroup())
                         .build()
         );
     }
@@ -83,6 +84,7 @@ public class LoginService {
         return ResponseDto.status(
                 LoginResponseDto.builder()
                         .email(consultant.getEmail())
+                        .colorGroup(consultant.getColorGroup())
                         .roleType(consultant.getRoleType())
                         .accessToken(firstAccessToken)
                         .refreshToken(tokenDto.getRefreshToken())

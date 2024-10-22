@@ -1,4 +1,4 @@
-package com.coloronme.admin.domain.consult.dto.response;
+package com.coloronme.product.color.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.coloronme.admin.domain.consult.dto.request;
+package com.coloronme.product.color.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

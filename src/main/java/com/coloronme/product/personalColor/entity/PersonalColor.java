@@ -1,5 +1,6 @@
 package com.coloronme.product.personalColor.entity;
 
+import com.coloronme.product.personalColor.dto.ColorGroup;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
