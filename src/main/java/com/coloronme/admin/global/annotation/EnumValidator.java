@@ -14,7 +14,6 @@ public class EnumValidator implements ConstraintValidator<ValueOfEnum, CharSeque
 
     @Override
     public void initialize(ValueOfEnum constraintAnnotation) {
-        System.out.println("여긴오니?");
         acceptedValues = Stream.of(constraintAnnotation.enumClass().getEnumConstants())
                 .map(Enum::name)
                 .collect(Collectors.toList());
