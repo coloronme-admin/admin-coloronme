@@ -22,7 +22,7 @@ public class PersonalColorService {
     /*색상군 조회*/
     public ColorGroupResponseDto getColorGroupListByType(PersonalColorRequestDto personalColorRequestDto) {
         /*1. type 확인 all | pccs | ks */
-        ColorGroup type = personalColorRequestDto.getType();
+        ColorGroup type = personalColorRequestDto.getColorGroupEnum();
 
         /*return 값 받을 응답 객체*/
         ColorGroupResponseDto colorGroupResponseDto = new ColorGroupResponseDto(type);
@@ -42,7 +42,7 @@ public class PersonalColorService {
     /*색상군별 + 퍼스널 컬러 타입 조회*/
     public PersonalColorResponseDto getColorGroupListByTypeAndGroup(PersonalColorRequestDto personalColorRequestDto) {
         PersonalColorResponseDto personalColorResponseDto = new PersonalColorResponseDto();
-        setPersonalColorByTypeAndGroup(personalColorResponseDto, personalColorRequestDto.getType(), personalColorRequestDto.getGroup());
+        setPersonalColorByTypeAndGroup(personalColorResponseDto, personalColorRequestDto.getColorGroupEnum(), personalColorRequestDto.getGroup());
         return personalColorResponseDto;
     }
 
@@ -134,7 +134,7 @@ public class PersonalColorService {
                         colorGroupResponseDto.getKs().getDp().add(colorResponseData);
                         break;
                     case "다크":
-                        colorGroupResponseDto.getKs().getGk().add(colorResponseData);
+                        colorGroupResponseDto.getKs().getDk().add(colorResponseData);
                         break;
                     case "블랙키쉬":
                         colorGroupResponseDto.getKs().getBk().add(colorResponseData);

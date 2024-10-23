@@ -6,7 +6,6 @@ import com.coloronme.product.personalColor.dto.request.PersonalColorRequestDto;
 import com.coloronme.product.personalColor.dto.response.ColorGroupResponseDto;
 import com.coloronme.product.personalColor.dto.response.PersonalColorResponseDto;
 import com.coloronme.product.personalColor.service.PersonalColorService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +25,7 @@ public class PersonalColorController {
     * 여러 요구사항이 늘어나면 응답 객체에 대한 인터페이스를 사용하는 것이 더 좋을 것 같음
     * */
     @GetMapping("/group")
-    public ResponseDto<?> getColorGroupList(HttpServletRequest httpServletRequest,
-                                                  @Valid PersonalColorRequestDto personalColorRequestDto){
+    public ResponseDto<?> getColorGroupList(@Valid PersonalColorRequestDto personalColorRequestDto){
         if(personalColorRequestDto.getGroup() == null) {
             ColorGroupResponseDto colorGroupResponseDto = personalColorService.getColorGroupListByType(personalColorRequestDto);
             return ResponseDto.status(colorGroupResponseDto);

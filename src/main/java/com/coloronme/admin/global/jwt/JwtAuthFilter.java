@@ -27,7 +27,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        log.info("JwtAuthFilter 접속");
         String accessToken = jwtUtil.getHeaderToken(request, "Access");
         String url = request.getRequestURI();
         /*요청에 access token이 없는 경우*/
