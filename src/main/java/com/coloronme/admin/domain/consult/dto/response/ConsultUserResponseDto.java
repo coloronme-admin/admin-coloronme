@@ -14,20 +14,18 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConsultUserResponseDto {
-    private List<PersonalColorGroupResponseDto> personalColorGroups;
     private int memberId;
     private String nickname;
     private String email;
     private String profileImageUrl;
     private LocalDateTime consultedDate;
-    private Integer personalColorId;
-    private List<ColorResponseDto> colors;
-    private Integer personalColorTypeId;
     private Integer age;
     private GenderEnum genderEnum;
     private String consultedContent;
     private String consultedDrawing;
-    private String uuid;
+    private List<ColorResponseDto> colors;
+    private Integer personalColorTypeId;
     private String consultedFile;
+    private String uuid;
 }
   
