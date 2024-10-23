@@ -6,6 +6,7 @@ import com.coloronme.product.personalColor.dto.request.PersonalColorRequestDto;
 import com.coloronme.product.personalColor.dto.response.ColorGroupResponseDto;
 import com.coloronme.product.personalColor.dto.response.PersonalColorResponseDto;
 import com.coloronme.product.personalColor.service.PersonalColorService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ public class PersonalColorController {
     * 후에 쿼리 파라미터 종류들이 늘어나거나 퍼스널 컬러 색상군 조회 관련하여
     * 여러 요구사항이 늘어나면 응답 객체에 대한 인터페이스를 사용하는 것이 더 좋을 것 같음
     * */
+    @Operation(summary = "ColorGroupList", description = "색상군 조회 API")
     @GetMapping("/group")
     public ResponseDto<?> getColorGroupList(@Valid PersonalColorRequestDto personalColorRequestDto){
         if(personalColorRequestDto.getGroup() == null) {
