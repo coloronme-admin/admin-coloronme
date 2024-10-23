@@ -2,7 +2,7 @@ package com.coloronme.admin.domain.consult.controller;
 
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
 import com.coloronme.admin.domain.consult.dto.response.ConsultUserResponseDto;
-import com.coloronme.admin.domain.consult.service.ConsultService;
+import com.coloronme.admin.domain.consult.service.ConsultUserService;
 import com.coloronme.admin.global.dto.ResponseDto;
 import com.coloronme.admin.global.jwt.JwtUtil;
 import com.coloronme.product.member.entity.Member;
@@ -22,8 +22,8 @@ import java.util.List;
 @RequestMapping(value = "/members")
 @RequiredArgsConstructor
 @Slf4j
-public class ConsultController {
-    private final ConsultService consultService;
+public class ConsultUserController {
+    private final ConsultUserService consultUserService;
     private final UserAuthDetailService userAuthDetailService;
     private final JwtUtil jwtUtil;
 
@@ -33,7 +33,7 @@ public class ConsultController {
     public ResponseDto<ConsultUserResponseDto> registerConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                                @Valid @RequestBody ConsultRequestDto consultRequestDto) throws IOException {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
-        ConsultUserResponseDto consultResponseDto = consultService.registerConsultUser(consultantId, userId, consultRequestDto);
+        ConsultUserResponseDto consultResponseDto = consultUserService.registerConsultUser(consultantId, userId, consultRequestDto);
         return ResponseDto.status(consultResponseDto);
     }
 
@@ -41,7 +41,7 @@ public class ConsultController {
     @GetMapping("/{userId}")
     public ResponseDto<ConsultUserResponseDto> selectConsultUserByUserId(HttpServletRequest request,
                                                                          @PathVariable int userId) {
-        ConsultUserResponseDto consultUserResponseDto = consultService.selectConsultUserByUserId(userId);
+        ConsultUserResponseDto consultUserResponseDto = consultUserService.selectConsultUserByUserId(userId);
         return ResponseDto.status(consultUserResponseDto);
     }
 
@@ -49,7 +49,7 @@ public class ConsultController {
     @GetMapping("/uuid/{uuid}")
     public ResponseDto<ConsultUserResponseDto> selectConsultUserByUserId(HttpServletRequest request,
                                                                          @PathVariable String uuid) {
-        ConsultUserResponseDto consultUserResponseDto = consultService.selectConsultUserByUuid(uuid);
+        ConsultUserResponseDto consultUserResponseDto = consultUserService.selectConsultUserByUuid(uuid);
         return ResponseDto.status(consultUserResponseDto);
     }
 
@@ -57,7 +57,7 @@ public class ConsultController {
     @GetMapping()
     public ResponseDto<List<ConsultUserResponseDto>> selectConsultUserList(HttpServletRequest request) {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
-        List<ConsultUserResponseDto> consultUserList = consultService.selectConsultUserList(consultantId);
+        List<ConsultUserResponseDto> consultUserList = consultUserService.selectConsultUserList(consultantId);
         return ResponseDto.status(consultUserList);
     }
 
@@ -67,7 +67,7 @@ public class ConsultController {
     public ResponseDto<ConsultUserResponseDto> updateConsultUser(HttpServletRequest request, @PathVariable int userId,
                                                  @Valid @RequestBody ConsultRequestDto consultRequestDto) {
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
-        ConsultUserResponseDto consultResponseDto = consultService.updateConsultUser(consultantId, userId, consultRequestDto);
+        ConsultUserResponseDto consultResponseDto = consultUserService.updateConsultUser(consultantId, userId, consultRequestDto);
         return ResponseDto.status(consultResponseDto);
     }
 
@@ -76,7 +76,7 @@ public class ConsultController {
     public ResponseDto<ConsultUserResponseDto> verifyUserQr(HttpServletRequest request, @PathVariable String uuid){
         int consultantId = jwtUtil.getIdFromRequest(request, "Access");
         Member member = userAuthDetailService.verifyUserQr(uuid);
-        ConsultUserResponseDto consultUserResponseDto = consultService.verifyUserQr(consultantId, member);
+        ConsultUserResponseDto consultUserResponseDto = consultUserService.verifyUserQr(consultantId, member);
         return ResponseDto.status(consultUserResponseDto);
     }
 }
