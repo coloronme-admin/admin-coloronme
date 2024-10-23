@@ -12,8 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConsultRequestDto {
-    @NotNull(message = "퍼스널 컬러를 선택해 주세요.")
-    private int personalColorId;
     @NotNull(message = "퍼스널 컬러 타입을 선택해 주세요.")
     private int personalColorTypeId;
     private String consultedContent;

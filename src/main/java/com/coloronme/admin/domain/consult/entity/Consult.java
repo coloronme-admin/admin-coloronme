@@ -27,9 +27,6 @@ public class Consult {
     @Column(name="`memberId`")
     private Integer memberId;
 
-    @Column(name="`personalColorId`")
-    private Integer personalColorId;
-
     @Column(name="`personalColorTypeId`")
     private Integer personalColorTypeId;
 
@@ -62,10 +59,10 @@ public class Consult {
     @Column(name="`deletedAt`")
     private LocalDateTime deletedAt;
 
-    public Consult(int consultantId, int memberId, int personalColorId, ConsultRequestDto consultRequestDto) {
+    public Consult(int consultantId, int memberId, int personalColorTypeId, ConsultRequestDto consultRequestDto) {
         this.consultantId = consultantId;
         this.memberId = memberId;
-        this.personalColorId = personalColorId;
+        this.personalColorTypeId = personalColorTypeId;
         this.personalColorTypeId = consultRequestDto.getPersonalColorTypeId();
         this.consultedContent = consultRequestDto.getConsultedContent();
         this.consultedDate = consultRequestDto.getConsultedDate();

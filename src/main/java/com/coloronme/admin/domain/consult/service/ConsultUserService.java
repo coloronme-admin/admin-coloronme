@@ -14,6 +14,7 @@ import com.coloronme.product.personalColor.dto.response.PersonalColorTypeDto;
 import com.coloronme.product.personalColor.entity.PersonalColor;
 import com.coloronme.admin.domain.consult.repository.ConsultRepository;
 import com.coloronme.product.personalColor.entity.PersonalColorGroup;
+import com.coloronme.product.personalColor.entity.PersonalColorType;
 import com.coloronme.product.personalColor.repository.PersonalColorGroupRepository;
 import com.coloronme.product.personalColor.repository.PersonalColorRepository;
 import com.coloronme.product.member.repository.MemberRepository;
@@ -53,19 +54,16 @@ public class ConsultUserService {
             Member member = memberRepository.findById(userId)
                     .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
 
-            PersonalColor personalColor = personalColorRepository.findById(consultRequestDto.getPersonalColorId())
-                    .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_NOT_FOUND_404));
-
-            personalColorTypeRepository.findById(consultRequestDto.getPersonalColorTypeId())
+            PersonalColorType personalColorType = personalColorTypeRepository.findById(consultRequestDto.getPersonalColorTypeId())
                     .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
 
-            member.setPersonalColorId(consultRequestDto.getPersonalColorId());
+            member.setPersonalColorId(consultRequestDto.getPersonalColorTypeId());
 
             /*uuid 생성*/
             UUID uuid = UUID.randomUUID();
             consultRequestDto.setUuid(uuid.toString());
 
-            Consult consultData = new Consult(consultantId, userId, personalColor.getId(), consultRequestDto);
+            Consult consultData = new Consult(consultantId, userId, personalColorType.getId(), consultRequestDto);
 
             List<ConsultColor> consultColors = new ArrayList<>();
             List<ColorResponseDto> colorList = new ArrayList<>();
@@ -175,19 +173,19 @@ public class ConsultUserService {
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
 
-        PersonalColor personalColor = personalColorRepository.findById(consultRequestDto.getPersonalColorId())
-                .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_NOT_FOUND_404));
-
         Consult consult = consultRepository.findByMemberId(userId)
                 .orElseThrow(() -> new RequestException(ErrorCode.CONSULT_NOT_FOUND_404));
 
-        consult.setPersonalColorId(personalColor.getId());
+        PersonalColorType personalColorType = personalColorTypeRepository.findById(consultRequestDto.getPersonalColorTypeId())
+                        .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
+
+        consult.setPersonalColorTypeId(personalColorType.getId());
         consult.setConsultedContent(consultRequestDto.getConsultedContent());
         consult.setConsultedDrawing(consultRequestDto.getConsultedDrawing());
         consult.setConsultedFile(consultRequestDto.getConsultedFile());
         consult.setUpdatedAt(LocalDateTime.now());
 
-        member.setPersonalColorId(consultRequestDto.getPersonalColorId());
+        member.setPersonalColorId(consultRequestDto.getPersonalColorTypeId());
 
         /*기존 ConsultColor 데이터는 삭제*/
         List<ConsultColor> consultColors = consult.getConsultColors();
