@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
-@RequestMapping(value = "/color")
 @RestController
 public class PersonalColorController {
 
@@ -26,7 +25,7 @@ public class PersonalColorController {
     * 여러 요구사항이 늘어나면 응답 객체에 대한 인터페이스를 사용하는 것이 더 좋을 것 같음
     * */
     @Operation(summary = "ColorGroupList", description = "색상군 조회 API")
-    @GetMapping("/group")
+    @GetMapping("/color/group")
     public ResponseDto<?> getColorGroupList(@Valid PersonalColorRequestDto personalColorRequestDto){
         if(personalColorRequestDto.getGroup() == null) {
             ColorGroupResponseDto colorGroupResponseDto = personalColorService.getColorGroupListByType(personalColorRequestDto);

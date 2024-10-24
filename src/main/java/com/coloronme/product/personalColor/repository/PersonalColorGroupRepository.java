@@ -13,4 +13,5 @@ public interface PersonalColorGroupRepository extends JpaRepository<PersonalColo
         """)
     List<PersonalColorGroup> findAllByConsultantIdWithTypes(@Param("consultantId") Integer consultantId);
 
+    PersonalColorGroup findByPersonalColorGroupName(String personalColorTypeName);
 }

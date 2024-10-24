@@ -21,8 +21,10 @@ public enum ErrorCode {
     /*PERSONAL COLOR*/
     PERSONAL_COLOR_NOT_FOUND_404(HttpStatus.NOT_FOUND, "퍼스널 컬러를 찾을 수 없습니다."),
     PERSONAL_COLOR_TYPE_NOT_FOUND_404(HttpStatus.NOT_FOUND, "퍼스널 컬러 타입을 찾을 수 없습니다."),
+    PERSONAL_COLOR_GROUP_NOT_FOUND_404(HttpStatus.NOT_FOUND, "퍼스널 컬러 그룹을 찾을 수 없습니다."),
 
-    /*PERSONAL COLOR*/
+
+    /*CONSULT*/
     CONSULT_NOT_FOUND_404(HttpStatus.NOT_FOUND, "진단 내역을 찾을 수 없습니다."),
 
     /*MY PAGE*/

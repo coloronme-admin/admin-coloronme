@@ -1,15 +1,16 @@
 package com.coloronme.product.personalColor.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name="`PersonalColorType`")
-@Setter
+@Builder
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PersonalColorType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

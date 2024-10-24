@@ -10,7 +10,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class PersonalColorGroupResponseDto {
-    private Integer personalColorGroupId;
     private String personalColorGroupName;
     private List<PersonalColorTypeDto> personalColorTypes;
 }
