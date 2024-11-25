@@ -151,5 +151,9 @@ public class ConsultPersonalColorService {
         );
     }
 
+    public void deletePersonalColorType(int consultantId, int personalColorTypeId) {
+        PersonalColorType personalColorType = personalColorTypeRepository.findByConsultantIdAndId(consultantId, personalColorTypeId)
+                .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
 
+    }
 }

@@ -47,4 +47,12 @@ public class ConsultPersonalColorController {
                 .updatePersonalColorType(consultantId, personalColorTypeId, personalColorTypeUpdateRequestDto);
         return ResponseDto.status(personalColorTypeResponseDto);
     }
+
+    @DeleteMapping("/{personalColorTypeId}")
+    public ResponseDto<?> deletePersonalColorType(HttpServletRequest httpServletRequest,
+                                                    @PathVariable int personalColorTypeId){
+        int consultantId = jwtUtil.getIdFromRequest(httpServletRequest, "Access");
+        consultPersonalColorService.deletePersonalColorType(consultantId, personalColorTypeId);
+        return ResponseDto.status();
+    }
 }
