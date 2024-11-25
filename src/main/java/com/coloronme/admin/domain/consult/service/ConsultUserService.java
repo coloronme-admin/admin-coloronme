@@ -9,11 +9,7 @@ import com.coloronme.admin.domain.consult.entity.ConsultColor;
 import com.coloronme.product.color.entity.Color;
 import com.coloronme.product.color.repository.ColorRepository;
 import com.coloronme.product.member.entity.Member;
-import com.coloronme.product.personalColor.dto.response.PersonalColorGroupResponseDto;
-import com.coloronme.product.personalColor.dto.response.PersonalColorTypeDto;
-import com.coloronme.product.personalColor.entity.PersonalColor;
 import com.coloronme.admin.domain.consult.repository.ConsultRepository;
-import com.coloronme.product.personalColor.entity.PersonalColorGroup;
 import com.coloronme.product.personalColor.entity.PersonalColorType;
 import com.coloronme.product.personalColor.repository.PersonalColorGroupRepository;
 import com.coloronme.product.personalColor.repository.PersonalColorRepository;
@@ -28,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service

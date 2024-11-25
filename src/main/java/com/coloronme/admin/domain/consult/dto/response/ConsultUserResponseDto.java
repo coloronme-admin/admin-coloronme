@@ -2,7 +2,6 @@ package com.coloronme.admin.domain.consult.dto.response;
 
 import com.coloronme.product.color.dto.ColorResponseDto;
 import com.coloronme.product.member.enums.GenderEnum;
-import com.coloronme.product.personalColor.dto.response.PersonalColorGroupResponseDto;
 import lombok.*;
 
 import java.time.LocalDateTime;

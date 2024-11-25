@@ -1,8 +1,11 @@
-package com.coloronme.product.personalColor.dto.response;
+package com.coloronme.admin.domain.consult.dto.response;
 
+import com.coloronme.product.color.dto.ColorResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -10,4 +13,5 @@ import lombok.Setter;
 public class PersonalColorTypeDto {
     private Integer personalColorTypeId;
     private String personalColorTypeName;
+    private List<ColorResponseDto> colors;
 }
