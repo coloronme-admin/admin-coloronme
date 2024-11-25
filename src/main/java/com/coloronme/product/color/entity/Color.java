@@ -1,6 +1,7 @@
 package com.coloronme.product.color.entity;
 
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
+import com.coloronme.admin.domain.consult.entity.ColorPersonalColorType;
 import com.coloronme.admin.domain.consult.entity.Consult;
 import com.coloronme.admin.domain.consult.entity.ConsultColor;
 import jakarta.persistence.*;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,6 +33,9 @@ public class Color {
 
     @OneToMany(mappedBy = "color", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ConsultColor> consultColors;
+
+    @OneToMany(mappedBy = "color", cascade = CascadeType.ALL)
+    private List<ColorPersonalColorType> colorPersonalColorTypeList;
 
     @Column(name="`createdAt`")
     private LocalDateTime createdAt;

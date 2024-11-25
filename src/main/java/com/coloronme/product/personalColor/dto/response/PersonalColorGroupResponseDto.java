@@ -1,15 +1,27 @@
 package com.coloronme.product.personalColor.dto.response;
 
+import com.coloronme.product.personalColor.dto.ColorGroup;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.util.List;
-
+@Setter
 @Getter
-@Builder
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PersonalColorGroupResponseDto {
-    private String personalColorGroupName;
-    private List<PersonalColorTypeDto> personalColorTypes;
+    private PersonalColorResponseDto pccs;
+    private PersonalColorResponseDto ks;
+
+    public PersonalColorGroupResponseDto(ColorGroup colorGroup) {
+        if (colorGroup == ColorGroup.ALL) {
+            this.pccs = new PersonalColorResponseDto(ColorGroup.PCCS);
+            this.ks = new PersonalColorResponseDto(ColorGroup.KS);
+        } else if (colorGroup == ColorGroup.KS) {
+            this.ks = new PersonalColorResponseDto(colorGroup);
+        } else if (colorGroup == ColorGroup.PCCS) {
+            this.pccs = new PersonalColorResponseDto(colorGroup);
+        }
+    }
 }

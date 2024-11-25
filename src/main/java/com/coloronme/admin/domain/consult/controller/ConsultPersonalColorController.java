@@ -3,14 +3,17 @@ package com.coloronme.admin.domain.consult.controller;
 
 import com.coloronme.admin.domain.consult.dto.request.PersonalColorTypeRequestDto;
 import com.coloronme.admin.domain.consult.dto.response.ConsultPersonalColorResponseDto;
+import com.coloronme.admin.domain.consult.dto.response.PersonalColorTypeDto;
 import com.coloronme.admin.domain.consult.service.ConsultPersonalColorService;
 import com.coloronme.admin.global.dto.ResponseDto;
 import com.coloronme.admin.global.jwt.JwtUtil;
-import com.coloronme.product.personalColor.dto.response.PersonalColorGroupResponseDto;
+import com.coloronme.admin.domain.consult.dto.response.PersonalColorTypeResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,10 +32,10 @@ public class ConsultPersonalColorController {
     }
 
     @PostMapping
-    public ResponseDto<PersonalColorGroupResponseDto> registerPersonalColorType(HttpServletRequest httpServletRequest,
-                          @Valid @RequestBody PersonalColorTypeRequestDto personalColorTypeRequestDto){
+    public ResponseDto<PersonalColorTypeResponseDto> registerPersonalColorType(HttpServletRequest httpServletRequest,
+                                                                             @Valid @RequestBody PersonalColorTypeRequestDto personalColorTypeRequestDto){
         int consultantId = jwtUtil.getIdFromRequest(httpServletRequest, "Access");
-        PersonalColorGroupResponseDto personalColorResponseDto = consultPersonalColorService
+        PersonalColorTypeResponseDto personalColorResponseDto = consultPersonalColorService
                 .registerPersonalColorType(consultantId, personalColorTypeRequestDto);
         return ResponseDto.status(personalColorResponseDto);
     }

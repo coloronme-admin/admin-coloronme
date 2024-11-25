@@ -3,7 +3,7 @@ package com.coloronme.product.personalColor.controller;
 import com.coloronme.admin.global.dto.ResponseDto;
 import com.coloronme.admin.global.jwt.JwtUtil;
 import com.coloronme.product.personalColor.dto.request.PersonalColorRequestDto;
-import com.coloronme.product.personalColor.dto.response.ColorGroupResponseDto;
+import com.coloronme.product.personalColor.dto.response.PersonalColorGroupResponseDto;
 import com.coloronme.product.personalColor.dto.response.PersonalColorResponseDto;
 import com.coloronme.product.personalColor.service.PersonalColorService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,8 +28,8 @@ public class PersonalColorController {
     @GetMapping("/color/group")
     public ResponseDto<?> getColorGroupList(@Valid PersonalColorRequestDto personalColorRequestDto){
         if(personalColorRequestDto.getGroup() == null) {
-            ColorGroupResponseDto colorGroupResponseDto = personalColorService.getColorGroupListByType(personalColorRequestDto);
-            return ResponseDto.status(colorGroupResponseDto);
+            PersonalColorGroupResponseDto personalColorGroupResponseDto = personalColorService.getColorGroupListByType(personalColorRequestDto);
+            return ResponseDto.status(personalColorGroupResponseDto);
         } else {
             PersonalColorResponseDto personalColorResponseDto = personalColorService.getColorGroupListByTypeAndGroup(personalColorRequestDto);
             return ResponseDto.status(personalColorResponseDto);

@@ -1,6 +1,5 @@
 package com.coloronme.admin.domain.consult.dto.response;
 
-import com.coloronme.product.personalColor.dto.response.PersonalColorTypeDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
