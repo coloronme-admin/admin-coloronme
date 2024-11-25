@@ -11,7 +11,6 @@ import com.coloronme.product.color.entity.Color;
 import com.coloronme.product.color.repository.ColorRepository;
 import com.coloronme.admin.domain.consult.dto.response.PersonalColorTypeResponseDto;
 import com.coloronme.admin.domain.consult.dto.response.PersonalColorTypeDto;
-import com.coloronme.product.color.service.ColorService;
 import com.coloronme.product.personalColor.dto.PersonalColorGroupEnum;
 import com.coloronme.product.personalColor.entity.PersonalColorGroup;
 import com.coloronme.product.personalColor.entity.PersonalColorType;
@@ -34,8 +33,6 @@ public class ConsultPersonalColorService {
     private final ColorRepository colorRepository;
     private final ColorPersonalColorTypeRepository colorPersonalColorTypeRepository;
     private final PersonalColorTypeRepository personalColorTypeRepository;
-
-    private final ColorService colorService;
 
     public ConsultPersonalColorResponseDto getPersonalColorType(int consultantId) {
 
