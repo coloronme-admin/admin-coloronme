@@ -39,4 +39,12 @@ public class ConsultPersonalColorController {
                 .registerPersonalColorType(consultantId, personalColorTypeRequestDto);
         return ResponseDto.status(personalColorResponseDto);
     }
+
+    @PatchMapping("/{personalColorTypeId}")
+    public ResponseDto<PersonalColorTypeResponseDto> updatePersonalColorType(HttpServletRequest httpServletRequest,
+                                                                             @PathVariable int personalColorTypeId,
+                                                                             @RequestBody PersonalColorTypeRequestDto personalColorTypeRequestDto) {
+        int consultantId = jwtUtil.getIdFromRequest(httpServletRequest, "Access");
+
+    }
 }

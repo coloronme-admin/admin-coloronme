@@ -38,10 +38,10 @@ public class ConsultPersonalColorService {
 
         ConsultPersonalColorResponseDto consultPersonalColorResponseDto = new ConsultPersonalColorResponseDto();
 
-        consultPersonalColorResponseDto.setSpring(getPersonalColorDtoList(consultantId, PersonalColorGroupEnum.SPRING.toString()));
-        consultPersonalColorResponseDto.setSummer(getPersonalColorDtoList(consultantId, PersonalColorGroupEnum.SUMMER.toString()));
-        consultPersonalColorResponseDto.setFall(getPersonalColorDtoList(consultantId, PersonalColorGroupEnum.FALL.toString()));
-        consultPersonalColorResponseDto.setWinter(getPersonalColorDtoList(consultantId, PersonalColorGroupEnum.WINTER.toString()));
+        consultPersonalColorResponseDto.setSpring(getPersonalColorDtoList(consultantId, PersonalColorGroupEnum.SPRING));
+        consultPersonalColorResponseDto.setSummer(getPersonalColorDtoList(consultantId, PersonalColorGroupEnum.SUMMER));
+        consultPersonalColorResponseDto.setFall(getPersonalColorDtoList(consultantId, PersonalColorGroupEnum.FALL));
+        consultPersonalColorResponseDto.setWinter(getPersonalColorDtoList(consultantId, PersonalColorGroupEnum.WINTER));
 
         return consultPersonalColorResponseDto;
     }
@@ -94,7 +94,7 @@ public class ConsultPersonalColorService {
         );
     }
 
-    private List<PersonalColorTypeDto> getPersonalColorDtoList(int consultantId, String groupName) {
+    private List<PersonalColorTypeDto> getPersonalColorDtoList(int consultantId, PersonalColorGroupEnum groupName) {
         List<PersonalColorType> personalColorTypes = personalColorTypeRepository.findPersonalColorTypeByGroup(consultantId, groupName.toLowerCase());
         return personalColorTypes.stream()
                 .map(this::toPersonalColorTypeDto)
