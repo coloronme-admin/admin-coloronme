@@ -2,8 +2,8 @@ package com.coloronme.admin.domain.consult.controller;
 
 
 import com.coloronme.admin.domain.consult.dto.request.PersonalColorTypeRequestDto;
+import com.coloronme.admin.domain.consult.dto.request.PersonalColorTypeUpdateRequestDto;
 import com.coloronme.admin.domain.consult.dto.response.ConsultPersonalColorResponseDto;
-import com.coloronme.admin.domain.consult.dto.response.PersonalColorTypeDto;
 import com.coloronme.admin.domain.consult.service.ConsultPersonalColorService;
 import com.coloronme.admin.global.dto.ResponseDto;
 import com.coloronme.admin.global.jwt.JwtUtil;
@@ -13,7 +13,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -25,7 +24,6 @@ public class ConsultPersonalColorController {
 
     @GetMapping
     public ResponseDto<ConsultPersonalColorResponseDto> getPersonalColorType(HttpServletRequest httpServletRequest) {
-        System.out.println("getPersonalColorType controller");
         int consultantId = jwtUtil.getIdFromRequest(httpServletRequest, "Access");
         ConsultPersonalColorResponseDto consultPersonalColorResponseDto = consultPersonalColorService.getPersonalColorType(consultantId);
         return ResponseDto.status(consultPersonalColorResponseDto);
@@ -43,8 +41,10 @@ public class ConsultPersonalColorController {
     @PatchMapping("/{personalColorTypeId}")
     public ResponseDto<PersonalColorTypeResponseDto> updatePersonalColorType(HttpServletRequest httpServletRequest,
                                                                              @PathVariable int personalColorTypeId,
-                                                                             @RequestBody PersonalColorTypeRequestDto personalColorTypeRequestDto) {
+                                                                             @RequestBody PersonalColorTypeUpdateRequestDto personalColorTypeUpdateRequestDto) {
         int consultantId = jwtUtil.getIdFromRequest(httpServletRequest, "Access");
-
+        PersonalColorTypeResponseDto personalColorTypeResponseDto = consultPersonalColorService
+                .updatePersonalColorType(consultantId, personalColorTypeId, personalColorTypeUpdateRequestDto);
+        return ResponseDto.status(personalColorTypeResponseDto);
     }
 }

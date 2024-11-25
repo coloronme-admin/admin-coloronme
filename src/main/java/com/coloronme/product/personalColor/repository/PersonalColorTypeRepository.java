@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonalColorTypeRepository extends JpaRepository<PersonalColorType, Integer> {
 
@@ -33,4 +34,6 @@ public interface PersonalColorTypeRepository extends JpaRepository<PersonalColor
             """)
     List<PersonalColorType> findPersonalColorTypeById(@Param("consultantId") int consultantId,
                                                       @Param("personalColorTypeId") Integer personalColorTypeId);
+
+    Optional<PersonalColorType> findByConsultantIdAndId(int consultantId, int personalColorTypeId);
 }
