@@ -1,6 +1,5 @@
 package com.coloronme.admin.domain.consult.service;
 
-import com.coloronme.product.color.dto.ColorRequestDto;
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
 import com.coloronme.product.color.dto.ColorResponseDto;
 import com.coloronme.admin.domain.consult.dto.response.ConsultUserResponseDto;
@@ -63,9 +62,9 @@ public class ConsultUserService {
             List<ConsultColor> consultColors = new ArrayList<>();
             List<ColorResponseDto> colorList = new ArrayList<>();
 
-            for(ColorRequestDto colorRequestDto : consultRequestDto.getColors()) {
+            for(Integer colorId : consultRequestDto.getColors()) {
 
-                Color color = colorRepository.findById(colorRequestDto.getColorId())
+                Color color = colorRepository.findById(colorId)
                         .orElseThrow(() -> new RequestException(ErrorCode.COLOR_NOT_FOUND_404));
 
                 ConsultColor consultColor = new ConsultColor();
@@ -188,9 +187,9 @@ public class ConsultUserService {
 
         List<ColorResponseDto> colorList = new ArrayList<>();
 
-        for(ColorRequestDto colorRequestDto : consultRequestDto.getColors()) {
+        for(Integer colorId : consultRequestDto.getColors()) {
 
-            Color color = colorRepository.findById(colorRequestDto.getColorId())
+            Color color = colorRepository.findById(colorId)
                     .orElseThrow(() -> new RequestException(ErrorCode.COLOR_NOT_FOUND_404));
 
             ConsultColor consultColor = new ConsultColor();
