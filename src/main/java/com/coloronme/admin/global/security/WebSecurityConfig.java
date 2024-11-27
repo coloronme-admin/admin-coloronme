@@ -76,7 +76,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
             .authorizeHttpRequests((requests) -> requests
                     .requestMatchers("/myPages", "/password", "/members/**", "/data/users","/color/**").authenticated()
                     .requestMatchers("/v3/api-docs/**", "/swagger-ui/**","/health",
-                            "/signup", "/login", "/refresh-token", "/emailCheck","/color/group/**").permitAll())
+                            "/signup", "/login", "/refresh-token", "/emailCheck","/color-library").permitAll())
             .httpBasic(Customizer.withDefaults())
             .build();
     }
