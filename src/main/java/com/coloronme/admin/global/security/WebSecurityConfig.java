@@ -62,7 +62,12 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 @Override
                 public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:3001", "http://localhost:3002", "http://localhost:3003", "https://coloronme-coloronme-admin.vercel.app"));
+                    config.setAllowedOrigins(List.of("http://localhost:3000"
+                            , "http://localhost:3001"
+                            , "http://localhost:3002"
+                            , "http://localhost:3003"
+                            , "http://localhost:6006"
+                            , "https://coloronme-coloronme-admin.vercel.app"));
                     config.setAllowedMethods(List.of("*"));
                     config.setAllowedHeaders(List.of("*"));
                     config.setAllowCredentials(true);
