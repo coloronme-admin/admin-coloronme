@@ -68,6 +68,7 @@ public class PersonalColorService {
                         break;
                     case "스트롱":
                         personalColorGroupResponseDto.getPccs().getS().add(colorResponseData);
+                        break;
                     case "소프트":
                         personalColorGroupResponseDto.getPccs().getSf().add(colorResponseData);
                         break;
