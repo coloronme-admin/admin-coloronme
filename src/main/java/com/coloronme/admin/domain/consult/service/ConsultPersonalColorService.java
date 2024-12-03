@@ -51,7 +51,7 @@ public class ConsultPersonalColorService {
     public PersonalColorTypeResponseDto registerPersonalColorType(Integer consultantId, PersonalColorTypeRequestDto personalColorTypeRequestDto) {
         /*퍼스널 컬러 그룹 확인*/
         PersonalColorGroup personalColorGroup = personalColorGroupRepository
-                .findByPersonalColorGroupName(personalColorTypeRequestDto.getPersonalColorGroup());
+                .findByPersonalColorGroupName(personalColorTypeRequestDto.getPersonalColorGroup().toLowerCase());
         if(personalColorGroup == null) {
             throw new RequestException(ErrorCode.PERSONAL_COLOR_GROUP_NOT_FOUND_404);
         }
@@ -122,6 +122,11 @@ public class ConsultPersonalColorService {
         return getPersonalColorTypeResponseDto(personalColorType, personalColorType.getPersonalColorGroup());
     }
 
+    public void deletePersonalColorType(int consultantId, int personalColorTypeId) {
+        PersonalColorType personalColorType = personalColorTypeRepository.findByConsultantIdAndId(consultantId, personalColorTypeId)
+                .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
+    }
+
     private PersonalColorTypeResponseDto getPersonalColorTypeResponseDto(PersonalColorType personalColorType, PersonalColorGroup personalColorGroup) {
         return new PersonalColorTypeResponseDto(
                 personalColorGroup.getPersonalColorGroupName(),
@@ -149,10 +154,5 @@ public class ConsultPersonalColorService {
                 personalColorType.getPersonalColorTypeName(),
                 colorResponseList
         );
-    }
-
-    public void deletePersonalColorType(int consultantId, int personalColorTypeId) {
-        PersonalColorType personalColorType = personalColorTypeRepository.findByConsultantIdAndId(consultantId, personalColorTypeId)
-                .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
     }
 }
