@@ -22,6 +22,7 @@ public class PersonalColorType {
     @Column(name="`consultantId`")
     private Integer consultantId;
 
+    @Setter
     @Column(name="`personalColorTypeName`")
     private String personalColorTypeName;
 

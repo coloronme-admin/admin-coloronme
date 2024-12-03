@@ -98,7 +98,7 @@ public class ConsultPersonalColorService {
 
         /*1. 퍼스널 컬러 타입을 수정하는 경우*/
         if (personalColorTypeUpdateRequestDto.getPersonalColorTypeName() != null) {
-            PersonalColorType.builder().personalColorTypeName(personalColorTypeUpdateRequestDto.getPersonalColorTypeName()).build();
+            personalColorType.setPersonalColorTypeName(personalColorTypeUpdateRequestDto.getPersonalColorTypeName());
         }
 
         /*2. 퍼스널 컬러 타입에 속한 컬러를 수정하는 경우*/
@@ -148,7 +148,6 @@ public class ConsultPersonalColorService {
                     return new ColorResponseDto(color.getId(), color.getName(), color.getR(), color.getG(), color.getB());
                 })
                 .collect(Collectors.toList());
-
         return new PersonalColorTypeDto(
                 personalColorType.getId(),
                 personalColorType.getPersonalColorTypeName(),
