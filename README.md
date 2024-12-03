@@ -28,15 +28,15 @@ GET /actuator/health
 
 ## 화면 구상 일부
 
-고객 진단 정보 페이지
+- 고객 진단 정보 페이지
 
 <img width="203" alt="image" src="https://github.com/user-attachments/assets/9020314d-2871-4910-88d9-0eac862e4c72">
 
 
-
+<br>
 <br>
 
-퍼스널 컬러 타입 커스터 마이징
+- 퍼스널 컬러 타입 커스터 마이징 페이지
 
 <img width="648" alt="image" src="https://github.com/user-attachments/assets/bd4fe3a2-64d8-47de-9943-fd29c5de559b">
 
