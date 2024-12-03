@@ -19,7 +19,7 @@ public interface PersonalColorRepository extends JpaRepository<PersonalColor, In
             FROM Color c
             JOIN PersonalColor p ON c.personalColorId = p.id
             WHERE p.colorGroup = :type
-            ORDER BY c.personalColorId
+            ORDER BY c.id ASC, c.personalColorId ASC
             """) /* 커스텀 dto를 사용하기위해 Jpql 사용*/
     List<PersonalColorDto> findPersonalColorByType(@Param("type") ColorGroup type);
 
@@ -29,7 +29,7 @@ public interface PersonalColorRepository extends JpaRepository<PersonalColor, In
             FROM Color c
             JOIN PersonalColor p ON c.personalColorId = p.id
             WHERE p.colorGroup = :type and p.name = :group
-            ORDER BY c.personalColorId
+            ORDER BY c.id ASC, c.personalColorId ASC
             """)
     List<PersonalColorDto> findPersonalColorByTypeAndGroup(@Param("type") ColorGroup type, @Param("group")String group);
 }

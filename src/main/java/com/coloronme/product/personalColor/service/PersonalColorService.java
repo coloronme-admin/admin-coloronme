@@ -153,136 +153,136 @@ public class PersonalColorService {
         switch (group) {
             case "p":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "페일");
+                personalColorResponseDto.setP(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setP(new ArrayList<>());
                     personalColorResponseDto.getP().add(colorResponseData);
                 }
                 break;
             case "lt":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "라이트");
+                personalColorResponseDto.setLt(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setLt(new ArrayList<>());
                     personalColorResponseDto.getLt().add(colorResponseData);
                 }
                 break;
             case "b":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "브라이트");
+                personalColorResponseDto.setB(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setB(new ArrayList<>());
                     personalColorResponseDto.getB().add(colorResponseData);
                 }
                 break;
             case "v":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "비비드");
+                personalColorResponseDto.setV(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setV(new ArrayList<>());
                     personalColorResponseDto.getV().add(colorResponseData);
                 }
                 break;
             case "s":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "스트롱");
+                personalColorResponseDto.setS(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setS(new ArrayList<>());
                     personalColorResponseDto.getS().add(colorResponseData);
                 }
                 break;
             case "sf":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "소프트");
+                personalColorResponseDto.setSf(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setSf(new ArrayList<>());
                     personalColorResponseDto.getSf().add(colorResponseData);
                 }
                 break;
             case "d":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "덜");
+                personalColorResponseDto.setD(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setD(new ArrayList<>());
                     personalColorResponseDto.getD().add(colorResponseData);
                 }
                 break;
             case "dp":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "딥");
+                personalColorResponseDto.setDp(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setDp(new ArrayList<>());
                     personalColorResponseDto.getDp().add(colorResponseData);
                 }
                 break;
             case "dk":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "다크");
+                personalColorResponseDto.setDk(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setDk(new ArrayList<>());
                     personalColorResponseDto.getDk().add(colorResponseData);
                 }
                 break;
             case "ltg":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "라이트그레이쉬");
+                personalColorResponseDto.setLtg(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setLtg(new ArrayList<>());
                     personalColorResponseDto.getLtg().add(colorResponseData);
                 }
                 break;
             case "g":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "그레이쉬");
+                personalColorResponseDto.setG(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setG(new ArrayList<>());
                     personalColorResponseDto.getG().add(colorResponseData);
                 }
                 break;
             case "dkg":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "다크그레이쉬");
+                personalColorResponseDto.setDkg(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setDkg(new ArrayList<>());
                     personalColorResponseDto.getDkg().add(colorResponseData);
                 }
                 break;
             case "wh":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "화이티쉬");
+                personalColorResponseDto.setWh(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setWh(new ArrayList<>());
                     personalColorResponseDto.getWh().add(colorResponseData);
                 }
                 break;
             case "bs":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "베이직");
+                personalColorResponseDto.setBs(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setBs(new ArrayList<>());
                     personalColorResponseDto.getBs().add(colorResponseData);
                 }
                 break;
             case "bk":
                 personalColorList = personalColorRepository.findPersonalColorByTypeAndGroup(type, "블랙키쉬");
+                personalColorResponseDto.setBk(new ArrayList<>());
                 for (PersonalColorDto personalColor : personalColorList) {
                     ColorResponseDto colorResponseData = new ColorResponseDto(personalColor.getColorId(), personalColor.getName(),
                             personalColor.getR(), personalColor.getG(), personalColor.getB());
-                    personalColorResponseDto.setBk(new ArrayList<>());
                     personalColorResponseDto.getBk().add(colorResponseData);
                 }
                 break;

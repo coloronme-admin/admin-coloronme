@@ -1,6 +1,5 @@
 package com.coloronme.admin.domain.consult.dto.request;
 
-import com.coloronme.product.color.dto.ColorRequestDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -20,6 +19,6 @@ public class ConsultRequestDto {
     private LocalDateTime consultedDate;
     private String uuid;
     @NotNull(message = "색상을 선택해 주세요.")
-    private List<ColorRequestDto> colors;
+    private List<Integer> colors;
     private String consultedFile;
 }
