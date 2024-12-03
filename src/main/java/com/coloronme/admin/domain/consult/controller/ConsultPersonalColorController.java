@@ -47,7 +47,7 @@ public class ConsultPersonalColorController {
                 .updatePersonalColorType(consultantId, personalColorTypeId, personalColorTypeUpdateRequestDto);
         return ResponseDto.status(personalColorTypeResponseDto);
     }
-
+  
     @DeleteMapping("/{personalColorTypeId}")
     public ResponseDto<?> deletePersonalColorType(HttpServletRequest httpServletRequest,
                                                     @PathVariable int personalColorTypeId){
