@@ -1,6 +1,7 @@
 package com.coloronme.admin.domain.consult.entity;
 
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
+import com.coloronme.product.personalColor.entity.PersonalColorType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -27,8 +28,9 @@ public class Consult {
     @Column(name="`memberId`")
     private Integer memberId;
 
-    @Column(name="`personalColorTypeId`")
-    private Integer personalColorTypeId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="`personalColorTypeId`")
+    private PersonalColorType personalColorType;
 
     @NotNull
     @Column(name="`consultedDate`")
@@ -59,11 +61,10 @@ public class Consult {
     @Column(name="`deletedAt`")
     private LocalDateTime deletedAt;
 
-    public Consult(int consultantId, int memberId, int personalColorTypeId, ConsultRequestDto consultRequestDto) {
+    public Consult(int consultantId, int memberId, PersonalColorType personalColorType, ConsultRequestDto consultRequestDto) {
         this.consultantId = consultantId;
         this.memberId = memberId;
-        this.personalColorTypeId = personalColorTypeId;
-        this.personalColorTypeId = consultRequestDto.getPersonalColorTypeId();
+        this.personalColorType = personalColorType;
         this.consultedContent = consultRequestDto.getConsultedContent();
         this.consultedDate = consultRequestDto.getConsultedDate();
         this.uuid = consultRequestDto.getUuid();

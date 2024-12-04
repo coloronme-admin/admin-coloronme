@@ -1,6 +1,7 @@
 package com.coloronme.product.personalColor.entity;
 
 import com.coloronme.admin.domain.consult.entity.ColorPersonalColorType;
+import com.coloronme.admin.domain.consult.entity.Consult;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,6 +34,9 @@ public class PersonalColorType {
     @Setter
     @OneToMany(mappedBy = "personalColorType", cascade = CascadeType.ALL)
     private List<ColorPersonalColorType> colorPersonalColorTypeList;
+
+    @OneToMany(mappedBy = "personalColorType", cascade = CascadeType.ALL)
+    private List<Consult> consults;
 
     @Column(name = "`isDeleted`", columnDefinition = "boolean default false")
     private boolean isDeleted;

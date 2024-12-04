@@ -23,4 +23,9 @@ public class ConsultColor {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="`consultId`")
     private Consult consult;
+
+    public ConsultColor(Color color, Consult consult) {
+        this.color = color;
+        this.consult = consult;
+    }
 }
