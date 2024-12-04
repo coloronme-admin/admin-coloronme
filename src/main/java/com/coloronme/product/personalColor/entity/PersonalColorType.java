@@ -1,11 +1,11 @@
 package com.coloronme.product.personalColor.entity;
 
 import com.coloronme.admin.domain.consult.entity.ColorPersonalColorType;
+import com.coloronme.admin.domain.consult.entity.Consult;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,6 +34,10 @@ public class PersonalColorType {
     @OneToMany(mappedBy = "personalColorType", cascade = CascadeType.ALL)
     private List<ColorPersonalColorType> colorPersonalColorTypeList;
 
+    @OneToMany(mappedBy = "personalColorType", cascade = CascadeType.ALL)
+    private List<Consult> consults;
+
+    @Setter
     @Column(name = "`isDeleted`", columnDefinition = "boolean default false")
     private boolean isDeleted;
 

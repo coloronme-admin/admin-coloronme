@@ -22,8 +22,8 @@ public class ConsultUserResponseDto {
     private GenderEnum genderEnum;
     private String consultedContent;
     private String consultedDrawing;
-    private List<ColorResponseDto> colors;
-    private Integer personalColorTypeId;
+    private String personalColorGroupName;
+    private PersonalColorTypeDto personalColorType;
     private String consultedFile;
     private String uuid;
 }

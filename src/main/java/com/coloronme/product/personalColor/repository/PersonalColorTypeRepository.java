@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public interface PersonalColorTypeRepository extends JpaRepository<PersonalColorType, Integer> {
 
-
     @Query(value = """
             SELECT
                 pct
@@ -23,17 +22,6 @@ public interface PersonalColorTypeRepository extends JpaRepository<PersonalColor
             """)
     List<PersonalColorType> findPersonalColorTypeByGroup(@Param("consultantId") int consultantId,
                                                             @Param("personalColorGroup") String personalColorGroup);
-
-    @Query(value = """
-            SELECT
-                pct
-            FROM PersonalColorType pct
-            JOIN FETCH pct.colorPersonalColorTypeList cpct
-            JOIN FETCH cpct.color c
-            WHERE pct.consultantId = :consultantId AND pct.id = :personalColorTypeId
-            """)
-    List<PersonalColorType> findPersonalColorTypeById(@Param("consultantId") int consultantId,
-                                                      @Param("personalColorTypeId") Integer personalColorTypeId);
 
     Optional<PersonalColorType> findByConsultantIdAndId(int consultantId, int personalColorTypeId);
 }

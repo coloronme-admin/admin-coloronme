@@ -65,24 +65,20 @@ public class ConsultPersonalColorService {
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        List<Color> colors = colorRepository.findAllById(personalColorTypeRequestDto.getColors());
-        if (colors.size() != personalColorTypeRequestDto.getColors().size()) {
-            throw new RequestException(ErrorCode.COLOR_NOT_FOUND_404);
-        }
+        List<ColorPersonalColorType> colorPersonalColorTypeList = personalColorTypeRequestDto.getColors().stream()
+                .map(personalColorTypeColor -> {
+                    Color color = colorRepository.findById(personalColorTypeColor)
+                            .orElseThrow(() -> new RequestException(ErrorCode.COLOR_NOT_FOUND_404));
+                    ColorPersonalColorType colorPersonalColorType = new ColorPersonalColorType();
+                    colorPersonalColorType.setPersonalColorType(personalColorType);
+                    colorPersonalColorType.setColor(color);
 
-        List<ColorPersonalColorType> colorPersonalColorTypeList = new ArrayList<>();
-        for (Color color : colors) {
-            ColorPersonalColorType colorPersonalColorType = new ColorPersonalColorType();
-            colorPersonalColorType.setPersonalColorType(personalColorType);
-            colorPersonalColorType.setColor(color);
+                    colorPersonalColorTypeRepository.save(colorPersonalColorType);
 
-            colorPersonalColorTypeRepository.save(colorPersonalColorType);
-
-            colorPersonalColorTypeList.add(colorPersonalColorType);
-        }
+                    return colorPersonalColorType;
+                }).toList();
 
         personalColorType.setColorPersonalColorTypeList(colorPersonalColorTypeList);
-
         personalColorTypeRepository.save(personalColorType);
 
         return getPersonalColorTypeResponseDto(personalColorType, personalColorGroup);
@@ -106,25 +102,28 @@ public class ConsultPersonalColorService {
             /*기존 PersonalColorType에 매핑되어있던 Color 삭제 후 처리*/
             colorPersonalColorTypeRepository.deleteByPersonalColorType(personalColorType);
 
-            List<Color> colors = colorRepository.findAllById(personalColorTypeUpdateRequestDto.getColors());
-            if (colors.size() != personalColorTypeUpdateRequestDto.getColors().size()) {
-                throw new RequestException(ErrorCode.COLOR_NOT_FOUND_404);
-            }
+            List<ColorPersonalColorType> colorPersonalColorTypeList = personalColorTypeUpdateRequestDto.getColors().stream()
+                    .map(colorId -> {
+                        Color color = colorRepository.findById(colorId)
+                                .orElseThrow(() -> new RequestException(ErrorCode.COLOR_NOT_FOUND_404));
+                        ColorPersonalColorType colorPersonalColorType = new ColorPersonalColorType();
+                        colorPersonalColorType.setPersonalColorType(personalColorType);
+                        colorPersonalColorType.setColor(color);
+                        return colorPersonalColorType;
+                    })
+                    .toList();
 
-            for (Color color : colors) {
-                ColorPersonalColorType colorPersonalColorType = new ColorPersonalColorType();
-                colorPersonalColorType.setPersonalColorType(personalColorType);
-                colorPersonalColorType.setColor(color);
-
-                colorPersonalColorTypeRepository.save(colorPersonalColorType);
-            }
+            colorPersonalColorTypeRepository.saveAll(colorPersonalColorTypeList);
+            personalColorType.setColorPersonalColorTypeList(colorPersonalColorTypeList);
         }
         return getPersonalColorTypeResponseDto(personalColorType, personalColorType.getPersonalColorGroup());
     }
 
+    @Transactional
     public void deletePersonalColorType(int consultantId, int personalColorTypeId) {
         PersonalColorType personalColorType = personalColorTypeRepository.findByConsultantIdAndId(consultantId, personalColorTypeId)
                 .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
+        personalColorType.setDeleted(true);
     }
 
     private PersonalColorTypeResponseDto getPersonalColorTypeResponseDto(PersonalColorType personalColorType, PersonalColorGroup personalColorGroup) {
@@ -151,6 +150,7 @@ public class ConsultPersonalColorService {
         return new PersonalColorTypeDto(
                 personalColorType.getId(),
                 personalColorType.getPersonalColorTypeName(),
+                personalColorType.isDeleted(),
                 colorResponseList
         );
     }
