@@ -38,6 +38,7 @@ public class PersonalColorType {
     @OneToMany(mappedBy = "personalColorType", cascade = CascadeType.ALL)
     private List<Consult> consults;
 
+    @Setter
     @Column(name = "`isDeleted`", columnDefinition = "boolean default false")
     private boolean isDeleted;
 

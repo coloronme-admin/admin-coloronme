@@ -122,9 +122,11 @@ public class ConsultPersonalColorService {
         return getPersonalColorTypeResponseDto(personalColorType, personalColorType.getPersonalColorGroup());
     }
 
+    @Transactional
     public void deletePersonalColorType(int consultantId, int personalColorTypeId) {
         PersonalColorType personalColorType = personalColorTypeRepository.findByConsultantIdAndId(consultantId, personalColorTypeId)
                 .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
+        personalColorType.setDeleted(true);
     }
 
     public PersonalColorTypeResponseDto getPersonalColorTypeResponseDto(PersonalColorType personalColorType, PersonalColorGroup personalColorGroup) {
