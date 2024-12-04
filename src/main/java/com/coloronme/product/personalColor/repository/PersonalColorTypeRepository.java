@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public interface PersonalColorTypeRepository extends JpaRepository<PersonalColorType, Integer> {
 
-
     @Query(value = """
             SELECT
                 pct

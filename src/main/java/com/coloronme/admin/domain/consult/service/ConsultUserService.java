@@ -55,9 +55,7 @@ public class ConsultUserService {
         consultRequestDto.setUuid(uuid.toString());
 
         Consult newConsult = new Consult(consultantId, userId, personalColorType, consultRequestDto);
-
         List<ConsultColor> consultColors = createConsultColors(newConsult, consultRequestDto.getColors());
-
         newConsult.setConsultColors(consultColors);
 
         /*consult 등록*/
@@ -121,7 +119,7 @@ public class ConsultUserService {
 
         member.setPersonalColorId(consultRequestDto.getPersonalColorTypeId());
 
-        /*기존 ConsultColor 데이터는 삭제*/
+        /*기존 ConsultColor 데이터는 삭제 후 저장*/
         List<ConsultColor> consultColors = createConsultColors(consult, consultRequestDto.getColors());
 
         consult.getConsultColors().clear();
