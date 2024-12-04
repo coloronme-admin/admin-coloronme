@@ -34,6 +34,9 @@ public class PersonalColorType {
     @OneToMany(mappedBy = "personalColorType", cascade = CascadeType.ALL)
     private List<ColorPersonalColorType> colorPersonalColorTypeList;
 
+    @Column(name = "`isDeleted`", columnDefinition = "boolean default false")
+    private boolean isDeleted;
+
     @Column(name="`createdAt`")
     private LocalDateTime createdAt;
 
