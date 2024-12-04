@@ -127,7 +127,7 @@ public class ConsultPersonalColorService {
                 .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
     }
 
-    private PersonalColorTypeResponseDto getPersonalColorTypeResponseDto(PersonalColorType personalColorType, PersonalColorGroup personalColorGroup) {
+    public PersonalColorTypeResponseDto getPersonalColorTypeResponseDto(PersonalColorType personalColorType, PersonalColorGroup personalColorGroup) {
         return new PersonalColorTypeResponseDto(
                 personalColorGroup.getPersonalColorGroupName(),
                 toPersonalColorTypeDto(personalColorType)
@@ -151,6 +151,7 @@ public class ConsultPersonalColorService {
         return new PersonalColorTypeDto(
                 personalColorType.getId(),
                 personalColorType.getPersonalColorTypeName(),
+                personalColorType.isDeleted(),
                 colorResponseList
         );
     }

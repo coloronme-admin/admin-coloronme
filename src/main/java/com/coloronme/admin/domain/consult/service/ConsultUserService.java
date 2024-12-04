@@ -1,6 +1,8 @@
 package com.coloronme.admin.domain.consult.service;
 
 import com.coloronme.admin.domain.consult.dto.request.ConsultRequestDto;
+import com.coloronme.admin.domain.consult.dto.response.PersonalColorTypeDto;
+import com.coloronme.admin.domain.consult.dto.response.PersonalColorTypeResponseDto;
 import com.coloronme.product.color.dto.ColorResponseDto;
 import com.coloronme.admin.domain.consult.dto.response.ConsultUserResponseDto;
 import com.coloronme.admin.domain.consult.entity.Consult;
@@ -9,6 +11,7 @@ import com.coloronme.product.color.entity.Color;
 import com.coloronme.product.color.repository.ColorRepository;
 import com.coloronme.product.member.entity.Member;
 import com.coloronme.admin.domain.consult.repository.ConsultRepository;
+import com.coloronme.product.personalColor.entity.PersonalColorGroup;
 import com.coloronme.product.personalColor.entity.PersonalColorType;
 import com.coloronme.product.personalColor.repository.PersonalColorGroupRepository;
 import com.coloronme.product.personalColor.repository.PersonalColorRepository;
@@ -19,6 +22,7 @@ import com.coloronme.product.personalColor.repository.PersonalColorTypeRepositor
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,6 +40,7 @@ public class ConsultUserService {
     private final PersonalColorTypeRepository personalColorTypeRepository;
     private final ColorRepository colorRepository;
     private final PersonalColorGroupRepository personalColorGroupRepository;
+    private final ConsultPersonalColorService consultPersonalColorService;
 
     @Transactional
     public ConsultUserResponseDto registerConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
@@ -89,7 +94,16 @@ public class ConsultUserService {
             /*consult 등록*/
             consultUserRepository.save(consultData);
 
-            return createConsultUserResponseDto(consultData, member, colorList);
+            PersonalColorGroup personalColorGroup  = personalColorGroupRepository.findByPersonalColorTypeId(consultRequestDto.getPersonalColorTypeId())
+                    .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
+
+            PersonalColorTypeDto personalColorTypeDto = new PersonalColorTypeDto(personalColorType.getId(),
+                    personalColorType.getPersonalColorTypeName(), false, colorList);
+
+            PersonalColorTypeResponseDto personalColorTypeResponseDto = new PersonalColorTypeResponseDto(personalColorGroup.getPersonalColorGroupName(),
+                    personalColorTypeDto);
+
+            return createConsultUserResponseDto(consultData, member, personalColorTypeResponseDto);
 
         } else {
             /*진단 정보가 이미 있는 경우 수정*/
@@ -123,7 +137,19 @@ public class ConsultUserService {
             colorList.add(colorResponseDto);
         }
 
-        return createConsultUserResponseDto(consult, member, colorList);
+        PersonalColorGroup personalColorGroup  = personalColorGroupRepository.findByPersonalColorTypeId(consult.getPersonalColorTypeId())
+                .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
+
+        PersonalColorType personalColorType = personalColorTypeRepository.findById(consult.getPersonalColorTypeId())
+                .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
+
+        PersonalColorTypeDto personalColorTypeDto = new PersonalColorTypeDto(personalColorType.getId(),
+                personalColorType.getPersonalColorTypeName(), false, colorList);
+
+        PersonalColorTypeResponseDto personalColorTypeResponseDto = new PersonalColorTypeResponseDto(personalColorGroup.getPersonalColorGroupName(),
+                personalColorTypeDto);
+
+        return createConsultUserResponseDto(consult, member, personalColorTypeResponseDto);
     }
 
     public List<ConsultUserResponseDto> selectConsultUserList(int consultantId) {
@@ -154,7 +180,19 @@ public class ConsultUserService {
                 colorList.add(colorResponseDto);
             }
 
-            ConsultUserResponseDto consultUserResponseDto = createConsultUserResponseDto(consult, member, colorList);
+            PersonalColorGroup personalColorGroup  = personalColorGroupRepository.findByPersonalColorTypeId(consult.getPersonalColorTypeId())
+                    .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
+
+            PersonalColorType personalColorType = personalColorTypeRepository.findById(consult.getPersonalColorTypeId())
+                    .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
+
+            PersonalColorTypeDto personalColorTypeDto = new PersonalColorTypeDto(personalColorType.getId(),
+                    personalColorType.getPersonalColorTypeName(), false, colorList);
+
+            PersonalColorTypeResponseDto personalColorTypeResponseDto = new PersonalColorTypeResponseDto(personalColorGroup.getPersonalColorGroupName(),
+                    personalColorTypeDto);
+
+            ConsultUserResponseDto consultUserResponseDto = createConsultUserResponseDto(consult, member, personalColorTypeResponseDto);
 
             consultUserList.add(consultUserResponseDto);
         }
@@ -212,25 +250,33 @@ public class ConsultUserService {
         consult.setConsultColors(consultColors);
         consultRepository.save(consult);
 
-        return createConsultUserResponseDto(consult, member, colorList);
+        PersonalColorGroup personalColorGroup  = personalColorGroupRepository.findByPersonalColorTypeId(consult.getPersonalColorTypeId())
+                .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
+
+        PersonalColorTypeDto personalColorTypeDto = new PersonalColorTypeDto(personalColorType.getId(),
+                personalColorType.getPersonalColorTypeName(), false, colorList);
+
+        PersonalColorTypeResponseDto personalColorTypeResponseDto = new PersonalColorTypeResponseDto(personalColorGroup.getPersonalColorGroupName(),
+                personalColorTypeDto);
+
+        return createConsultUserResponseDto(consult, member, personalColorTypeResponseDto);
     }
 
     public ConsultUserResponseDto verifyUserQr(int consultantId, Member member) {
-        Optional<Consult> consult = consultRepository.findByMemberIdAndConsultantId(member.getId(), consultantId);
+        Consult consult = consultRepository.findByMemberIdAndConsultantId(member.getId(), consultantId)
+                .orElseThrow(() -> new RequestException(ErrorCode.CONSULT_NOT_FOUND_404));
 
         ConsultUserResponseDto consultUserResponseDto;
 
         /*이전 진단 내역이 없는 경우에는 진단 내용을 null 값으로 보냄*/
-        if(consult.isEmpty()) {
+        if(consult == null) {
             consultUserResponseDto = createConsultUserResponseDto(null, member, null);
 
         /*이전 진단 내역이 있는 경우에는 이전 내용을 같이 보내줌*/
         } else {
-            Consult consultData = consult.get();
-
             List<ColorResponseDto> colorList = new ArrayList<>();
 
-            for(ConsultColor consultColor : consultData.getConsultColors()) {
+            for(ConsultColor consultColor : consult.getConsultColors()) {
 
                 Color color = colorRepository.findById(consultColor.getColor().getId())
                         .orElseThrow(() -> new RequestException(ErrorCode.COLOR_NOT_FOUND_404));
@@ -245,7 +291,20 @@ public class ConsultUserService {
 
                 colorList.add(colorResponseDto);
             }
-            consultUserResponseDto = createConsultUserResponseDto(consultData, member, colorList);
+
+            PersonalColorGroup personalColorGroup  = personalColorGroupRepository.findByPersonalColorTypeId(consult.getPersonalColorTypeId())
+                    .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
+
+            PersonalColorType personalColorType = personalColorTypeRepository.findById(consult.getPersonalColorTypeId())
+                    .orElseThrow(() -> new RequestException(ErrorCode.PERSONAL_COLOR_TYPE_NOT_FOUND_404));
+
+            PersonalColorTypeDto personalColorTypeDto = new PersonalColorTypeDto(personalColorType.getId(),
+                    personalColorType.getPersonalColorTypeName(), false, colorList);
+
+            PersonalColorTypeResponseDto personalColorTypeResponseDto = new PersonalColorTypeResponseDto(personalColorGroup.getPersonalColorGroupName(),
+                    personalColorTypeDto);
+
+            consultUserResponseDto = createConsultUserResponseDto(consult, member, personalColorTypeResponseDto);
         }
         return consultUserResponseDto;
     }
@@ -262,7 +321,7 @@ public class ConsultUserService {
     }
 
     /*진단자 + 진단 정보에 필요한 Response 양식*/
-    private ConsultUserResponseDto createConsultUserResponseDto (Consult consult, Member member, List<ColorResponseDto> colorList) {
+    private ConsultUserResponseDto createConsultUserResponseDto (Consult consult, Member member, PersonalColorTypeResponseDto personalColorTypeResponseDto) {
 
         ConsultUserResponseDto consultUserResponseDto = new ConsultUserResponseDto();
 
@@ -273,8 +332,8 @@ public class ConsultUserService {
             consultUserResponseDto.setProfileImageUrl(member.getProfileImageUrl());
             consultUserResponseDto.setConsultedDate(null);
             consultUserResponseDto.setAge(member.getAge());
-            consultUserResponseDto.setColors(null);
-            consultUserResponseDto.setPersonalColorTypeId(null);
+            consultUserResponseDto.setPersonalColorGroupName(null);
+            consultUserResponseDto.setPersonalColorType(null);
             consultUserResponseDto.setGenderEnum(member.getGender());
             consultUserResponseDto.setConsultedContent(null);
             consultUserResponseDto.setConsultedDate(null);
@@ -287,8 +346,8 @@ public class ConsultUserService {
             consultUserResponseDto.setProfileImageUrl(member.getProfileImageUrl());
             consultUserResponseDto.setConsultedDate(consult.getConsultedDate());
             consultUserResponseDto.setAge(member.getAge());
-            consultUserResponseDto.setColors(colorList);
-            consultUserResponseDto.setPersonalColorTypeId(consult.getPersonalColorTypeId());
+            consultUserResponseDto.setPersonalColorGroupName(personalColorTypeResponseDto.getPersonalColorGroupName());
+            consultUserResponseDto.setPersonalColorType(personalColorTypeResponseDto.getPersonalColorType());
             consultUserResponseDto.setGenderEnum(member.getGender());
             consultUserResponseDto.setConsultedContent(consult.getConsultedContent());
             consultUserResponseDto.setConsultedDate(consult.getConsultedDate());

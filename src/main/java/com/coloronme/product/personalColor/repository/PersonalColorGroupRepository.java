@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonalColorGroupRepository extends JpaRepository<PersonalColorGroup, Integer> {
     @Query(value = """
@@ -13,5 +14,14 @@ public interface PersonalColorGroupRepository extends JpaRepository<PersonalColo
         """)
     List<PersonalColorGroup> findAllByConsultantIdWithTypes(@Param("consultantId") Integer consultantId);
 
-    PersonalColorGroup findByPersonalColorGroupName(String personalColorTypeName);
+    PersonalColorGroup findByPersonalColorGroupName(String personalColorGroupName);
+
+    @Query(value = """
+           SELECT
+                pcg
+           FROM PersonalColorGroup pcg
+           JOIN FETCH pcg.personalColorTypes t
+           WHERE t.id = :personalColorTypeId
+           """)
+    Optional<PersonalColorGroup> findByPersonalColorTypeId(int personalColorTypeId);
 }
