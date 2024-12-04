@@ -90,6 +90,17 @@ public class ConsultUserService {
                 .toList();
     }
 
+    public ConsultUserResponseDto selectConsultUserByUuid(String uuid) {
+        /*유효성 검사*/
+        Consult consult = consultRepository.findByUuid(uuid)
+                .orElseThrow(() -> new RequestException(ErrorCode.CONSULT_NOT_FOUND_404));
+
+        Member member = memberRepository.findById(consult.getMemberId())
+                .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
+
+        return createConsultUserResponseDto(consult, member);
+    }
+
     @Transactional
     public ConsultUserResponseDto updateConsultUser(int consultantId, int userId, ConsultRequestDto consultRequestDto) {
         /*유효성 검사*/
@@ -145,31 +156,6 @@ public class ConsultUserService {
 
         Consult consult = consultData.get();
         return createConsultUserResponseDto(consult, member);
-    }
-
-    public ConsultUserResponseDto selectConsultUserByUuid(String uuid) {
-        /*유효성 검사*/
-        Consult consult = consultRepository.findByUuid(uuid)
-                .orElseThrow(() -> new RequestException(ErrorCode.CONSULT_NOT_FOUND_404));
-
-        Member member = memberRepository.findById(consult.getMemberId())
-                .orElseThrow(() -> new RequestException(ErrorCode.USER_NOT_FOUND_404));
-
-        return new ConsultUserResponseDto(
-                member.getId(),
-                member.getNickname(),
-                member.getEmail(),
-                member.getProfileImageUrl(),
-                null,
-                member.getAge(),
-                member.getGender(),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
     }
 
     /*진단자 + 진단 정보에 필요한 Response 양식*/
