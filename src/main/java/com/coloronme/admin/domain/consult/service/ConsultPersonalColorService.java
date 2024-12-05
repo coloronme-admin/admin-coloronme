@@ -41,7 +41,7 @@ public class ConsultPersonalColorService {
 
         consultPersonalColorResponseDto.setSpring(getPersonalColorDtoList(consultantId, PersonalColorGroupEnum.SPRING));
         consultPersonalColorResponseDto.setSummer(getPersonalColorDtoList(consultantId, PersonalColorGroupEnum.SUMMER));
-        consultPersonalColorResponseDto.setFall(getPersonalColorDtoList(consultantId, PersonalColorGroupEnum.FALL));
+        consultPersonalColorResponseDto.setAutumn(getPersonalColorDtoList(consultantId, PersonalColorGroupEnum.AUTUMN));
         consultPersonalColorResponseDto.setWinter(getPersonalColorDtoList(consultantId, PersonalColorGroupEnum.WINTER));
 
         return consultPersonalColorResponseDto;

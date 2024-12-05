@@ -13,6 +13,6 @@ import java.util.List;
 public class PersonalColorTypeListResponseDto {
     private List<PersonalColorTypeDto> spring = new ArrayList<>();
     private List<PersonalColorTypeDto> summer = new ArrayList<>();
-    private List<PersonalColorTypeDto> fall = new ArrayList<>();
+    private List<PersonalColorTypeDto> autumn = new ArrayList<>();
     private List<PersonalColorTypeDto> winter = new ArrayList<>();
 }

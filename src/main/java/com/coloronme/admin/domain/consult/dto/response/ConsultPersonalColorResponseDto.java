@@ -14,6 +14,6 @@ import java.util.List;
 public class ConsultPersonalColorResponseDto {
     private List<PersonalColorTypeDto> spring;
     private List<PersonalColorTypeDto> summer;
-    private List<PersonalColorTypeDto> fall;
+    private List<PersonalColorTypeDto> autumn;
     private List<PersonalColorTypeDto> winter;
 }
