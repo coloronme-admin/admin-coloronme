@@ -4,6 +4,17 @@
 
 <br>
 
+## 주 기능
+- 진단 회원 관리
+- 퍼스널 컬러 짇단 내역 관리
+- 퍼스널 컬러 커스터 마이징
+- 진단 내역 기반 통계 자료 제공
+- 로그인 및 마이페이지
+- QR 코드로 진단 회원 추가
+
+<br>
+
+
 ## 프로젝트 환경
 - JDK 17
 - SpringBoot 3.1.2
@@ -44,5 +55,12 @@ GET /actuator/health
 - 퍼스널 컬러 타입 커스터 마이징 페이지
 
 <img width="648" alt="image" src="https://github.com/user-attachments/assets/bd4fe3a2-64d8-47de-9943-fd29c5de559b">
+
+<br>
+<br>
+
+- 차트 페이지
+
+<img width="648" alt="image" src="https://github.com/user-attachments/assets/2c649170-2cd2-4585-ad14-e42f3fa2fab1">
 
 
