@@ -14,6 +14,11 @@
 
 <br>
 
+## 🚚 현재는 아직 개발 단계라 클라우드 타입 서비스로 배포중에 있습니다.
+[컬러온미 관리자 서비스 접속하기](https://coloronme-coloronme-admin.vercel.app/)
+
+<br>
+
 ## API 명세
 ### [Swagger](https://port-0-admin-coloronme-staging-am952nlsmt6rh8.sel5.cloudtype.app/swagger-ui/index.html)
 ```
