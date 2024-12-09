@@ -67,6 +67,9 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                             , "http://localhost:3002"
                             , "http://localhost:3003"
                             , "http://localhost:6006"
+                            , "192.168.0.12:3000"
+                            , "192.168.0.12:3001"
+                            , "192.168.0.12:3002"
                             , "https://coloronme-coloronme-admin.vercel.app"));
                     config.setAllowedMethods(List.of("*"));
                     config.setAllowedHeaders(List.of("*"));
