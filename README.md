@@ -28,6 +28,8 @@
 ## 🚚 현재는 아직 개발 단계라 클라우드 타입 서비스로 배포중에 있습니다.
 [컬러온미 관리자 서비스 접속하기](https://coloronme-coloronme-admin.vercel.app/)
 
+모바일로 이용하는 것을 권장드립니다.
+
 <br>
 
 ## API 명세
@@ -43,6 +45,9 @@ GET /actuator/health
 <br>
 
 ## 화면 구상 일부
+- 로그린 페이지
+<img width="203" alt="image" src="https://github.com/user-attachments/assets/feee3eb5-3e79-45f0-8571-ca143e8099aa">
+
 
 - 고객 진단 정보 페이지
 
@@ -54,13 +59,13 @@ GET /actuator/health
 
 - 퍼스널 컬러 타입 커스터 마이징 페이지
 
-<img width="648" alt="image" src="https://github.com/user-attachments/assets/bd4fe3a2-64d8-47de-9943-fd29c5de559b">
+<img width="406" alt="image" src="https://github.com/user-attachments/assets/bd4fe3a2-64d8-47de-9943-fd29c5de559b">
 
 <br>
 <br>
 
 - 차트 페이지
 
-<img width="648" alt="image" src="https://github.com/user-attachments/assets/2c649170-2cd2-4585-ad14-e42f3fa2fab1">
+<img width="406" alt="image" src="https://github.com/user-attachments/assets/2c649170-2cd2-4585-ad14-e42f3fa2fab1">
 
 
